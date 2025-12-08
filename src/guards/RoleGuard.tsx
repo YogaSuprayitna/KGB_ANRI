@@ -5,7 +5,7 @@ import { ReactNode } from "react";
 export const AdminRoleGuard = ({ children }: { children: ReactNode }) => {
   const { data: identity } = useGetIdentity();
 
-  if (identity?.role !== "admin") {
+  if (identity?.role !== "user") {
     return <Navigate to="/user-dashboard" />;
   }
 
@@ -15,7 +15,7 @@ export const AdminRoleGuard = ({ children }: { children: ReactNode }) => {
 export const UserRoleGuard = ({ children }: { children: ReactNode }) => {
   const { data: identity } = useGetIdentity();
 
-  if (identity?.role !== "user") {
+  if (identity?.role !== "admin") {
     return <Navigate to="/admin-dashboard" />;
   }
 
