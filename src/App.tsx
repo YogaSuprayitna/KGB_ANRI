@@ -1,127 +1,57 @@
-import {
-  Refine,
-  GitHubBanner,
-  WelcomePage,
-  Authenticated,
-} from "@refinedev/core";
-import { DevtoolsPanel, DevtoolsProvider } from "@refinedev/devtools";
-import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
-
-import {
-  AuthPage,
-  ErrorComponent,
-  useNotificationProvider,
-  ThemedLayout,
-  ThemedSider,
-} from "@refinedev/antd";
-import "@refinedev/antd/dist/reset.css";
-
+import { Refine, Authenticated } from "@refinedev/core";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import dataProvider from "@refinedev/simple-rest";
-import { App as AntdApp } from "antd";
-import { BrowserRouter, Route, Routes, Outlet } from "react-router";
-import routerProvider, {
-  NavigateToResource,
-  CatchAllNavigate,
-  UnsavedChangesNotifier,
-  DocumentTitleHandler,
-} from "@refinedev/react-router";
-import {
-  BlogPostList,
-  BlogPostCreate,
-  BlogPostEdit,
-  BlogPostShow,
-} from "./pages/blog-posts";
-import {
-  CategoryList,
-  CategoryCreate,
-  CategoryEdit,
-  CategoryShow,
-} from "./pages/categories";
-import { AppIcon } from "./components/app-icon";
-import { ColorModeContextProvider } from "./contexts/color-mode";
-import { Header } from "./components/header";
+
+import { authProvider } from "./authProvider";
+
+import Login from "./pages/login";
+import AdminDashboard from "./pages/AdminDashboard";
+import UserDashboard from "./pages/UserDashboard";
+import { AdminRoleGuard, UserRoleGuard } from "./guards/RoleGuard";
 
 function App() {
   return (
     <BrowserRouter>
-      <GitHubBanner />
-      <RefineKbarProvider>
-        <ColorModeContextProvider>
-          <AntdApp>
-            <DevtoolsProvider>
-              <Refine
-                dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
-                notificationProvider={useNotificationProvider}
-                routerProvider={routerProvider}
-                resources={[
-                  {
-                    name: "blog_posts",
-                    list: "/blog-posts",
-                    create: "/blog-posts/create",
-                    edit: "/blog-posts/edit/:id",
-                    show: "/blog-posts/show/:id",
-                    meta: {
-                      canDelete: true,
-                    },
-                  },
-                  {
-                    name: "categories",
-                    list: "/categories",
-                    create: "/categories/create",
-                    edit: "/categories/edit/:id",
-                    show: "/categories/show/:id",
-                    meta: {
-                      canDelete: true,
-                    },
-                  },
-                ]}
-                options={{
-                  syncWithLocation: true,
-                  warnWhenUnsavedChanges: true,
-                  projectId: "fv3D3r-8DTbrx-s1VIGi",
-                  title: { text: "Refine Project", icon: <AppIcon /> },
-                }}
-              >
-                <Routes>
-                  <Route
-                    element={
-                      <ThemedLayout
-                        Header={() => <Header sticky />}
-                        Sider={(props) => <ThemedSider {...props} fixed />}
-                      >
-                        <Outlet />
-                      </ThemedLayout>
-                    }
-                  >
-                    <Route
-                      index
-                      element={<NavigateToResource resource="blog_posts" />}
-                    />
-                    <Route path="/blog-posts">
-                      <Route index element={<BlogPostList />} />
-                      <Route path="create" element={<BlogPostCreate />} />
-                      <Route path="edit/:id" element={<BlogPostEdit />} />
-                      <Route path="show/:id" element={<BlogPostShow />} />
-                    </Route>
-                    <Route path="/categories">
-                      <Route index element={<CategoryList />} />
-                      <Route path="create" element={<CategoryCreate />} />
-                      <Route path="edit/:id" element={<CategoryEdit />} />
-                      <Route path="show/:id" element={<CategoryShow />} />
-                    </Route>
-                    <Route path="*" element={<ErrorComponent />} />
-                  </Route>
-                </Routes>
+      <Refine
+        dataProvider={dataProvider("http://localhost:3000")}
+        authProvider={authProvider}
+      >
+        <Routes>
+          {/* Login */}
+          <Route path="/login" element={<Login />} />
 
-                <RefineKbar />
-                <UnsavedChangesNotifier />
-                <DocumentTitleHandler />
-              </Refine>
-              <DevtoolsPanel />
-            </DevtoolsProvider>
-          </AntdApp>
-        </ColorModeContextProvider>
-      </RefineKbarProvider>
+          {/* Admin Dashboard (Hanya Admin) */}
+          <Route
+            path="/admin-dashboard"
+            element={
+              <Authenticated
+                key="admin-auth" 
+                  fallback={<Navigate to="/login" />}>
+                <AdminRoleGuard>
+                  <AdminDashboard />
+                </AdminRoleGuard>
+              </Authenticated>
+            }
+          />
+
+          {/* User Dashboard (Hanya User) */}
+          <Route
+            path="/user-dashboard"
+            element={
+              <Authenticated
+              key="user-auth" 
+              fallback={<Navigate to="/login" />}>
+                <UserRoleGuard>
+                  <UserDashboard />
+                </UserRoleGuard>
+              </Authenticated>
+            }
+          />
+
+          {/* Default redirect */}
+          <Route path="*" element={<Navigate to="/login" />} />
+        </Routes>
+      </Refine>
     </BrowserRouter>
   );
 }
