@@ -1,15 +1,18 @@
-import DarkModeOutlined from "@mui/icons-material/DarkModeOutlined";
-import LightModeOutlined from "@mui/icons-material/LightModeOutlined";
-import AppBar from "@mui/material/AppBar";
-import Avatar from "@mui/material/Avatar";
-import IconButton from "@mui/material/IconButton";
-import Stack from "@mui/material/Stack";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
+import type { RefineThemedLayoutHeaderProps } from "@refinedev/antd";
 import { useGetIdentity } from "@refinedev/core";
-import { HamburgerMenu, RefineThemedLayoutHeaderProps } from "@refinedev/mui";
+import {
+  Avatar,
+  Layout as AntdLayout,
+  Space,
+  Switch,
+  theme,
+  Typography,
+} from "antd";
 import React, { useContext } from "react";
 import { ColorModeContext } from "../../contexts/color-mode";
+
+const { Text } = Typography;
+const { useToken } = theme;
 
 type IUser = {
   id: number;
@@ -20,61 +23,39 @@ type IUser = {
 export const Header: React.FC<RefineThemedLayoutHeaderProps> = ({
   sticky = true,
 }) => {
+  const { token } = useToken();
+  const { data: user } = useGetIdentity<IUser>();
   const { mode, setMode } = useContext(ColorModeContext);
 
-  const { data: user } = useGetIdentity<IUser>();
+  const headerStyles: React.CSSProperties = {
+    backgroundColor: token.colorBgElevated,
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    padding: "0px 24px",
+    height: "64px",
+  };
+
+  if (sticky) {
+    headerStyles.position = "sticky";
+    headerStyles.top = 0;
+    headerStyles.zIndex = 1;
+  }
 
   return (
-    <AppBar position={sticky ? "sticky" : "relative"}>
-      <Toolbar>
-        <Stack
-          direction="row"
-          width="100%"
-          justifyContent="flex-end"
-          alignItems="center"
-        >
-          <HamburgerMenu />
-          <Stack
-            direction="row"
-            width="100%"
-            justifyContent="flex-end"
-            alignItems="center"
-          >
-            <IconButton
-              color="inherit"
-              onClick={() => {
-                setMode();
-              }}
-            >
-              {mode === "dark" ? <LightModeOutlined /> : <DarkModeOutlined />}
-            </IconButton>
-
-            {(user?.avatar || user?.name) && (
-              <Stack
-                direction="row"
-                gap="16px"
-                alignItems="center"
-                justifyContent="center"
-              >
-                {user?.name && (
-                  <Typography
-                    sx={{
-                      display: {
-                        xs: "none",
-                        sm: "inline-block",
-                      },
-                    }}
-                    variant="subtitle2"
-                  >
-                    {user?.name}
-                  </Typography>
-                )}
-                <Avatar src={user?.avatar} alt={user?.name} />
-              </Stack>
-            )}
-          </Stack>
-        </Stack>
-      </Toolbar>
-    </AppBar>
+    <AntdLayout.Header style={headerStyles}>
+      <Space>
+        <Switch
+          checkedChildren="🌛"
+          unCheckedChildren="🔆"
+          onChange={() => setMode(mode === "light" ? "dark" : "light")}
+          defaultChecked={mode === "dark"}
+        />
+        <Space style={{ marginLeft: "8px" }} size="middle">
+          {user?.name && <Text strong>{user.name}</Text>}
+          {user?.avatar && <Avatar src={user?.avatar} alt={user?.name} />}
+        </Space>
+      </Space>
+    </AntdLayout.Header>
   );
 };

@@ -1,19 +1,21 @@
-import { Stack, Typography } from "@mui/material";
-import { useOne, useShow } from "@refinedev/core";
 import {
   DateField,
   MarkdownField,
   NumberField,
   Show,
-  TextFieldComponent as TextField,
-} from "@refinedev/mui";
+  TextField,
+} from "@refinedev/antd";
+import { useOne, useShow } from "@refinedev/core";
+import { Typography } from "antd";
+import React from "react";
+
+const { Title } = Typography;
 
 export const BlogPostShow = () => {
-  const { query } = useShow({});
-
-  const { data, isLoading } = query;
-
-  const record = data?.data;
+  const {
+    result: record,
+    query: { isLoading },
+  } = useShow({});
 
   const {
     result: category,
@@ -28,35 +30,20 @@ export const BlogPostShow = () => {
 
   return (
     <Show isLoading={isLoading}>
-      <Stack gap={1}>
-        <Typography variant="body1" fontWeight="bold">
-          {"ID"}
-        </Typography>
-        <TextField value={record?.id} />
-
-        <Typography variant="body1" fontWeight="bold">
-          {"Title"}
-        </Typography>
-        <TextField value={record?.title} />
-
-        <Typography variant="body1" fontWeight="bold">
-          {"Content"}
-        </Typography>
-        <MarkdownField value={record?.content} />
-
-        <Typography variant="body1" fontWeight="bold">
-          {"Category"}
-        </Typography>
-        {categoryIsLoading ? <>Loading...</> : <>{category?.title}</>}
-        <Typography variant="body1" fontWeight="bold">
-          {"Status"}
-        </Typography>
-        <TextField value={record?.status} />
-        <Typography variant="body1" fontWeight="bold">
-          {"CreatedAt"}
-        </Typography>
-        <DateField value={record?.createdAt} />
-      </Stack>
+      <Title level={5}>{"ID"}</Title>
+      <TextField value={record?.id} />
+      <Title level={5}>{"Title"}</Title>
+      <TextField value={record?.title} />
+      <Title level={5}>{"Content"}</Title>
+      <MarkdownField value={record?.content} />
+      <Title level={5}>{"Category"}</Title>
+      <TextField
+        value={categoryIsLoading ? <>Loading...</> : <>{category?.title}</>}
+      />
+      <Title level={5}>{"Status"}</Title>
+      <TextField value={record?.status} />
+      <Title level={5}>{"CreatedAt"}</Title>
+      <DateField value={record?.createdAt} />
     </Show>
   );
 };

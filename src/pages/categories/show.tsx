@@ -1,29 +1,20 @@
-import { Stack, Typography } from "@mui/material";
+import { NumberField, Show, TextField } from "@refinedev/antd";
 import { useShow } from "@refinedev/core";
-import {
-  NumberField,
-  Show,
-  TextFieldComponent as TextField,
-} from "@refinedev/mui";
+import { Typography } from "antd";
+import React from "react";
+
+const { Title } = Typography;
 
 export const CategoryShow = () => {
-  const { query } = useShow({});
-  const { data, isLoading } = query;
-
-  const record = data?.data;
+  const { result: record, query } = useShow({});
+  const { isLoading } = query;
 
   return (
     <Show isLoading={isLoading}>
-      <Stack gap={1}>
-        <Typography variant="body1" fontWeight="bold">
-          {"ID"}
-        </Typography>
-        <TextField value={record?.id} />
-        <Typography variant="body1" fontWeight="bold">
-          {"Title"}
-        </Typography>
-        <TextField value={record?.title} />
-      </Stack>
+      <Title level={5}>{"ID"}</Title>
+      <TextField value={record?.id} />
+      <Title level={5}>{"Title"}</Title>
+      <TextField value={record?.title} />
     </Show>
   );
 };

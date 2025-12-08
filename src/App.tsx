@@ -11,13 +11,13 @@ import {
   AuthPage,
   ErrorComponent,
   useNotificationProvider,
-  RefineSnackbarProvider,
   ThemedLayout,
-} from "@refinedev/mui";
+  ThemedSider,
+} from "@refinedev/antd";
+import "@refinedev/antd/dist/reset.css";
 
 import dataProvider from "@refinedev/simple-rest";
-import CssBaseline from "@mui/material/CssBaseline";
-import GlobalStyles from "@mui/material/GlobalStyles";
+import { App as AntdApp } from "antd";
 import { BrowserRouter, Route, Routes, Outlet } from "react-router";
 import routerProvider, {
   NavigateToResource,
@@ -47,9 +47,7 @@ function App() {
       <GitHubBanner />
       <RefineKbarProvider>
         <ColorModeContextProvider>
-          <CssBaseline />
-          <GlobalStyles styles={{ html: { WebkitFontSmoothing: "auto" } }} />
-          <RefineSnackbarProvider>
+          <AntdApp>
             <DevtoolsProvider>
               <Refine
                 dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
@@ -80,14 +78,17 @@ function App() {
                 options={{
                   syncWithLocation: true,
                   warnWhenUnsavedChanges: true,
-                  projectId: "VRPxR6-K6Tm82-q1bevq",
+                  projectId: "fv3D3r-8DTbrx-s1VIGi",
                   title: { text: "Refine Project", icon: <AppIcon /> },
                 }}
               >
                 <Routes>
                   <Route
                     element={
-                      <ThemedLayout Header={() => <Header sticky />}>
+                      <ThemedLayout
+                        Header={() => <Header sticky />}
+                        Sider={(props) => <ThemedSider {...props} fixed />}
+                      >
                         <Outlet />
                       </ThemedLayout>
                     }
@@ -118,7 +119,7 @@ function App() {
               </Refine>
               <DevtoolsPanel />
             </DevtoolsProvider>
-          </RefineSnackbarProvider>
+          </AntdApp>
         </ColorModeContextProvider>
       </RefineKbarProvider>
     </BrowserRouter>

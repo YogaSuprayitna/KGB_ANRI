@@ -12,15 +12,10 @@
     "react-dom": "^19.1.0",
     "react-router": "^7.0.2",
     "@refinedev/simple-rest": "^6.0.0",
-    "@refinedev/mui": "^7.0.0",
-    "@refinedev/react-hook-form": "^5.0.0",
-    "@mui/icons-material": "^6.1.6",
-    "@emotion/react": "^11.8.2",
-    "@emotion/styled": "^11.8.1",
-    "@mui/lab": "^6.0.0-beta.14",
-    "@mui/material": "^6.1.7",
-    "@mui/x-data-grid": "^7.23.5",
-    "react-hook-form": "^7.57.0",
+    "@refinedev/antd": "^6.0.1",
+    "antd": "^5.23.0",
+    "@ant-design/icons": "^5.5.1",
+    "@uiw/react-md-editor": "^4.0.8",
     "@refinedev/react-router": "^2.0.0"
   },
   "devDependencies": {
@@ -58,6 +53,6 @@
     ]
   },
   "refine": {
-    "projectId": "VRPxR6-K6Tm82-q1bevq"
+    "projectId": "fv3D3r-8DTbrx-s1VIGi"
   }
 }
