@@ -13,21 +13,22 @@ function App() {
   return (
     <BrowserRouter>
       <Refine
-        // dataProvider={dataProvider("http://localhost:3000")}
+        dataProvider={dataProvider("http://localhost:3000")}
         authProvider={authProvider}
       >
         <Routes>
-          {/* Route /dashboard dihapus atau diganti dengan Admin/User Dashboard */}
-          {/* Contoh: gunakan /admin-dashboard atau /user-dashboard sesuai role */}
 
           {/* Login */}
           <Route path="/login" element={<Login />} />
 
-          {/* Admin Dashboard (Hanya Admin) */}
+          {/* Admin Dashboard */}
           <Route
             path="/admin-dashboard"
             element={
-              <Authenticated fallback={<Navigate to="/login" />}>
+              <Authenticated
+                key="admin-auth"
+                fallback={<Navigate to="/login" />}
+              >
                 <AdminLayout>
                   <AdminDashboard />
                 </AdminLayout>
@@ -35,11 +36,14 @@ function App() {
             }
           />
 
-          {/* User Dashboard (Hanya User) */}
+          {/* User Dashboard */}
           <Route
             path="/user-dashboard"
             element={
-              <Authenticated fallback={<Navigate to="/login" />}>
+              <Authenticated
+                key="user-auth"
+                fallback={<Navigate to="/login" />}
+              >
                 <UserDashboard />
               </Authenticated>
             }
@@ -47,6 +51,7 @@ function App() {
 
           {/* Default redirect */}
           <Route path="*" element={<Navigate to="/login" />} />
+
         </Routes>
       </Refine>
     </BrowserRouter>
