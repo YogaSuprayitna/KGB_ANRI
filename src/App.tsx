@@ -1,14 +1,42 @@
-import { Refine, Authenticated } from "@refinedev/core";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Refine, Authenticated, usePermissions } from "@refinedev/core";
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 import dataProvider from "@refinedev/simple-rest";
-
 import { authProvider } from "./authProvider";
-
 import Login from "./pages/login";
 import AdminDashboard from "./pages/AdminDashboard";
 import UserDashboard from "./pages/UserDashboard";
 import AdminLayout from "./components/layout/AdminLayout";
 import UserLayout from "./components/layout/UserLayout";
+import NotFound from "./pages/NotFound";
+
+
+// --- ROLE ---
+const RoleProtected = ({ allowedRoles }: { allowedRoles: string[] }) => {
+  const { data: role, isLoading } = usePermissions({});
+
+  if (isLoading) return <div>Loading permissions...</div>;
+
+  if (allowedRoles.includes(role)) {
+    return <Outlet />;
+  }
+
+  if (role === "admin") return <Navigate to="/admin-dashboard" />;
+  if (role === "user") return <Navigate to="/user-dashboard" />;
+
+  // 3. Fallback
+  return <Navigate to="/login" />;
+};
+// --- ROOT REDIRECT ---
+const RootRedirect = () => {
+    const { data: role, isLoading } = usePermissions({});
+    if (isLoading) return null;
+
+    if (role === "admin") return <Navigate to="/admin-dashboard" />;
+    if (role === "user") return <Navigate to="/user-dashboard" />;
+    
+    return <Navigate to="/login" />;
+}
+
 
 function App() {
   return (
@@ -18,42 +46,55 @@ function App() {
         authProvider={authProvider}
       >
         <Routes>
-
-          {/* Login */}
+          {/* 1. LOGIN PAGE (TIDAK PERLU PROTEKSI) */}
           <Route path="/login" element={<Login />} />
-
-          {/* Admin Dashboard */}
+          {/* 2. PROTECTED ROUTE: ADMIN */}
           <Route
-            path="/admin-dashboard"
             element={
-              <Authenticated
-                key="admin-auth"
-                fallback={<Navigate to="/login" />}
-              >
+              <Authenticated key="admin-auth" fallback={<Navigate to="/login" />}>
+                <RoleProtected allowedRoles={["admin"]} />
+              </Authenticated>
+            }
+          >
+            <Route
+              path="/admin-dashboard"
+              element={
                 <AdminLayout>
                   <AdminDashboard />
                 </AdminLayout>
+              }
+            />
+          </Route>
+
+          {/* 3. PROTECTED ROUTE: USER */}
+          <Route
+            element={
+              <Authenticated key="user-auth" fallback={<Navigate to="/login" />}>
+                <RoleProtected allowedRoles={["user"]} />
               </Authenticated>
             }
-          />
-
-          {/* User Dashboard */}
-          <Route
-            path="/user-dashboard"
-            element={
-              <Authenticated
-                key="user-auth"
-                fallback={<Navigate to="/login" />}
-              >
+          >
+            <Route
+              path="/user-dashboard"
+              element={
                 <UserLayout>
                   <UserDashboard />
                 </UserLayout>
-              </Authenticated>
-            }
-          />
+              }
+            />
+          </Route>
 
-          {/* Default redirect */}
-          <Route path="*" element={<Navigate to="/login" />} />
+          {/* 4. ROOT PATH (/) */}
+          <Route
+             path="/"
+             element={
+                <Authenticated key="root-auth" fallback={<Navigate to="/login" />}>
+                    <RootRedirect />
+                </Authenticated>
+             }
+          />
+          {/* 5. NOT FOUND PAGE */}
+          <Route path="*" element={<NotFound />} />
 
         </Routes>
       </Refine>

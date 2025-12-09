@@ -22,9 +22,13 @@ export const authProvider: AuthProvider = {
 
             localStorage.setItem("auth", JSON.stringify(user));
 
+            // PERBAIKAN DI SINI: Redirect berdasarkan role
+            const role = user.role; // Pastikan di database ada kolom 'role'
+            const redirectUrl = role === "admin" ? "/admin-dashboard" : "/user-dashboard";
+
             return {
                 success: true,
-                redirectTo: "/",
+                redirectTo: redirectUrl,
             };
         } catch (error) {
             return {
@@ -47,11 +51,9 @@ export const authProvider: AuthProvider = {
 
     check: async () => {
         const user = localStorage.getItem("auth");
-
         if (user) {
             return { authenticated: true };
         }
-
         return {
             authenticated: false,
             redirectTo: "/login",
@@ -65,14 +67,12 @@ export const authProvider: AuthProvider = {
 
     getPermissions: async () => {
         const user = localStorage.getItem("auth");
+        // Ini penting untuk RoleCheck nanti
         return user ? JSON.parse(user).role : null;
     },
 
-    // WAJIB ADA — untuk versi refine terbaru
     onError: async (error) => {
         console.error("Auth error:", error);
-        return {
-            error,
-        };
+        return { error };
     },
 };
