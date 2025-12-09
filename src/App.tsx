@@ -13,10 +13,13 @@ function App() {
   return (
     <BrowserRouter>
       <Refine
-        dataProvider={dataProvider("http://localhost:3000")}
+        // dataProvider={dataProvider("http://localhost:3000")}
         authProvider={authProvider}
       >
         <Routes>
+          {/* Route /dashboard dihapus atau diganti dengan Admin/User Dashboard */}
+          {/* Contoh: gunakan /admin-dashboard atau /user-dashboard sesuai role */}
+
           {/* Login */}
           <Route path="/login" element={<Login />} />
 

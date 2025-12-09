@@ -13,14 +13,14 @@ const Login = () => {
 
   const onFinish = (values: any) => {
     setLoading(true);
-    
+
     login(
       { username: values.username, password: values.password },
       {
         onSuccess: (data: any) => {
-          message.success("Login berhasil!");
-          
-          if (data?.role === "admin") {
+          console.log("login response:", data); // debug
+          const role = data?.role ?? data?.user?.role; // menampung berbagai struktur
+          if (role === "admin") {
             navigate("/admin-dashboard");
           } else {
             navigate("/user-dashboard");
