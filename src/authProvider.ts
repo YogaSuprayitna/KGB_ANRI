@@ -1,11 +1,9 @@
-import { AuthProvider, OnErrorResponse } from "@refinedev/core";
+import { AuthProvider } from "@refinedev/core";
 import axios from "axios";
 
 export const authProvider: AuthProvider = {
-    // LOGIN
     login: async ({ username, password }) => {
         try {
-            // Ambil user sesuai username & password dari db.json
             const res = await axios.get<any[]>(
                 `http://localhost:3001/users?username=${username}&password=${password}`
             );
@@ -22,25 +20,23 @@ export const authProvider: AuthProvider = {
                 };
             }
 
-            // Simpan user ke localStorage
             localStorage.setItem("auth", JSON.stringify(user));
 
             return {
                 success: true,
-                redirectTo: "/", // Redirect ke Home (nanti auto redirect berdasarkan role)
+                redirectTo: "/",
             };
         } catch (error) {
             return {
                 success: false,
                 error: {
-                    message: "Terjadi kesalahan",
+                    message: "Terjadi kesalahan server",
                     name: "Server error",
                 },
             };
         }
     },
 
-    // LOGOUT
     logout: async () => {
         localStorage.removeItem("auth");
         return {
@@ -49,14 +45,11 @@ export const authProvider: AuthProvider = {
         };
     },
 
-    // CEK STATUS LOGIN
     check: async () => {
         const user = localStorage.getItem("auth");
 
         if (user) {
-            return {
-                authenticated: true,
-            };
+            return { authenticated: true };
         }
 
         return {
@@ -65,29 +58,21 @@ export const authProvider: AuthProvider = {
         };
     },
 
-    // MENGAMBIL IDENTITAS USER (untuk UI)
     getIdentity: async () => {
         const user = localStorage.getItem("auth");
-
-        if (user) {
-            return JSON.parse(user);
-        }
-
-        return null;
+        return user ? JSON.parse(user) : null;
     },
 
-    // MENGAMBIL ROLE USER
     getPermissions: async () => {
         const user = localStorage.getItem("auth");
-
-        if (user) {
-            const parsed = JSON.parse(user);
-            return parsed.role; // <-- role: "admin" atau "user"
-        }
-
-        return null;
+        return user ? JSON.parse(user).role : null;
     },
-    onError: function (_error: any): Promise<OnErrorResponse> {
-        throw new Error("Function not implemented.");
-    }
+
+    // WAJIB ADA — untuk versi refine terbaru
+    onError: async (error) => {
+        console.error("Auth error:", error);
+        return {
+            error,
+        };
+    },
 };
