@@ -8,11 +8,6 @@ export default function UserDashboard() {
 
   if (isLoading) return <div className="p-4">Memuat...</div>;
 
-  // Jika bukan user, arahkan ke admin atau login
-  if (identity?.role !== "user") {
-    return <Navigate to="/admin-dashboard" replace />;
-  }
-
   return (
     <div style={{ padding: 24, fontFamily: "Arial" }}>
       <h1>User Dashboard</h1>
