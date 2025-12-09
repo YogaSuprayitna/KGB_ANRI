@@ -16,7 +16,7 @@ const CustomNotification = ({ show, type, title, message, onClose }: Notificatio
     if (show) {
       const timer = setTimeout(() => {
         onClose();
-      }, 4000);
+      }, 2000);
       return () => clearTimeout(timer);
     }
   }, [show, onClose]);
@@ -36,10 +36,6 @@ const CustomNotification = ({ show, type, title, message, onClose }: Notificatio
       <div className="notif-icon-wrapper">
         <div className="icon-bg">
           {getIcon()}
-        </div>
-        {/* Logo Kecil di bawah icon utama */}
-        <div className="app-logo-mini">
-           <Shield size={10} color="#fff" strokeWidth={3} />
         </div>
       </div>
 

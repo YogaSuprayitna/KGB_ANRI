@@ -2,7 +2,11 @@ import { useState } from "react";
 import { useLogin } from "@refinedev/core";
 import { useNavigate } from "react-router-dom";
 import { Shield, User, Lock, Eye, EyeOff, Sparkles, ArrowRight, CheckCircle } from "lucide-react";
-import { Button, Form, Input, Typography, message } from "antd";
+import { Button, Form, Input, Typography, message as antMessage } from "antd";
+import "../styles/Login.css";
+
+// IMPORT CUSTOM NOTIFICATION
+import CustomNotification from "../components/Notification"; // Sesuaikan path ini
 
 const { Title, Text } = Typography;
 
@@ -12,38 +16,50 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  // --- STATE UNTUK CUSTOM NOTIFICATION ---
+  const [notifState, setNotifState] = useState<{
+    show: boolean;
+    type: 'success' | 'error' | 'warning';
+    title: string;
+    message: string;
+  }>({
+    show: false,
+    type: 'error', // default
+    title: '',
+    message: '',
+  });
+
+  // Fungsi helper untuk menutup notifikasi
+  const closeNotif = () => {
+    setNotifState((prev) => ({ ...prev, show: false }));
+  };
+
   const onFinish = async (values: any) => {
     setLoading(true);
+    // Tutup notifikasi lama jika ada
+    closeNotif();
 
     try {
-      // 1. Panggil fungsi login
       const response = await login({ 
         username: values.username, 
         password: values.password 
       });
 
-      // --- BAGIAN INI PERBAIKAN UTAMANYA ---
-      // 2. Cek apakah authProvider mengembalikan success: false
-      // Jika ya, kita paksa lempar error agar masuk ke blok 'catch'
       if (response && response.success === false) {
          const errorMsg = response.error?.message || "Login gagal";
          throw new Error(errorMsg);
       }
       
-      // 3. Jika success: true, baru kita jalankan logika sukses
+      // --- SUCCESS HANDLING (TIDAK PAKAI CUSTOM NOTIF) ---
       console.log("Login sukses:", response);
       
-      // Ambil data user (sesuaikan dengan struktur data JSON server Anda)
-      // authProvider Anda menyimpan user di localStorage, tapi respon login biasanya berisi data user juga jika dikonfigurasi demikian.
-      // Jika response tidak membawa data user, kita bisa ambil nama dari input atau localStorage.
-      
-      // Mengambil nama user dari localStorage (karena authProvider Anda menyimpannya di sana)
       const storedUser = localStorage.getItem("auth");
       const parsedUser = storedUser ? JSON.parse(storedUser) : null;
       const name = parsedUser?.name || values.username;
       const role = parsedUser?.role || "user";
 
-      message.success(`Login berhasil — Selamat datang, ${name}`);
+      // Tetap pakai Ant Design message untuk sukses (sesuai request)
+      antMessage.success(`Login berhasil — Selamat datang, ${name}`);
 
       setTimeout(() => {
         if (role === "admin") {
@@ -55,26 +71,47 @@ const Login = () => {
       }, 600);
 
     } catch (error: any) {
-      // 4. SEMUA ERROR (Baik dari server atau validasi password) AKAN DITANGKAP DI SINI
-      // Halaman TIDAK akan refresh
+      // --- ERROR HANDLING (PAKAI CUSTOM NOTIF: ERROR) ---
       console.error("Login gagal:", error);
       
-      const errMsg = error?.message || "Username atau password salah!";
-      message.error(errMsg);
+      const errMsg ="Username atau password salah!";
       
-      // Stop loading
+      // Trigger Custom Notification Error
+      setNotifState({
+        show: true,
+        type: 'error',
+        title: 'Login Gagal',
+        message: errMsg
+      });
+      
       setLoading(false);
     }
   };
 
   const onFinishFailed = (errorInfo: any) => {
     console.warn("Validation failed:", errorInfo);
-    message.error("Periksa kembali input Anda.");
+    
+    // --- VALIDATION HANDLING (PAKAI CUSTOM NOTIF: WARNING) ---
+    // Trigger Custom Notification Warning (Wajib diisi)
+    setNotifState({
+        show: true,
+        type: 'warning',
+        title: 'Perhatian',
+        message: 'Mohon lengkapi username dan password Anda.'
+    });
   };
 
   return (
     <div className="login-root">
-      {/* ... (BAGIAN TAMPILAN/JSX KE BAWAH SAMA PERSIS SEPERTI SEBELUMNYA) ... */}
+      {/* --- RENDER CUSTOM NOTIFICATION --- */}
+      <CustomNotification 
+        show={notifState.show}
+        type={notifState.type}
+        title={notifState.title}
+        message={notifState.message}
+        onClose={closeNotif}
+      />
+
       <div className="split-grid">
         <div className="hero-section">
           <div className="decor-circle decor-1" />
@@ -138,47 +175,6 @@ const Login = () => {
           </div>
         </div>
       </div>
-      
-      {/* CSS Styles sama seperti sebelumnya */}
-      <style>{`
-        :root { --hero-bg-1: #667eea; --hero-bg-2: #764ba2; }
-        * { box-sizing: border-box; }
-        body { margin: 0; padding: 0; overflow-y: auto; -webkit-font-smoothing: antialiased; }
-        .login-root { min-height: 100vh; width: 100%; background: #ffffff; display: flex; align-items: stretch; }
-        .split-grid { display: grid; grid-template-columns: 55% 45%; width: 100%; min-height: 100vh; }
-        .hero-section { background: linear-gradient(135deg, var(--hero-bg-1) 0%, var(--hero-bg-2) 100%); padding: 80px 60px; display: flex; align-items: center; position: relative; overflow: hidden; }
-        .decor-circle { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.08); filter: blur(0.5px); }
-        .decor-1 { width: 400px; height: 400px; top: -100px; left: -100px; background: rgba(255,255,255,0.1); animation: float 8s ease-in-out infinite; }
-        .decor-2 { width: 300px; height: 300px; bottom: -50px; right: -50px; background: rgba(255,255,255,0.08); animation: float 10s ease-in-out infinite reverse; }
-        .hero-content { position: relative; z-index: 1; max-width: 550px; color: #fff; }
-        .logo { width: 80px; height: 80px; border-radius: 20px; background: rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; margin-bottom: 48px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
-        .hero-title { color: #fff; font-size: clamp(32px, 4.5vw, 48px); font-weight: 800; margin-bottom: 16px; line-height:1.1; }
-        .hero-sub { color: rgba(255,255,255,0.9); display:block; margin-bottom: 28px; font-size: clamp(16px, 2.2vw, 18px); line-height:1.6; }
-        .features { display:flex; flex-direction:column; gap: 16px; margin-top: 12px; }
-        .feature-item { display:flex; align-items:center; gap:16px; }
-        .feature-icon { width:40px; height:40px; border-radius:10px; background: rgba(255,255,255,0.15); display:flex; align-items:center; justify-content:center; }
-        .feature-text { color:#fff; font-size: 16px; font-weight:500; }
-        .sparkles { position:absolute; top:20%; right:10%; opacity:0.6; }
-        .form-section { padding: 60px 50px; display:flex; align-items:center; justify-content:center; background: #fff; overflow-y: auto; }
-        .form-wrap { max-width: 450px; width:100%; }
-        .form-header { margin-bottom: 32px; }
-        .lock-badge { display:inline-flex; padding:14px; border-radius:18px; background: linear-gradient(135deg, rgba(102,126,234,0.08), rgba(118,75,162,0.08)); margin-bottom: 16px; }
-        .form-title { margin: 0 0 8px 0; font-size: clamp(22px, 3.2vw, 28px); font-weight:700; color:#1e293b; }
-        .form-sub { color:#64748b; display:block; margin-bottom: 0; }
-        .label-text { font-weight:600; color:#1e293b; font-size:15px; }
-        .input-wrap { position: relative; }
-        .input-icon { position:absolute; left:14px; top:50%; transform:translateY(-50%); z-index:1; }
-        .custom-input { border-radius:14px; padding: 14px 20px 14px 48px; height:56px; font-size:16px; border: 2px solid #e2e8f0; }
-        .eye-toggle { position:absolute; right:14px; top:50%; transform:translateY(-50%); cursor:pointer; z-index:1; color:#94a3b8; }
-        .submit-btn { height:58px; background: linear-gradient(135deg, var(--hero-bg-1), var(--hero-bg-2)); border:none; border-radius:14px; font-size:17px; font-weight:700; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow: 0 10px 30px rgba(102,126,234,0.25); }
-        .form-footer { margin-top: 28px; text-align:center; }
-        .footer-text { color:#94a3b8; font-size:13px; }
-        .custom-input:focus, .custom-input.ant-input:focus { border-color: var(--hero-bg-1); box-shadow: 0 0 0 6px rgba(102,126,234,0.08); outline: none; }
-        @media (max-width: 1200px) { .hero-section { padding: 60px 40px; } .form-section { padding: 50px 40px; } }
-        @media (max-width: 1024px) { .split-grid { grid-template-columns: 1fr !important; } .hero-section { display: none !important; } .form-section { padding: 40px 32px; } }
-        @media (max-width: 768px) { .form-section { padding: 32px 24px; } .hero-title { font-size: clamp(24px, 6vw, 32px); } .custom-input { height:54px; } .submit-btn { height:54px; font-size:16px; } }
-        @media (max-width: 576px) { .form-wrap { padding: 8px; } .custom-input { font-size:15px; height:50px; padding-left:44px; } .submit-btn { height:50px; font-size:15px; } }
-      `}</style>
     </div>
   );
 };
