@@ -7,7 +7,7 @@ import { authProvider } from "./authProvider";
 import Login from "./pages/login";
 import AdminDashboard from "./pages/AdminDashboard";
 import UserDashboard from "./pages/UserDashboard";
-import { AdminRoleGuard, UserRoleGuard } from "./guards/RoleGuard";
+import AdminLayout from "./components/layout/AdminLayout";
 
 function App() {
   return (
@@ -27,13 +27,10 @@ function App() {
           <Route
             path="/admin-dashboard"
             element={
-              <Authenticated
-                key="admin-auth"
-                fallback={<Navigate to="/login" />}
-              >
-                <AdminRoleGuard>
+              <Authenticated fallback={<Navigate to="/login" />}>
+                <AdminLayout>
                   <AdminDashboard />
-                </AdminRoleGuard>
+                </AdminLayout>
               </Authenticated>
             }
           />
@@ -42,13 +39,8 @@ function App() {
           <Route
             path="/user-dashboard"
             element={
-              <Authenticated
-                key="user-auth"
-                fallback={<Navigate to="/login" />}
-              >
-                <UserRoleGuard>
-                  <UserDashboard />
-                </UserRoleGuard>
+              <Authenticated fallback={<Navigate to="/login" />}>
+                <UserDashboard />
               </Authenticated>
             }
           />

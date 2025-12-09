@@ -1,22 +1,23 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
 import { useGetIdentity } from "@refinedev/core";
+import { Navigate } from "react-router-dom";
+import { ReactNode } from "react";
 
-export const AdminRoleGuard = ({ children }: { children: React.ReactNode }) => {
-  const { data: user, isLoading } = useGetIdentity<{ role?: string }>();
-  if (isLoading) return <div>Checking access...</div>;
-  // pastikan role yang dicek sama persis dengan yang dikembalikan authProvider
-  if (user?.role !== "admin") {
-    return <Navigate to="/user-dashboard" replace />;
+export const AdminRoleGuard = ({ children }: { children: ReactNode }) => {
+  const { data: identity } = useGetIdentity();
+
+  if (identity?.role !== "admin") {
+    return <Navigate to="/user-dashboard" />;
   }
-  return <>{children}</>;
+
+  return children;
 };
 
-export const UserRoleGuard = ({ children }: { children: React.ReactNode }) => {
-  const { data: user, isLoading } = useGetIdentity<{ role?: string }>();
-  if (isLoading) return <div>Checking access...</div>;
-  if (user?.role !== "user") {
-    return <Navigate to="/admin-dashboard" replace />;
+export const UserRoleGuard = ({ children }: { children: ReactNode }) => {
+  const { data: identity } = useGetIdentity();
+
+  if (identity?.role !== "user") {
+    return <Navigate to="/admin-dashboard" />;
   }
-  return <>{children}</>;
+
+  return children;
 };
