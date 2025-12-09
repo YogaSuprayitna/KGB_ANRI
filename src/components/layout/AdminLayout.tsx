@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Layout, Menu, Button, Dropdown, Avatar, Space, Typography, message, Grid } from 'antd';
-import { LayoutDashboard, Menu as MenuIcon, LogOut, User, Settings, ChevronRight, Bell, X } from 'lucide-react';
+import React, { useState } from "react";
+import { Layout, Menu, Button, Dropdown, Avatar, Space, Typography, message, Grid } from "antd";
+import { LayoutDashboard, Menu as MenuIcon, LogOut, User, Settings, ChevronRight, Bell, X } from "lucide-react";
 import { useGetIdentity, useLogout } from "@refinedev/core";
-import '../../styles/Layout.css';
+import "../../styles/Layout.css";
 
 const { Header, Sider, Content } = Layout;
 const { Text } = Typography;
@@ -11,92 +11,105 @@ const { useBreakpoint } = Grid;
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const [collapsed, setCollapsed] = useState(false);
   const screens = useBreakpoint();
-  const isMobile = !screens.lg; 
+  const isMobile = !screens.lg;
 
   const { mutate: logout } = useLogout();
   const { data: user } = useGetIdentity();
 
   const handleLogout = () => {
-    logout({}, {
-      onSuccess: () => message.success('Logout berhasil'),
-      onError: (err) => console.error('Logout error:', err),
-    });
+    logout(
+      {},
+      {
+        onSuccess: () => message.success("Logout berhasil"),
+        onError: (err) => console.error("Logout error:", err),
+      }
+    );
   };
 
   const menuItems = [
-    { key: 'dashboard', icon: <LayoutDashboard size={20} />, label: 'Dashboard' },
-    { key: 'users', icon: <User size={20} />, label: 'Users' },
-    { key: 'settings', icon: <Settings size={20} />, label: 'Settings' },
+    { key: "dashboard", icon: <LayoutDashboard size={20} />, label: "Dashboard" },
+    { key: "users", icon: <User size={20} />, label: "Users" },
+    { key: "settings", icon: <Settings size={20} />, label: "Settings" },
   ];
 
   const profileMenuItems = [
-    { key: 'profile', label: <Space><User size={16} /><span>Profil Saya</span></Space> },
-    { key: 'settings', label: <Space><Settings size={16} /><span>Pengaturan</span></Space> },
-    { type: 'divider' as const },
-    { key: 'logout', danger: true, label: <Space><LogOut size={16} /><span>Logout</span></Space>, onClick: handleLogout },
+    {
+      key: "profile",
+      label: (
+        <Space>
+          <User size={16} />
+          <span>Profil Saya</span>
+        </Space>
+      ),
+    },
+    {
+      key: "settings",
+      label: (
+        <Space>
+          <Settings size={16} />
+          <span>Pengaturan</span>
+        </Space>
+      ),
+    },
+    { type: "divider" as const },
+    {
+      key: "logout",
+      danger: true,
+      label: (
+        <Space>
+          <LogOut size={16} />
+          <span>Logout</span>
+        </Space>
+      ),
+      onClick: handleLogout,
+    },
   ];
 
   return (
     <Layout className="admin-layout">
       {/* --- SIDEBAR --- */}
-      <Sider
-        trigger={null}
-        collapsible
-        collapsed={collapsed}
-        breakpoint="lg"
-        collapsedWidth={isMobile ? 0 : 80}
-        onBreakpoint={(broken) => setCollapsed(broken)}
-        width={260}
-        className="custom-sider"
-      >
-        <div className="logo-container" style={{ justifyContent: collapsed ? 'center' : 'space-between', padding: collapsed ? 0 : '0 20px' }}>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <div className="logo-box">K</div>
+      <Sider trigger={null} collapsible collapsed={collapsed} breakpoint="lg" collapsedWidth={isMobile ? 0 : 80} onBreakpoint={(broken) => setCollapsed(broken)} width={260} className="custom-sider">
+        <div className="logo-container" style={{ justifyContent: collapsed ? "center" : "space-between", padding: collapsed ? 0 : "0 20px" }}>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <div className="logo-box">
+              <img src="/assets/ANRI.png" alt="Logo ANRI" className="logo-image" />
+            </div>
+
             {!collapsed && <span className="logo-text">KGB ANRI</span>}
           </div>
 
           {/* Tombol Close (Hanya Mobile) */}
-          {isMobile && !collapsed && (
-            <Button 
-              type="text" 
-              icon={<X size={20} />} 
-              onClick={() => setCollapsed(true)}
-              className="close-btn"
-            />
-          )}
+          {isMobile && !collapsed && <Button type="text" icon={<X size={20} />} onClick={() => setCollapsed(true)} className="close-btn" />}
         </div>
 
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={['dashboard']} items={menuItems} className="custom-menu" />
+        <Menu theme="dark" mode="inline" defaultSelectedKeys={["dashboard"]} items={menuItems} className="custom-menu" />
       </Sider>
 
       {/* --- MOBILE OVERLAY --- */}
-      {isMobile && !collapsed && (
-        <div onClick={() => setCollapsed(true)} className="mobile-overlay" />
-      )}
+      {isMobile && !collapsed && <div onClick={() => setCollapsed(true)} className="mobile-overlay" />}
 
       {/* --- CONTENT LAYOUT --- */}
-      <Layout className="site-layout" style={{ marginLeft: isMobile ? 0 : (collapsed ? 80 : 260) }}>
+      <Layout className="site-layout" style={{ marginLeft: isMobile ? 0 : collapsed ? 80 : 260 }}>
         <Header className="site-header">
-          <div style={{ display: 'flex', gap: 16 }}>
-            <Button
-              type="text"
-              icon={collapsed ? <ChevronRight size={20} /> : <MenuIcon size={20} />}
-              onClick={() => setCollapsed(!collapsed)}
-              className="icon-btn"
-            />
+          <div style={{ display: "flex", gap: 16 }}>
+            <Button type="text" icon={collapsed ? <ChevronRight size={20} /> : <MenuIcon size={20} />} onClick={() => setCollapsed(!collapsed)} className="icon-btn" />
           </div>
 
           <Space size={16} align="center">
             <Button type="text" icon={<Bell size={20} />} className="icon-btn" />
             <div className="divider" />
-            
+
             <Dropdown menu={{ items: profileMenuItems }} placement="bottomRight" arrow>
               <div className="profile-box">
                 <Avatar className="user-avatar" size={40} icon={<User size={20} />} />
                 {!isMobile && (
-                  <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.3 }}>
-                    <Text strong style={{ fontSize: 14, color: '#333' }}>{user?.name || 'Admin'}</Text>
-                    <Text type="secondary" style={{ fontSize: 12, color: '#999' }}>Administrator</Text>
+                  <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.3 }}>
+                    <Text strong style={{ fontSize: 14, color: "#333" }}>
+                      {user?.name || "Admin"}
+                    </Text>
+                    <Text type="secondary" style={{ fontSize: 12, color: "#999" }}>
+                      Administrator
+                    </Text>
                   </div>
                 )}
               </div>
@@ -108,7 +121,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
           <div className="content-box">{children}</div>
           <div className="footer-text">
             <span>KGB ANRI Admin Panel © 2025</span>
-            <span style={{ margin: '0 8px' }}>•</span>
+            <span style={{ margin: "0 8px" }}>•</span>
             <span>All rights reserved</span>
           </div>
         </Content>
