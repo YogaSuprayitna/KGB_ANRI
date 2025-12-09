@@ -6,7 +6,7 @@ export const authProvider: AuthProvider = {
     login: async ({ username, password }) => {
         try {
             // Ambil user sesuai username & password dari db.json
-            const res = await axios.get(
+            const res = await axios.get<any[]>(
                 `http://localhost:3001/users?username=${username}&password=${password}`
             );
 
@@ -87,7 +87,7 @@ export const authProvider: AuthProvider = {
 
         return null;
     },
-    onError: function (error: any): Promise<OnErrorResponse> {
+    onError: function (_error: any): Promise<OnErrorResponse> {
         throw new Error("Function not implemented.");
     }
 };
