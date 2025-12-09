@@ -8,6 +8,7 @@ import Login from "./pages/login";
 import AdminDashboard from "./pages/AdminDashboard";
 import UserDashboard from "./pages/UserDashboard";
 import AdminLayout from "./components/layout/AdminLayout";
+import UserLayout from "./components/layout/UserLayout";
 
 function App() {
   return (
@@ -44,7 +45,9 @@ function App() {
                 key="user-auth"
                 fallback={<Navigate to="/login" />}
               >
-                <UserDashboard />
+                <UserLayout>
+                  <UserDashboard />
+                </UserLayout>
               </Authenticated>
             }
           />

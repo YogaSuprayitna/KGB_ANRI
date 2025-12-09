@@ -1,0 +1,173 @@
+/* AdminLayout.css */
+
+/* --- Layout Utama --- */
+.admin-layout {
+  min-height: 100vh;
+  background: #f5f7fa;
+}
+
+/* --- Sidebar (Sider) --- */
+.custom-sider {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  position: fixed !important;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  z-index: 1000; /* Pastikan di atas konten */
+}
+
+/* Logo Area */
+.logo-container {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.logo-box {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  backdrop-filter: blur(10px);
+  flex-shrink: 0;
+}
+
+.logo-text {
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  margin-left: 12px;
+  white-space: nowrap;
+}
+
+/* Tombol Close (Mobile Only) */
+.close-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-radius: 6px;
+  border: none;
+  color: white !important;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Menu Custom Override */
+.custom-menu {
+  margin-top: 10px;
+  border: none !important;
+  background: transparent !important;
+}
+
+/* --- Mobile Overlay --- */
+.mobile-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+  backdrop-filter: blur(2px);
+}
+
+/* --- Content Layout (Right Side) --- */
+.site-layout {
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #f5f7fa;
+}
+
+/* --- Header --- */
+.site-header {
+  padding: 0 24px;
+  background: white !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 98;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  height: 70px;
+}
+
+/* Tombol Icon Header */
+.icon-btn {
+  font-size: 16px;
+  width: 40px;
+  height: 40px;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px !important;
+  color: #667eea !important;
+  transition: all 0.3s ease;
+}
+
+.icon-btn:hover {
+  background: rgba(102, 126, 234, 0.1) !important;
+}
+
+.divider {
+  width: 1px;
+  height: 24px;
+  background: #e6e8eb;
+}
+
+/* Profile Box */
+.profile-box {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 8px;
+  gap: 10px;
+  transition: background 0.3s ease;
+}
+
+.profile-box:hover {
+  background: rgba(102, 126, 234, 0.05);
+}
+
+.user-avatar {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+/* --- Content Area --- */
+.content-wrapper {
+  margin: 24px;
+  overflow: initial;
+}
+
+.content-box {
+  padding: 24px;
+  min-height: 500px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.footer-text {
+  text-align: center;
+  padding: 28px 0 20px;
+  color: #999;
+  font-size: 13px;
+}

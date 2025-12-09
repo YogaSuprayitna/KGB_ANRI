@@ -8,7 +8,7 @@ const { Header, Sider, Content } = Layout;
 const { Text } = Typography;
 const { useBreakpoint } = Grid;
 
-const AdminLayout = ({ children }: { children: React.ReactNode }) => {
+const UserLayout = ({ children }: { children: React.ReactNode }) => {
   const [collapsed, setCollapsed] = useState(false);
   const screens = useBreakpoint();
   const isMobile = !screens.lg; 
@@ -37,7 +37,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   ];
 
   return (
-    <Layout className="admin-layout">
+    <Layout className="user-layout">
       {/* --- SIDEBAR --- */}
       <Sider
         trigger={null}
@@ -95,8 +95,8 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
                 <Avatar className="user-avatar" size={40} icon={<User size={20} />} />
                 {!isMobile && (
                   <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.3 }}>
-                    <Text strong style={{ fontSize: 14, color: '#333' }}>{user?.name || 'Admin'}</Text>
-                    <Text type="secondary" style={{ fontSize: 12, color: '#999' }}>Administrator</Text>
+                    <Text strong style={{ fontSize: 14, color: '#333' }}>{user?.name || 'User'}</Text>
+                    <Text type="secondary" style={{ fontSize: 12, color: '#999' }}>User</Text>
                   </div>
                 )}
               </div>
@@ -107,7 +107,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
         <Content className="content-wrapper">
           <div className="content-box">{children}</div>
           <div className="footer-text">
-            <span>KGB ANRI Admin Panel © 2025</span>
+            <span>KGB ANRI User Panel © 2025</span>
             <span style={{ margin: '0 8px' }}>•</span>
             <span>All rights reserved</span>
           </div>
@@ -117,4 +117,4 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default AdminLayout;
+export default UserLayout;
