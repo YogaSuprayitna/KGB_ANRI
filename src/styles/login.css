@@ -89,11 +89,11 @@ body {
 
 /* Typography Overrides for Antd Components */
 h1.hero-title {
-  color: #ffffff !important;
-  font-size: clamp(28px, 4vw, 42px) !important;
-  font-weight: 800 !important;
-  margin-bottom: 1rem !important;
-  line-height: 1.1 !important;
+  color: #ffc400 ;
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 800;
+  margin-bottom: 1rem;
+  line-height: 1.1;
 }
 
 span.hero-sub {

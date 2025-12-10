@@ -16,9 +16,9 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 
   const { mutate: logout } = useLogout();
   const { data: user } = useGetIdentity();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-
     logout(
       {},
       {
@@ -37,12 +37,25 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
     );
   };
 
-  const navigate = useNavigate();
-
   const menuItems = [
-    { key: "dashboard", path: "/admin-dashboard", icon: <LayoutDashboard size={20} />, label: "Dashboard" },
-    { key: "pegawai", path: "/admin-pegawai", icon: <User size={20} />, label: "Data Pegawai" },
-    { key: "settings", path: "/admin-settings", icon: <Settings size={20} />, label: "Settings" },
+    {
+      key: "dashboard",
+      path: "/admin-dashboard",
+      icon: <LayoutDashboard size={20} />,
+      label: "Dashboard",
+    },
+    {
+      key: "pegawai",
+      path: "/admin-pegawai",
+      icon: <User size={20} />,
+      label: "Data Pegawai",
+    },
+    {
+      key: "settings",
+      path: "/admin-settings",
+      icon: <Settings size={20} />,
+      label: "Settings",
+    },
   ];
 
   const onMenuClick = (item: any) => {
@@ -52,11 +65,11 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 
   const profileMenuItems = [
     {
-      key: "profile",
+      key: "Dashboard",
       label: (
         <Space>
           <User size={16} />
-          <span>Profil Saya</span>
+          <span>Dashboard</span>
         </Space>
       ),
     },
@@ -79,15 +92,30 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
           <span>Logout</span>
         </Space>
       ),
-      onClick: handleLogout,
     },
   ];
 
+  const onProfileMenuClick = ({ key }: { key: string }) => {
+    if (key === "Dashboard") {
+      navigate("/");
+    } else if (key === "settings") {
+      navigate("/admin-settings");
+    } else if (key === "logout") {
+      handleLogout();
+    }
+  };
+
   return (
-    <Layout className="admin-layout">
-      {/* --- SIDEBAR --- */}
+    <Layout className="layout">
+      {/* SIDEBAR */}
       <Sider trigger={null} collapsible collapsed={collapsed} breakpoint="lg" collapsedWidth={isMobile ? 0 : 80} onBreakpoint={(broken) => setCollapsed(broken)} width={260} className="custom-sider">
-        <div className="logo-container" style={{ justifyContent: collapsed ? "center" : "space-between", padding: collapsed ? 0 : "0 20px" }}>
+        <div
+          className="logo-container"
+          style={{
+            justifyContent: collapsed ? "center" : "space-between",
+            padding: collapsed ? 0 : "0 20px",
+          }}
+        >
           <div style={{ display: "flex", alignItems: "center" }}>
             <div className="logo-box">
               <img src="/assets/ANRI.png" alt="Logo ANRI" className="logo-image" />
@@ -96,18 +124,23 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
             {!collapsed && <span className="logo-text">KGB ANRI</span>}
           </div>
 
-          {/* Tombol Close (Hanya Mobile) */}
+          {/* Tombol Close (Mobile) */}
           {isMobile && !collapsed && <Button type="text" icon={<X size={20} />} onClick={() => setCollapsed(true)} className="close-btn" />}
         </div>
 
         <Menu theme="dark" mode="inline" defaultSelectedKeys={["dashboard"]} items={menuItems} onClick={onMenuClick} className="custom-menu" />
       </Sider>
 
-      {/* --- MOBILE OVERLAY --- */}
+      {/* MOBILE OVERLAY */}
       {isMobile && !collapsed && <div onClick={() => setCollapsed(true)} className="mobile-overlay" />}
 
-      {/* --- CONTENT LAYOUT --- */}
-      <Layout className="site-layout" style={{ marginLeft: isMobile ? 0 : collapsed ? 80 : 260 }}>
+      {/* CONTENT */}
+      <Layout
+        className="site-layout"
+        style={{
+          marginLeft: isMobile ? 0 : collapsed ? 80 : 260,
+        }}
+      >
         <Header className="site-header">
           <div style={{ display: "flex", gap: 16 }}>
             <Button type="text" icon={collapsed ? <ChevronRight size={20} /> : <MenuIcon size={20} />} onClick={() => setCollapsed(!collapsed)} className="icon-btn" />
@@ -117,11 +150,25 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
             <Button type="text" icon={<Bell size={20} />} className="icon-btn" />
             <div className="divider" />
 
-            <Dropdown menu={{ items: profileMenuItems }} placement="bottomRight" arrow>
+            {/* Dropdown Profile Diperbaiki (menambah onClick) */}
+            <Dropdown
+              menu={{
+                items: profileMenuItems,
+                onClick: onProfileMenuClick,
+              }}
+              placement="bottomRight"
+              arrow
+            >
               <div className="profile-box">
                 <Avatar className="user-avatar" size={40} icon={<User size={20} />} />
                 {!isMobile && (
-                  <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.3 }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      lineHeight: 1.3,
+                    }}
+                  >
                     <Text strong style={{ fontSize: 14, color: "#333" }}>
                       {user?.name || "Admin"}
                     </Text>
