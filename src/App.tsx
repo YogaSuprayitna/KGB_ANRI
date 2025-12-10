@@ -10,22 +10,34 @@ import UserLayout from "./components/layout/UserLayout";
 import NotFound from "./pages/NotFound";
 import DataPegawai from "./pages/admin/dataPegawai";
 
-// --- ROLE ---
 const RoleProtected = ({ allowedRoles }: { allowedRoles: string[] }) => {
-  const { data: role, isLoading } = usePermissions({});
+  const { data: roleFromHook, isLoading } = usePermissions({});
 
-  if (isLoading) return <div>Loading permissions...</div>;
+  // Baca langsung dari localStorage untuk hindari delay React Query
+  const storedAuth = localStorage.getItem("auth");
+  const storedUser = storedAuth ? JSON.parse(storedAuth) : null;
+  const storedRole = storedUser?.role;
 
-  if (allowedRoles.includes(role)) {
+  const currentRole = roleFromHook || storedRole;
+
+  if (isLoading && !currentRole) {
+    return (
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+        Loading Access...
+      </div>
+    );
+  }
+
+  if (currentRole && allowedRoles.includes(currentRole)) {
     return <Outlet />;
   }
 
-  if (role === "admin") return <Navigate to="/admin-dashboard" />;
-  if (role === "user") return <Navigate to="/user-dashboard" />;
+  if (currentRole === "admin") return <Navigate to="/admin-dashboard" replace />;
+  if (currentRole === "user") return <Navigate to="/user-dashboard" replace />;
 
-  // 3. Fallback
-  return <Navigate to="/login" />;
+  return <Navigate to="/login" replace />;
 };
+
 // --- ROOT REDIRECT ---
 const RootRedirect = () => {
   const { data: role, isLoading } = usePermissions({});
@@ -44,6 +56,7 @@ function App() {
         <Routes>
           {/* 1. LOGIN PAGE (TIDAK PERLU PROTEKSI) */}
           <Route path="/login" element={<Login />} />
+          
           {/* 2. PROTECTED ROUTE: ADMIN */}
           <Route
             element={

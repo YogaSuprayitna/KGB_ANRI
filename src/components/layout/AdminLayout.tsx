@@ -18,11 +18,21 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const { data: user } = useGetIdentity();
 
   const handleLogout = () => {
+
     logout(
       {},
       {
-        onSuccess: () => message.success("Logout berhasil"),
-        onError: (err) => console.error("Logout error:", err),
+        onSuccess: () => {
+          setTimeout(() => {
+            message.success({
+              content: "Logout berhasil!",
+              duration: 2,
+            });
+          }, 400);
+        },
+        onError: () => {
+          message.error("Gagal logout");
+        },
       }
     );
   };

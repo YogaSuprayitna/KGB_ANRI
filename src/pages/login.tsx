@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useLogin } from "@refinedev/core";
 import { useNavigate } from "react-router-dom";
-import { Shield, User, Lock, Eye, EyeOff, Sparkles, ArrowRight, CheckCircle, FileText } from "lucide-react";
+import { User, Lock, Eye, EyeOff, Sparkles, ArrowRight, CheckCircle, FileText } from "lucide-react";
 import { Button, Form, Input, Typography, App } from "antd";
 import "../styles/Login.css";
 
@@ -15,7 +15,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  // ⬅️ Gunakan AntD App.useApp() untuk message
+  // AntD App.useApp() untuk message
   const { message } = App.useApp();
 
   const [notifState, setNotifState] = useState<{
@@ -36,7 +36,7 @@ const Login = () => {
 
   const onFinish = async (values: any) => {
     setLoading(true);
-    closeNotif();
+    closeNotif(); 
 
     try {
       const response = await login({
@@ -45,34 +45,33 @@ const Login = () => {
       });
 
       if (response && response.success === false) {
-        const errorMsg = response.error?.message || "Login gagal";
-        throw new Error(errorMsg);
+        const errorMsg = response.error?.name || "Username atau password salah";
+        throw new Error(errorMsg); 
       }
 
-      // Ambil user dari localStorage
       const storedUser = localStorage.getItem("auth");
       const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+      
+      const role = parsedUser?.role || "user"; 
       const name = parsedUser?.name || values.username;
-      const role = parsedUser?.role || "user";
 
-      // ⬅️ Ganti antMessage.success → message.success
       message.success(`Login berhasil — Selamat datang, ${name}`);
 
       setTimeout(() => {
-        if (role === "admin") navigate("/admin-dashboard");
-        else navigate("/user-dashboard");
-
+        const target = role === "admin" ? "/admin-dashboard" : "/user-dashboard";
+        navigate(target, { replace: true });
         setLoading(false);
-      }, 600);
-    } catch (error) {
+      }, 500);
+
+    } catch (error: any) {
+      setLoading(false);
+      
       setNotifState({
         show: true,
         type: "error",
-        title: "Akses Ditolak",
-        message: "Username atau password salah!",
+        title: "Login Gagal",
+        message: error.message || "Periksa kembali username dan password Anda.",
       });
-
-      setLoading(false);
     }
   };
 
@@ -87,7 +86,6 @@ const Login = () => {
 
   return (
     <div className="login-root">
-      {/* --- RENDER CUSTOM NOTIFICATION --- */}
       <CustomNotification 
         show={notifState.show}
         type={notifState.type}
@@ -97,7 +95,6 @@ const Login = () => {
       />
 
       <div className="split-grid">
-        {/* BAGIAN KIRI: HERO / BANNER */}
         <div className="hero-section">
           <div className="decor-circle decor-1" />
           <div className="decor-circle decor-2" />
@@ -128,7 +125,6 @@ const Login = () => {
           </div>
         </div>
 
-        {/* BAGIAN KANAN: FORM LOGIN */}
         <div className="form-section">
           <div className="form-wrap">
             <div className="form-header">

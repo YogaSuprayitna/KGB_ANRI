@@ -22,24 +22,19 @@ export const authProvider: AuthProvider = {
 
             localStorage.setItem("auth", JSON.stringify(user));
 
-            // PERBAIKAN DI SINI: Redirect berdasarkan role
-            const role = user.role; // Pastikan di database ada kolom 'role'
-            const redirectUrl = role === "admin" ? "/admin-dashboard" : "/user-dashboard";
-
-            return {
-                success: true,
-                redirectTo: redirectUrl,
-            };
-        } catch (error) {
-            return {
-                success: false,
-                error: {
-                    message: "Terjadi kesalahan server",
-                    name: "Server error",
-                },
-            };
-        }
-    },
+        return {
+            success: true,
+        };
+    } catch (error) {
+        return {
+            success: false,
+            error: {
+                message: "Terjadi kesalahan server",
+                name: "Server error",
+            },
+        };
+    }
+},
 
     logout: async () => {
         localStorage.removeItem("auth");
@@ -60,17 +55,14 @@ export const authProvider: AuthProvider = {
         };
     },
 
-    getIdentity: async () => {
-        const user = localStorage.getItem("auth");
-        return user ? JSON.parse(user) : null;
-    },
-
     getPermissions: async () => {
         const user = localStorage.getItem("auth");
-        // Ini penting untuk RoleCheck nanti
-        return user ? JSON.parse(user).role : null;
+        if (user) {
+            const parsed = JSON.parse(user);
+            return parsed.role; 
+        }
+        return null;
     },
-
     onError: async (error) => {
         console.error("Auth error:", error);
         return { error };
