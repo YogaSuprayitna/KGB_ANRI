@@ -2,10 +2,9 @@ import { useState } from "react";
 import { useLogin } from "@refinedev/core";
 import { useNavigate } from "react-router-dom";
 import { Shield, User, Lock, Eye, EyeOff, Sparkles, ArrowRight, CheckCircle, FileText } from "lucide-react";
-import { Button, Form, Input, Typography, message as antMessage } from "antd";
+import { Button, Form, Input, Typography, App } from "antd";
 import "../styles/Login.css";
 
-// IMPORT CUSTOM NOTIFICATION
 import CustomNotification from "../components/Notification"; 
 
 const { Title, Text } = Typography;
@@ -16,17 +15,19 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  // --- STATE UNTUK CUSTOM NOTIFICATION ---
+  // ⬅️ Gunakan AntD App.useApp() untuk message
+  const { message } = App.useApp();
+
   const [notifState, setNotifState] = useState<{
     show: boolean;
-    type: 'success' | 'error' | 'warning';
+    type: "success" | "error" | "warning";
     title: string;
     message: string;
   }>({
     show: false,
-    type: 'error', 
-    title: '',
-    message: '',
+    type: "error",
+    title: "",
+    message: "",
   });
 
   const closeNotif = () => {
@@ -38,54 +39,49 @@ const Login = () => {
     closeNotif();
 
     try {
-      const response = await login({ 
-        username: values.username, 
-        password: values.password 
+      const response = await login({
+        username: values.username,
+        password: values.password,
       });
 
       if (response && response.success === false) {
-         const errorMsg = response.error?.message || "Login gagal";
-         throw new Error(errorMsg);
+        const errorMsg = response.error?.message || "Login gagal";
+        throw new Error(errorMsg);
       }
-      
-      // --- SUCCESS HANDLING ---
+
+      // Ambil user dari localStorage
       const storedUser = localStorage.getItem("auth");
       const parsedUser = storedUser ? JSON.parse(storedUser) : null;
       const name = parsedUser?.name || values.username;
       const role = parsedUser?.role || "user";
 
-      antMessage.success(`Login berhasil — Selamat datang, ${name}`);
+      // ⬅️ Ganti antMessage.success → message.success
+      message.success(`Login berhasil — Selamat datang, ${name}`);
 
       setTimeout(() => {
-        if (role === "admin") {
-          navigate("/admin-dashboard");
-        } else {
-          navigate("/user-dashboard");
-        }
+        if (role === "admin") navigate("/admin-dashboard");
+        else navigate("/user-dashboard");
+
         setLoading(false);
       }, 600);
-
-    } catch (error: any) {
-      console.error("Login gagal:", error);
-      const errMsg ="Username atau password salah!";
-      
+    } catch (error) {
       setNotifState({
         show: true,
-        type: 'error',
-        title: 'Akses Ditolak',
-        message: errMsg
+        type: "error",
+        title: "Akses Ditolak",
+        message: "Username atau password salah!",
       });
-      
+
       setLoading(false);
     }
   };
 
-  const onFinishFailed = (_errorInfo: any) => {
+  const onFinishFailed = () => {
     setNotifState({
-        show: true,
-        type: 'warning',
-        title: 'Perhatian',
-        message: 'Mohon lengkapi username dan password Anda.'
+      show: true,
+      type: "warning",
+      title: "Perhatian",
+      message: "Mohon lengkapi username dan password Anda.",
     });
   };
 

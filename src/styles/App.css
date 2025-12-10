@@ -1,0 +1,4 @@
+.ant-card {
+  --antd-card-borderless: 1;
+  border: none !important;
+}

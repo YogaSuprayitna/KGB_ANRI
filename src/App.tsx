@@ -3,12 +3,12 @@ import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom
 import dataProvider from "@refinedev/simple-rest";
 import { authProvider } from "./authProvider";
 import Login from "./pages/login";
-import AdminDashboard from "./pages/AdminDashboard";
-import UserDashboard from "./pages/UserDashboard";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import UserDashboard from "./pages/users/UserDashboard";
 import AdminLayout from "./components/layout/AdminLayout";
 import UserLayout from "./components/layout/UserLayout";
 import NotFound from "./pages/NotFound";
-
+import DataPegawai from "./pages/admin/dataPegawai";
 
 // --- ROLE ---
 const RoleProtected = ({ allowedRoles }: { allowedRoles: string[] }) => {
@@ -28,23 +28,19 @@ const RoleProtected = ({ allowedRoles }: { allowedRoles: string[] }) => {
 };
 // --- ROOT REDIRECT ---
 const RootRedirect = () => {
-    const { data: role, isLoading } = usePermissions({});
-    if (isLoading) return null;
+  const { data: role, isLoading } = usePermissions({});
+  if (isLoading) return null;
 
-    if (role === "admin") return <Navigate to="/admin-dashboard" />;
-    if (role === "user") return <Navigate to="/user-dashboard" />;
-    
-    return <Navigate to="/login" />;
-}
+  if (role === "admin") return <Navigate to="/admin-dashboard" />;
+  if (role === "user") return <Navigate to="/user-dashboard" />;
 
+  return <Navigate to="/login" />;
+};
 
 function App() {
   return (
     <BrowserRouter>
-      <Refine
-        dataProvider={dataProvider("http://localhost:3000")}
-        authProvider={authProvider}
-      >
+      <Refine dataProvider={dataProvider("http://localhost:3000")} authProvider={authProvider}>
         <Routes>
           {/* 1. LOGIN PAGE (TIDAK PERLU PROTEKSI) */}
           <Route path="/login" element={<Login />} />
@@ -61,6 +57,14 @@ function App() {
               element={
                 <AdminLayout>
                   <AdminDashboard />
+                </AdminLayout>
+              }
+            />
+            <Route
+              path="/admin-pegawai"
+              element={
+                <AdminLayout>
+                  <DataPegawai />
                 </AdminLayout>
               }
             />
@@ -86,16 +90,15 @@ function App() {
 
           {/* 4. ROOT PATH (/) */}
           <Route
-             path="/"
-             element={
-                <Authenticated key="root-auth" fallback={<Navigate to="/login" />}>
-                    <RootRedirect />
-                </Authenticated>
-             }
+            path="/"
+            element={
+              <Authenticated key="root-auth" fallback={<Navigate to="/login" />}>
+                <RootRedirect />
+              </Authenticated>
+            }
           />
           {/* 5. NOT FOUND PAGE */}
           <Route path="*" element={<NotFound />} />
-
         </Routes>
       </Refine>
     </BrowserRouter>

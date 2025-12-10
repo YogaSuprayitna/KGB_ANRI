@@ -3,6 +3,7 @@ import { Layout, Menu, Button, Dropdown, Avatar, Space, Typography, message, Gri
 import { LayoutDashboard, Menu as MenuIcon, LogOut, User, Settings, ChevronRight, Bell, X } from "lucide-react";
 import { useGetIdentity, useLogout } from "@refinedev/core";
 import "../../styles/Layout.css";
+import { useNavigate } from "react-router-dom";
 
 const { Header, Sider, Content } = Layout;
 const { Text } = Typography;
@@ -26,11 +27,18 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
     );
   };
 
+  const navigate = useNavigate();
+
   const menuItems = [
-    { key: "dashboard", icon: <LayoutDashboard size={20} />, label: "Dashboard" },
-    { key: "users", icon: <User size={20} />, label: "Users" },
-    { key: "settings", icon: <Settings size={20} />, label: "Settings" },
+    { key: "dashboard", path: "/admin-dashboard", icon: <LayoutDashboard size={20} />, label: "Dashboard" },
+    { key: "pegawai", path: "/admin-pegawai", icon: <User size={20} />, label: "Data Pegawai" },
+    { key: "settings", path: "/admin-settings", icon: <Settings size={20} />, label: "Settings" },
   ];
+
+  const onMenuClick = (item: any) => {
+    const menu = menuItems.find((m) => m.key === item.key);
+    if (menu) navigate(menu.path);
+  };
 
   const profileMenuItems = [
     {
@@ -82,7 +90,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
           {isMobile && !collapsed && <Button type="text" icon={<X size={20} />} onClick={() => setCollapsed(true)} className="close-btn" />}
         </div>
 
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={["dashboard"]} items={menuItems} className="custom-menu" />
+        <Menu theme="dark" mode="inline" defaultSelectedKeys={["dashboard"]} items={menuItems} onClick={onMenuClick} className="custom-menu" />
       </Sider>
 
       {/* --- MOBILE OVERLAY --- */}
@@ -119,6 +127,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 
         <Content className="content-wrapper">
           <div className="content-box">{children}</div>
+
           <div className="footer-text">
             <span>KGB ANRI Admin Panel © 2025</span>
             <span style={{ margin: "0 8px" }}>•</span>
