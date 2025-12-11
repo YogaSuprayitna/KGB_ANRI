@@ -28,8 +28,11 @@ import {
 } from "@ant-design/icons";
 import { useGetIdentity, useLogout } from "@refinedev/core";
 
-// ➕ Tambahan untuk navigasi ke UserSettings
+// ➕ Navigasi
 import { useNavigate } from "react-router-dom";
+
+// ➕ Generate PDF
+import jsPDF from "jspdf";
 
 import "../../styles/UserDashboard.css";
 
@@ -39,7 +42,6 @@ const UserDashboard: React.FC = () => {
   const { data: identity, isLoading } = useGetIdentity<{ name?: string; role?: string; nip?: string }>();
   const { mutate: logout } = useLogout();
 
-  // ➕ Inisialisasi Navigate
   const navigate = useNavigate();
 
   const [profile] = useState({
@@ -83,6 +85,29 @@ const UserDashboard: React.FC = () => {
     d.setFullYear(d.getFullYear() + 1);
     return d.toISOString().slice(0, 10);
   }, [profile.lastIncrease]);
+
+  // ➕ FUNGSI GENERATE PDF
+const handleGeneratePDF = (title: string) => {
+  const doc = new jsPDF();
+
+  doc.setFontSize(18);
+  doc.text("Dokumen Resmi", 20, 20);
+
+  doc.setFontSize(14);
+  doc.text(`Judul Dokumen: ${title}`, 20, 40);
+
+  doc.setFontSize(12);
+  doc.text("Dokumen ini digenerate otomatis dari Sistem KGB ANRI.", 20, 60);
+
+  // 👉 PREVIEW PDF DI TAB BARU
+  const pdfBlob = doc.output("blob");
+  const pdfUrl = URL.createObjectURL(pdfBlob);
+  window.open(pdfUrl, "_blank");
+};
+  const documents = [
+    { id: "d1", title: "SK Kenaikan Terakhir", status: "Tersedia", color: "#52c41a" },
+    { id: "d2", title: "Formulir Pengajuan", status: "Perlu Dilengkapi", color: "#faad14" },
+  ];
 
   const upcomingColumns = [
     {
@@ -144,12 +169,10 @@ const UserDashboard: React.FC = () => {
 
   return (
     <div className="user-dashboard">
-      {/* Header */}
+      {/* HEADER */}
       <div className="ud-header">
         <div className="ud-header-info">
-          <Title level={3} className="ud-header-title">
-            Dashboard Pengguna
-          </Title>
+          <Title level={3} className="ud-header-title">Dashboard Pengguna</Title>
           <Text type="secondary" className="ud-header-sub">Arsip Nasional Republik Indonesia (ANRI)</Text>
         </div>
 
@@ -161,7 +184,7 @@ const UserDashboard: React.FC = () => {
       </div>
 
       <Row gutter={[24, 24]}>
-        {/* Left column */}
+        {/* LEFT */}
         <Col xs={24} lg={8}>
           <Card className="profile-card" bodyStyle={{ padding: 0 }}>
             <div className="profile-body">
@@ -207,7 +230,6 @@ const UserDashboard: React.FC = () => {
                   </Row>
                 </div>
 
-                {/* ➕ UPDATED: Tombol Edit Profil mengarah ke UserSettings */}
                 <Button
                   type="default"
                   block
@@ -245,7 +267,7 @@ const UserDashboard: React.FC = () => {
           </Card>
         </Col>
 
-        {/* Right column */}
+        {/* RIGHT */}
         <Col xs={24} lg={16}>
           <Space direction="vertical" size={24} style={{ width: "100%" }}>
             <Card title={<span><ClockCircleOutlined className="ud-icon-warning" /> <Text strong>Jadwal KGB Saya</Text></span>} className="panel-card" extra={<Tag>1 Jadwal Aktif</Tag>}>
@@ -256,15 +278,24 @@ const UserDashboard: React.FC = () => {
               <Table dataSource={history} columns={historyColumns} pagination={false} size="middle" />
             </Card>
 
+            {/* ➕ — DOKUMEN & SK — sudah ditambahkan GENERATE PDF */}
             <Card title={<span><FileProtectOutlined className="ud-icon-success" /> <Text strong>Dokumen & SK</Text></span>} className="panel-card">
               <List
                 itemLayout="horizontal"
-                dataSource={[
-                  { id: "d1", title: "SK Kenaikan Terakhir", status: "Tersedia", color: "#52c41a" },
-                  { id: "d2", title: "Formulir Pengajuan", status: "Perlu Dilengkapi", color: "#faad14" },
-                ]}
+                dataSource={documents}
                 renderItem={(item) => (
-                  <List.Item actions={[<Button type="primary" className="ud-primary-sm">Unduh</Button>]} className="ud-list-item">
+                  <List.Item
+                    actions={[
+                      <Button
+                        type="primary"
+                        className="ud-primary-sm"
+                        onClick={() => handleGeneratePDF(item.title)}
+                      >
+                        Unduh
+                      </Button>,
+                    ]}
+                    className="ud-list-item"
+                  >
                     <List.Item.Meta
                       avatar={<Avatar icon={<FileProtectOutlined />} className="ud-doc-avatar" />}
                       title={<Text strong>{item.title}</Text>}
