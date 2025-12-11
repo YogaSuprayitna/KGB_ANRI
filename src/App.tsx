@@ -10,6 +10,7 @@ import NotFound from "./pages/NotFound";
 import DataPegawai from "./pages/admin/dataPegawai";
 import UserDashboard from "./pages/users/UserDashboard";
 import { ProfileUserSettings } from "./pages/users/UserSettings";
+import { AdminProfileSettings } from "./pages/admin/AdminSettings";
 
 const RoleProtected = ({ allowedRoles }: { allowedRoles: string[] }) => {
   const { data: roleFromHook, isLoading } = usePermissions({});
@@ -79,6 +80,14 @@ function App() {
               element={
                 <AdminLayout>
                   <DataPegawai />
+                </AdminLayout>
+              }
+            />
+            <Route
+              path="/admin-settings"
+              element={
+                <AdminLayout>
+                  <AdminProfileSettings />
                 </AdminLayout>
               }
             />

@@ -255,19 +255,23 @@ span.footer-text {
 /* --- RESPONSIVE BREAKPOINTS --- */
 @media (max-width: 1024px) {
   .split-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr;   /* Jadi 1 kolom */
+    height: auto;                 /* Konten boleh memanjang */
   }
-  
-  .hero-section {
-    display: none;
-  }
-  
+
   .login-root {
-    overflow-y: auto; /* Enable scroll on tablets/mobile */
+    height: auto;                 /* Jangan kunci 100vh */
+    overflow-y: auto;
   }
-  
+
+  .hero-section {
+    display: flex;                /* Tampilkan kembali hero */
+    height: auto;                 /* Ikut panjang konten */
+    padding: 60px 24px;           /* Sesuaikan padding */
+  }
+
   .form-section {
+    height: auto;
     padding: 40px 24px;
-    height: 100vh;
   }
 }

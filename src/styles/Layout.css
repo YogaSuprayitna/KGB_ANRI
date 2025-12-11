@@ -6,7 +6,7 @@
 
 /* --- Sidebar (Sider) --- */
 .custom-sider {
-background: linear-gradient(135deg, #5b2cff 0%, #1e3aff 100%);
+background: linear-gradient(135deg, #00c6ff 0%, #4866ff 100%);
   position: fixed !important;
   height: 100vh;
   left: 0;
@@ -160,7 +160,7 @@ background: linear-gradient(135deg, #5b2cff 0%, #1e3aff 100%);
 }
 
 .user-avatar {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #4866ff;
   box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
 }
 

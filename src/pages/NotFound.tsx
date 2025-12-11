@@ -30,7 +30,7 @@ export default function NotFound() {
             <Title level={2} style={styles.heading}>Halaman Tidak Ditemukan</Title>
             
             <Paragraph style={styles.description}>
-              Maaf, halaman yang Anda cari tidak dapat ditemukan atau telah dipindahkan.
+              Maaf, halaman yang Anda cari tidak dapat ditemukan.
             </Paragraph>
 
             <Button 
@@ -64,7 +64,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    background: 'linear-gradient(135deg, #667eea 50%, #8398f9 100%)',
+    background: 'linear-gradient(135deg, #00c6ff 50%, #4866ff 100%)',
     padding: '20px',
     overflow: 'hidden',
   },
@@ -80,7 +80,7 @@ const styles: Record<string, React.CSSProperties> = {
   title404: {
     fontSize: '180px',
     margin: 0,
-    color: 'rgba(255, 255, 255, 0.1)',
+    color: 'rgba(107, 107, 107, 0.29)',
     fontWeight: 'bold',
     lineHeight: 1,
     letterSpacing: '-10px',
