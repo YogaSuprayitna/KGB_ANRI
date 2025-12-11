@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Button } from "antd";
+import { Modal, Button, ButtonProps } from "antd";
 
 interface DynamicModalProps {
     title: string;
@@ -10,6 +10,10 @@ interface DynamicModalProps {
     width?: number | string;
     mode?: "view" | "edit" | "create";
     children: React.ReactNode;
+    okText?: string;
+    cancelText?: string;
+    okButtonProps?: ButtonProps;
+    cancelButtonProps?: ButtonProps;
 }
 
 export const DynamicModal: React.FC<DynamicModalProps> = ({
@@ -17,15 +21,24 @@ export const DynamicModal: React.FC<DynamicModalProps> = ({
     isOpen,
     onClose,
     onSubmit,
-    isLoading,
+    isLoading = false,
     width = 800,
     mode = "view",
     children,
+    okText = "Simpan Data",
+    cancelText,
+    okButtonProps,
+    cancelButtonProps,
 }) => {
     // Tombol Footer Dinamis
-    const footerButtons = [
-        <Button key="back" onClick={onClose} style={{ borderRadius: '6px' }}>
-            {mode === "view" ? "Tutup" : "Batal"}
+    const footerButtons: React.ReactNode[] = [
+        <Button 
+            key="back" 
+            onClick={onClose} 
+            style={{ borderRadius: '6px' }}
+            {...cancelButtonProps}
+        >
+            {cancelText || (mode === "view" ? "Tutup" : "Batal")}
         </Button>,
     ];
 
@@ -38,8 +51,9 @@ export const DynamicModal: React.FC<DynamicModalProps> = ({
                 loading={isLoading} 
                 onClick={onSubmit}
                 style={{ borderRadius: '6px' }}
+                {...okButtonProps}
             >
-                Simpan Data
+                {okText}
             </Button>
         );
     }
@@ -52,8 +66,7 @@ export const DynamicModal: React.FC<DynamicModalProps> = ({
             footer={footerButtons}
             width={width}
             centered
-            destroyOnClose
-            styles={{ mask: { backdropFilter: 'blur(4px)' } }} // Efek blur modern
+            styles={{ mask: { backdropFilter: 'blur(4px)' } }}
         >
             <div style={{ paddingTop: '16px' }}>
                 {children}

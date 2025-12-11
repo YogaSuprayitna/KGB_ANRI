@@ -11,6 +11,7 @@ import DataPegawai from "./pages/admin/dataPegawai";
 import UserDashboard from "./pages/users/UserDashboard";
 import { ProfileUserSettings } from "./pages/users/UserSettings";
 import { AdminProfileSettings } from "./pages/admin/AdminSettings";
+import KGBAdminMenuRiwayat from "./pages/admin/AdminMenuRiwayat";
 
 const RoleProtected = ({ allowedRoles }: { allowedRoles: string[] }) => {
   const { data: roleFromHook, isLoading } = usePermissions({});
@@ -80,6 +81,14 @@ function App() {
               element={
                 <AdminLayout>
                   <DataPegawai />
+                </AdminLayout>
+              }
+            />
+            <Route
+              path="/admin-menu-riwayat"
+              element={
+                <AdminLayout>
+                  <KGBAdminMenuRiwayat />
                 </AdminLayout>
               }
             />

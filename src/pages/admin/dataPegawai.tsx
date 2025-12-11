@@ -320,8 +320,8 @@ const EmployeePage: React.FC = () => {
     ];
 
     return (
-        <div style={{ padding: '24px', minHeight: '100vh', backgroundColor: '#f5f7fa' }}>
-            <Card bordered={false} style={{ borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
+        <div>
+            <Card style={{ borderRadius: '12px' }}>
                 {/* 1. Header & Title */}
                 <div style={{ marginBottom: 20 }}>
                     <Title level={3} style={{ margin: 0 }}>Data Pegawai</Title>

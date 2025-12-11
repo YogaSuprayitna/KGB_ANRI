@@ -54,6 +54,12 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       label: "Data Pegawai",
     },
     {
+      key: "riwayat",
+      path: "/admin-menu-riwayat",
+      icon: <User size={20} />,
+      label: "Riwayat KGB",
+    },
+    {
       key: "settings",
       path: "/admin-settings",
       icon: <Settings size={20} />,
