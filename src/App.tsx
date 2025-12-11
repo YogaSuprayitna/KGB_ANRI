@@ -4,11 +4,12 @@ import dataProvider from "@refinedev/simple-rest";
 import { authProvider } from "./authProvider";
 import Login from "./pages/login";
 import AdminDashboard from "./pages/admin/AdminDashboard";
-import UserDashboard from "./pages/users/UserDashboard";
 import AdminLayout from "./components/layout/AdminLayout";
 import UserLayout from "./components/layout/UserLayout";
 import NotFound from "./pages/NotFound";
 import DataPegawai from "./pages/admin/dataPegawai";
+import UserDashboard from "./pages/users/UserDashboard";
+import { ProfileUserSettings } from "./pages/users/UserSettings";
 
 const RoleProtected = ({ allowedRoles }: { allowedRoles: string[] }) => {
   const { data: roleFromHook, isLoading } = usePermissions({});
@@ -96,6 +97,14 @@ function App() {
               element={
                 <UserLayout>
                   <UserDashboard />
+                </UserLayout>
+              }
+            />
+            <Route
+              path="/user-settings"
+              element={
+                <UserLayout>
+                  <ProfileUserSettings />
                 </UserLayout>
               }
             />

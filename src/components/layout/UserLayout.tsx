@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Layout, Menu, Button, Dropdown, Avatar, Space, Typography, message, Grid } from "antd";
 import { LayoutDashboard, Menu as MenuIcon, LogOut, User, Settings, ChevronRight, Bell, X } from "lucide-react";
 import { useGetIdentity, useLogout } from "@refinedev/core";
-import { useNavigate } from "react-router-dom";
 import "../../styles/Layout.css";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const { Header, Sider, Content } = Layout;
 const { Text } = Typography;
@@ -14,9 +14,12 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
   const screens = useBreakpoint();
   const isMobile = !screens.lg;
 
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const { mutate: logout } = useLogout();
   const { data: user } = useGetIdentity();
-  const navigate = useNavigate();
+
 
   const handleLogout = () => {
     logout(
@@ -57,6 +60,9 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
       label: "Settings",
     },
   ];
+
+  const activeItem = menuItems.find((item) => location.pathname.startsWith(item.path));
+  const selectedKey = activeItem ? activeItem.key : "dashboard";
 
   const onMenuClick = (item: any) => {
     const menu = menuItems.find((m) => m.key === item.key);
@@ -108,7 +114,16 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <Layout className="layout">
       {/* SIDEBAR */}
-      <Sider trigger={null} collapsible collapsed={collapsed} breakpoint="lg" collapsedWidth={isMobile ? 0 : 80} onBreakpoint={(broken) => setCollapsed(broken)} width={260} className="custom-sider">
+      <Sider 
+        trigger={null} 
+        collapsible 
+        collapsed={collapsed} 
+        breakpoint="lg" 
+        collapsedWidth={isMobile ? 0 : 80} 
+        onBreakpoint={(broken) => setCollapsed(broken)} 
+        width={260} 
+        className="custom-sider"
+      >
         <div
           className="logo-container"
           style={{
@@ -128,7 +143,14 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
           {isMobile && !collapsed && <Button type="text" icon={<X size={20} />} onClick={() => setCollapsed(true)} className="close-btn" />}
         </div>
 
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={["dashboard"]} items={menuItems} onClick={onMenuClick} className="custom-menu" />
+        <Menu 
+          theme="dark" 
+          mode="inline" 
+          selectedKeys={[selectedKey]}
+          items={menuItems} 
+          onClick={onMenuClick} 
+          className="custom-menu" 
+        />
       </Sider>
 
       {/* MOBILE OVERLAY */}
