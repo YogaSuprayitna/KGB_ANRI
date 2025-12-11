@@ -348,7 +348,7 @@ const EmployeePage: React.FC = () => {
                             prefix={<SearchOutlined />} 
                             allowClear
                             onChange={(e) => setSearchText(e.target.value)}
-                            style={{ width: 250 }}
+                            style={{ width: 200 }}
                         />
                         
                         {/* BUTTON FILTER: UNIT KERJA */}

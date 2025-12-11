@@ -27,17 +27,20 @@ import {
   DollarOutlined,
 } from "@ant-design/icons";
 import { useGetIdentity, useLogout } from "@refinedev/core";
-import "../../../src/styles/UserDashboard.css";
+
+// ➕ Tambahan untuk navigasi ke UserSettings
+import { useNavigate } from "react-router-dom";
+
+import "../../styles/UserDashboard.css";
 
 const { Text, Title } = Typography;
 
-/**
- * UserDashboard
- * Tampilan dashboard user — styling utama dipisah ke UserDashboard.css
- */
 const UserDashboard: React.FC = () => {
   const { data: identity, isLoading } = useGetIdentity<{ name?: string; role?: string; nip?: string }>();
   const { mutate: logout } = useLogout();
+
+  // ➕ Inisialisasi Navigate
+  const navigate = useNavigate();
 
   const [profile] = useState({
     name: identity?.name ?? "Nama Pengguna",
@@ -204,7 +207,14 @@ const UserDashboard: React.FC = () => {
                   </Row>
                 </div>
 
-                <Button type="default" block size="large" className="ud-gradient-btn">
+                {/* ➕ UPDATED: Tombol Edit Profil mengarah ke UserSettings */}
+                <Button
+                  type="default"
+                  block
+                  size="large"
+                  className="ud-gradient-btn"
+                  onClick={() => navigate("/user-settings")}
+                >
                   Edit Profil
                 </Button>
               </Space>
