@@ -48,12 +48,6 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
       label: "Dashboard",
     },
     {
-      key: "pegawai",
-      path: "/user-pegawai",
-      icon: <User size={20} />,
-      label: "Data Pegawai",
-    },
-    {
       key: "settings",
       path: "/user-settings",
       icon: <Settings size={20} />,

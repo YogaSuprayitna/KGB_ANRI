@@ -1,30 +1,69 @@
+/* ========================================
+   USER LAYOUT - TEMA KONSISTEN
+   Warna utama: Purple-Blue Gradient (#667eea → #764ba2)
+   ======================================== */
 
+/* LAYOUT UTAMA */
 .layout {
   min-height: 100vh;
-  background: #f5f7fa;
+  background: #fafafa;
 }
 
-/* --- Sidebar (Sider) --- */
+/* ========================================
+   SIDEBAR
+   ======================================== */
 .custom-sider {
-background: linear-gradient(135deg, #00c6ff 0%, #4866ff 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
   position: fixed !important;
   height: 100vh;
   left: 0;
   top: 0;
   bottom: 0;
-  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 4px 0 20px rgba(102, 126, 234, 0.25);
   overflow: hidden;
-  z-index: 1000; /* Pastikan di atas konten */
+  z-index: 1000;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Logo Area */
+.custom-sider::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.15) 100%);
+  pointer-events: none;
+}
+
+.custom-sider::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-sider::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.custom-sider::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.custom-sider::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* LOGO CONTAINER */
 .logo-container {
   height: 70px;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0 20px;
   background: rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
 }
 
 .logo-box {
@@ -35,11 +74,15 @@ background: linear-gradient(135deg, #00c6ff 0%, #4866ff 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  font-weight: bold;
-  font-size: 18px;
   backdrop-filter: blur(10px);
   flex-shrink: 0;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+}
+
+.logo-box:hover {
+  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.35);
 }
 
 .logo-image {
@@ -49,14 +92,15 @@ background: linear-gradient(135deg, #00c6ff 0%, #4866ff 100%);
 }
 
 .logo-text {
-  color: white;
+  color: #ffffff;
   font-size: 16px;
   font-weight: 700;
   margin-left: 12px;
   white-space: nowrap;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Tombol Close (Mobile Only) */
 .close-btn {
   width: 32px;
   height: 32px;
@@ -64,32 +108,66 @@ background: linear-gradient(135deg, #00c6ff 0%, #4866ff 100%);
   align-items: center;
   justify-content: center;
   background: rgba(255, 255, 255, 0.2) !important;
-  border-radius: 6px;
+  border-radius: 8px;
   border: none;
-  color: white !important;
+  color: #ffffff !important;
+  transition: all 0.3s ease;
 }
 
 .close-btn:hover {
-  background: rgba(255, 255, 255, 0.3) !important;
+  background: rgba(255, 255, 255, 0.35) !important;
+  transform: scale(1.05);
 }
 
-/* Menu Custom Override */
+/* MENU STYLING */
 .custom-menu {
   margin-top: 10px;
   border: none !important;
   background: transparent !important;
+  padding: 0 12px;
+  position: relative;
+  z-index: 1;
 }
 
-/* --- Active Menu Item (Warna Menu yang Sedang Dipilih) --- */
+.custom-menu .ant-menu-item {
+  margin: 6px 0 !important;
+  border-radius: 10px !important;
+  height: 48px !important;
+  line-height: 48px !important;
+  color: rgba(255, 255, 255, 0.85) !important;
+  transition: all 0.3s ease !important;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  padding: 0 16px !important;
+}
+
+.custom-menu .ant-menu-item:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+  transform: translateX(4px);
+}
+
 .custom-menu .ant-menu-item-selected {
-  background-color: rgba(255, 255, 255, 0.25) !important;
-  color: #fff !important;
+  background: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
   font-weight: 600;
-  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
+.custom-menu .ant-menu-item-selected::after {
+  display: none !important;
+}
 
-/* --- Mobile Overlay --- */
+.custom-menu .ant-menu-item .anticon,
+.custom-menu .ant-menu-item svg {
+  font-size: 20px;
+  margin-right: 12px;
+}
+
+/* ========================================
+   MOBILE OVERLAY
+   ======================================== */
 .mobile-overlay {
   position: fixed;
   top: 0;
@@ -97,31 +175,45 @@ background: linear-gradient(135deg, #00c6ff 0%, #4866ff 100%);
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 99;
+  z-index: 999;
   backdrop-filter: blur(2px);
+  animation: fadeIn 0.3s ease;
 }
 
-/* --- Content Layout (Right Side) --- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ========================================
+   CONTENT LAYOUT
+   ======================================== */
 .site-layout {
   transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  background: #f5f7fa;
+  background: #fafafa;
 }
 
-/* --- Header --- */
+/* ========================================
+   HEADER
+   ======================================== */
 .site-header {
   padding: 0 24px;
-  background: white !important;
+  background: rgba(255, 255, 255, 0.95) !important;
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: sticky;
   top: 0;
-  z-index: 98;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  z-index: 998;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   height: 70px;
+  backdrop-filter: blur(10px);
 }
 
-/* Tombol Icon Header */
 .icon-btn {
   font-size: 16px;
   width: 40px;
@@ -129,53 +221,63 @@ background: linear-gradient(135deg, #00c6ff 0%, #4866ff 100%);
   display: flex !important;
   align-items: center;
   justify-content: center;
-  border-radius: 8px !important;
+  border-radius: 10px !important;
   color: #667eea !important;
   transition: all 0.3s ease;
+  border: 1px solid transparent;
 }
 
 .icon-btn:hover {
   background: rgba(102, 126, 234, 0.1) !important;
+  border-color: rgba(102, 126, 234, 0.2);
+  transform: scale(1.05);
 }
 
 .divider {
   width: 1px;
   height: 24px;
   background: #e6e8eb;
+  margin: 0 8px;
 }
 
-/* Profile Box */
+/* PROFILE BOX */
 .profile-box {
   display: flex;
   align-items: center;
   cursor: pointer;
-  padding: 6px 12px;
-  border-radius: 8px;
-  gap: 10px;
-  transition: background 0.3s ease;
+  padding: 8px 14px;
+  border-radius: 12px;
+  gap: 12px;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
 }
 
 .profile-box:hover {
-  background: rgba(102, 126, 234, 0.05);
+  background: rgba(102, 126, 234, 0.08);
+  border-color: rgba(102, 126, 234, 0.15);
 }
 
 .user-avatar {
-  background: #4866ff;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
 }
 
-/* --- Content Area --- */
+/* ========================================
+   CONTENT AREA
+   ======================================== */
 .content-wrapper {
   margin: 24px;
   overflow: initial;
+  min-height: calc(100vh - 118px);
 }
 
 .content-box {
   padding: 24px;
   min-height: 500px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.04);
 }
 
 .footer-text {
@@ -183,4 +285,126 @@ background: linear-gradient(135deg, #00c6ff 0%, #4866ff 100%);
   padding: 28px 0 20px;
   color: #999;
   font-size: 13px;
+  border-top: 1px solid #f0f0f0;
+  margin-top: 24px;
+}
+
+/* ========================================
+   DROPDOWN MENU STYLING
+   ======================================== */
+.ant-dropdown-menu {
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+  padding: 8px !important;
+  min-width: 200px;
+  background: #ffffff !important;
+}
+
+.ant-dropdown-menu-item {
+  border-radius: 8px !important;
+  padding: 10px 12px !important;
+  transition: all 0.3s ease !important;
+}
+
+.ant-dropdown-menu-item:hover {
+  background: rgba(102, 126, 234, 0.08) !important;
+}
+
+.ant-dropdown-menu-item-danger:hover {
+  background: #fff1f0 !important;
+  color: #ff4d4f !important;
+}
+
+.ant-dropdown-menu-item-divider {
+  margin: 8px 0 !important;
+  background: #f0f0f0 !important;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+@media (max-width: 992px) {
+  .site-header {
+    padding: 0 16px !important;
+    height: 64px;
+  }
+
+  .content-wrapper {
+    margin: 16px;
+  }
+
+  .content-box {
+    padding: 20px;
+    border-radius: 12px;
+  }
+
+  .logo-text {
+    font-size: 15px;
+  }
+
+  .profile-box {
+    padding: 6px 10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .site-header {
+    padding: 0 12px !important;
+  }
+
+  .content-wrapper {
+    margin: 12px;
+  }
+
+  .content-box {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .icon-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .footer-text {
+    font-size: 12px;
+    padding: 20px 0 16px;
+  }
+
+  .logo-container {
+    height: 64px;
+  }
+}
+
+/* Landscape mobile optimization */
+@media (max-height: 500px) and (orientation: landscape) {
+  .site-header {
+    height: 56px;
+  }
+
+  .logo-container {
+    height: 56px;
+  }
+
+  .content-wrapper {
+    margin: 12px;
+  }
+}
+
+/* Print styles */
+@media print {
+  .custom-sider,
+  .site-header,
+  .mobile-overlay {
+    display: none;
+  }
+
+  .site-layout {
+    margin-left: 0 !important;
+  }
+
+  .content-box {
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
 }
