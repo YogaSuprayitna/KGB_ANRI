@@ -13,7 +13,7 @@
    SIDEBAR
    ======================================== */
 .custom-sider {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  background: linear-gradient(135deg, #00c6ff 0%, #4866ff 100%);
   position: fixed !important;
   height: 100vh;
   left: 0;
