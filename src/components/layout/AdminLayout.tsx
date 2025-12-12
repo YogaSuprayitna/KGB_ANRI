@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Layout, Menu, Button, Dropdown, Avatar, Space, Typography, message, Grid } from "antd";
-import { LayoutDashboard, Menu as MenuIcon, LogOut, User, Settings, ChevronRight, Bell, X } from "lucide-react";
+import { LayoutDashboard, Menu as MenuIcon, LogOut, User, FilePlus, History, Settings, ChevronRight, Bell, X } from "lucide-react";
 import { useGetIdentity, useLogout } from "@refinedev/core";
 import "../../styles/Layout.css";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -54,9 +54,15 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       label: "Data Pegawai",
     },
     {
+      key: "usulan",
+      path: "/admin-menu-usulan",
+      icon: <FilePlus size={20} />,
+      label: "Usulan KGB",
+    },
+    {
       key: "riwayat",
       path: "/admin-menu-riwayat",
-      icon: <User size={20} />,
+      icon: <History size={20} />,
       label: "Riwayat KGB",
     },
     {
