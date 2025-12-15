@@ -20,7 +20,6 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const { mutate: logout } = useLogout();
   const { data: user } = useGetIdentity();
 
-
   const handleLogout = () => {
     logout(
       {},
@@ -126,16 +125,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <Layout className="layout">
       {/* SIDEBAR */}
-      <Sider 
-        trigger={null} 
-        collapsible 
-        collapsed={collapsed} 
-        breakpoint="lg" 
-        collapsedWidth={isMobile ? 0 : 80} 
-        onBreakpoint={(broken) => setCollapsed(broken)} 
-        width={260} 
-        className="custom-sider"
-      >
+      <Sider trigger={null} collapsible collapsed={collapsed} breakpoint="lg" collapsedWidth={isMobile ? 0 : 80} onBreakpoint={(broken) => setCollapsed(broken)} width={260} className="custom-sider">
         <div
           className="logo-container"
           style={{
@@ -155,14 +145,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
           {isMobile && !collapsed && <Button type="text" icon={<X size={20} />} onClick={() => setCollapsed(true)} className="close-btn" />}
         </div>
 
-        <Menu 
-          theme="dark" 
-          mode="inline" 
-          selectedKeys={[selectedKey]}
-          items={menuItems} 
-          onClick={onMenuClick} 
-          className="custom-menu" 
-        />
+        <Menu theme="dark" mode="inline" selectedKeys={[selectedKey]} items={menuItems} onClick={onMenuClick} className="custom-menu" />
       </Sider>
 
       {/* MOBILE OVERLAY */}
@@ -181,7 +164,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
           </div>
 
           <Space size={16} align="center">
-            <Button type="text" icon={<Bell size={20} />} className="icon-btn" />
+            <Button type="text" icon={<Bell size={20} />} className="icon-btn" onClick={() => navigate("/notifications")} />
             <div className="divider" />
 
             {/* Dropdown Profile Diperbaiki (menambah onClick) */}

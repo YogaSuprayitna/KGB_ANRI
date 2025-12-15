@@ -13,6 +13,8 @@ import { ProfileUserSettings } from "./pages/users/UserSettings";
 import { AdminProfileSettings } from "./pages/admin/AdminSettings";
 import KGBAdminMenuRiwayat from "./pages/admin/AdminMenuRiwayat";
 import MenuUsulanKGB from "./pages/admin/AdminMenuUsulan";
+import NotificationList from "./pages/Notificationlist";
+import NotificationDetail from "./pages/Notificationdetail";
 
 const RoleProtected = ({ allowedRoles }: { allowedRoles: string[] }) => {
   const { data: roleFromHook, isLoading } = usePermissions({});
@@ -25,11 +27,7 @@ const RoleProtected = ({ allowedRoles }: { allowedRoles: string[] }) => {
   const currentRole = roleFromHook || storedRole;
 
   if (isLoading && !currentRole) {
-    return (
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
-        Loading Access...
-      </div>
-    );
+    return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>Loading Access...</div>;
   }
 
   if (currentRole && allowedRoles.includes(currentRole)) {
@@ -60,7 +58,7 @@ function App() {
         <Routes>
           {/* 1. LOGIN PAGE (TIDAK PERLU PROTEKSI) */}
           <Route path="/login" element={<Login />} />
-          
+
           {/* 2. PROTECTED ROUTE: ADMIN */}
           <Route
             element={
@@ -106,6 +104,24 @@ function App() {
               element={
                 <AdminLayout>
                   <AdminProfileSettings />
+                </AdminLayout>
+              }
+            />
+            {/* ✅ NOTIFICATION LIST */}
+            <Route
+              path="/notifications"
+              element={
+                <AdminLayout>
+                  <NotificationList />
+                </AdminLayout>
+              }
+            />
+
+            <Route
+              path="/notifications/show/:notificationId"
+              element={
+                <AdminLayout>
+                  <NotificationDetail />
                 </AdminLayout>
               }
             />

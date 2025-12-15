@@ -1,0 +1,130 @@
+.notification-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: #f5f7fb;
+  min-height: 100vh;
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 16px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.notification-card {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  background: white;
+}
+
+.notification-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: #d9d9d9;
+  transition: all 0.3s ease;
+}
+
+.notification-card.unread::before {
+  background: linear-gradient(180deg, #1890ff 0%, #52c41a 100%);
+}
+
+.notification-card.unread {
+  background: linear-gradient(90deg, #e6f7ff 0%, #ffffff 100%);
+}
+
+.notification-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.notification-card:active {
+  transform: translateY(-2px);
+}
+
+.notification-content {
+  display: flex;
+  gap: 16px;
+  padding: 8px;
+}
+
+.notification-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-start;
+  padding-top: 4px;
+}
+
+.notification-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.notification-top {
+  margin-bottom: 12px;
+}
+
+.notification-message {
+  display: block;
+  line-height: 1.6;
+  margin-top: 4px;
+}
+
+.notification-footer {
+  padding-top: 8px;
+  border-top: 1px solid #f0f0f0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .notification-container {
+    padding: 16px;
+  }
+
+  .notification-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .notification-content {
+    gap: 12px;
+  }
+
+  .notification-icon {
+    font-size: 20px;
+  }
+}
+
+/* Animation untuk elemen baru */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.notification-card {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
