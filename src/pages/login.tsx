@@ -3,7 +3,7 @@ import { useLogin } from "@refinedev/core";
 import { useNavigate } from "react-router-dom";
 import { User, Lock, Eye, EyeOff, Sparkles, ArrowRight, CheckCircle, FileText } from "lucide-react";
 import { Button, Form, Input, Typography, App } from "antd";
-import "../styles/Login.css";
+import "../styles/login.css";
 
 import CustomNotification from "../components/Notification"; 
 
