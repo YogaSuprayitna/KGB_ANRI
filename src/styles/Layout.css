@@ -5,11 +5,7 @@
 
 /* --- Sidebar (Sider) --- */
 .custom-sider {
-<<<<<<< HEAD
 background: linear-gradient(135deg, #00c6ff 0%, #4866ff 100%);
-=======
-  background: linear-gradient(135deg, #00c6ff 0%, #4866ff 100%);
->>>>>>> 906152f9a9aa90e0819bca58bff1684eaccbb58c
   position: fixed !important;
   height: 100vh;
   left: 0;
