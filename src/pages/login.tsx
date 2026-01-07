@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { useLogin } from "@refinedev/core";
 import { useNavigate } from "react-router-dom";
-import { User, Lock, Eye, EyeOff, Sparkles, ArrowRight, CheckCircle, FileText } from "lucide-react";
+import { User, Lock, Eye, EyeOff, ArrowRight, CheckCircle, FileText } from "lucide-react";
 import { Button, Form, Input, Typography, App } from "antd";
 import "../styles/login.css";
-
 import CustomNotification from "../components/Notification"; 
 
 const { Title, Text } = Typography;
@@ -13,9 +12,6 @@ const Login = () => {
   const { mutateAsync: login } = useLogin();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-
-  // AntD App.useApp() untuk message
   const { message } = App.useApp();
 
   const [notifState, setNotifState] = useState<{
@@ -30,9 +26,7 @@ const Login = () => {
     message: "",
   });
 
-  const closeNotif = () => {
-    setNotifState((prev) => ({ ...prev, show: false }));
-  };
+  const closeNotif = () => setNotifState((prev) => ({ ...prev, show: false }));
 
   const onFinish = async (values: any) => {
     setLoading(true);
@@ -45,146 +39,112 @@ const Login = () => {
       });
 
       if (response && response.success === false) {
-        const errorMsg = response.error?.name || "Username atau password salah";
-        throw new Error(errorMsg); 
+        throw new Error(response.error?.message || "Username atau password salah"); 
       }
 
       const storedUser = localStorage.getItem("auth");
       const parsedUser = storedUser ? JSON.parse(storedUser) : null;
-      
       const role = parsedUser?.role || "user"; 
-      const name = parsedUser?.name || values.username;
 
-      message.success(`Login berhasil — Selamat datang, ${name}`);
+      message.success(`Selamat datang kembali, ${parsedUser?.name || values.username}`);
 
       setTimeout(() => {
-        const target = role === "admin" ? "/admin-dashboard" : "/user-dashboard";
-        navigate(target, { replace: true });
+        navigate(role === "admin" ? "/admin-dashboard" : "/user-dashboard", { replace: true });
         setLoading(false);
       }, 500);
 
     } catch (error: any) {
       setLoading(false);
-      
       setNotifState({
         show: true,
         type: "error",
         title: "Login Gagal",
-        message: error.message || "Periksa kembali username dan password Anda.",
+        message: error.message || "Periksa kembali kredensial Anda.",
       });
     }
   };
 
-  const onFinishFailed = () => {
-    setNotifState({
-      show: true,
-      type: "warning",
-      title: "Perhatian",
-      message: "Mohon lengkapi username dan password Anda.",
-    });
-  };
-
   return (
     <div className="login-root">
-      <CustomNotification 
-        show={notifState.show}
-        type={notifState.type}
-        title={notifState.title}
-        message={notifState.message}
-        onClose={closeNotif}
-      />
+      <CustomNotification {...notifState} onClose={closeNotif} />
 
       <div className="split-grid">
+        {/* LEFT: HERO SECTION */}
         <div className="hero-section">
           <div className="decor-circle decor-1" />
           <div className="decor-circle decor-2" />
+          
           <div className="hero-content">
-            <div className="logo"><FileText size={40} color="#fff" strokeWidth={2.5} /></div>
+            <div className="logo">
+              <FileText size={38} color="#002347" strokeWidth={2.5} />
+            </div>
             
             <Title className="hero-title">
               Sistem Kenaikan Gaji Berkala
             </Title>
             
             <Text className="hero-sub">
-              Kelola penerbitan SK dam monitoring masa kerja, Arsip Nasional kepegawaian secara terintegrasi.
+              Platform terintegrasi untuk pengelolaan SK dan monitoring masa kerja pegawai Arsip Nasional Republik Indonesia secara akurat.
             </Text>
 
             <div className="features">
-              {[
-                "Monitoring Jatuh Tempo KGB Otomatis", 
-                "Penerbitan SK Cepat & Akurat", 
-                "Integrasi Data Kepegawaian"
-              ].map((feature, idx) => (
+              {["Monitoring KGB Otomatis", "Penerbitan SK Digital", "Integrasi Data Kepegawaian"].map((item, idx) => (
                 <div key={idx} className="feature-item">
-                  <div className="feature-icon"><CheckCircle size={20} color="#fff" /></div>
-                  <Text className="feature-text">{feature}</Text>
+                  <div className="feature-icon">
+                    <CheckCircle size={18} color="#ffffff" />
+                  </div>
+                  <Text className="feature-text">{item}</Text>
                 </div>
               ))}
             </div>
-            <div className="sparkles"><Sparkles size={24} color="#fff" opacity={0.4} /></div>
           </div>
         </div>
 
+        {/* RIGHT: FORM SECTION */}
         <div className="form-section">
           <div className="form-wrap">
             <div className="form-header">
-              
-              <Title level={2} className="form-title">
-                Login Aplikasi KGB
-              </Title>
-              
-              <Text type="secondary" className="form-sub">
-                Masuk untuk mengelola pengajuan gaji berkala
-              </Text>
+              <Title level={2} className="form-title">Masuk Aplikasi</Title>
+              <Text type="secondary" className="form-sub">Silakan masukkan akun Anda untuk melanjutkan</Text>
             </div>
 
-            <Form
-              name="login"
-              onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
-              layout="vertical"
-              requiredMark={false}
-              size="large"
-            >
+            <Form name="login" onFinish={onFinish} layout="vertical" size="large" requiredMark={false}>
               <Form.Item 
                 name="username" 
-                label={<span className="label-text">Username</span>} 
-                rules={[{ required: true, message: "Masukkan username!" }]}
+                label={<span className="label-text">Username</span>}
+                rules={[{ required: true, message: "Username wajib diisi" }]}
               >
-                <div className="input-wrap">
-                  <div className="input-icon"><User size={20} color="#667eea" strokeWidth={2.5} /></div>
-                  <Input placeholder="Masukkan Username" className="custom-input" />
-                </div>
+                <Input 
+                  placeholder="Username Anda" 
+                  className="custom-input"
+                  prefix={<User size={20} color="#002347" strokeWidth={2.2} style={{ marginRight: 8 }} />} 
+                />
               </Form.Item>
 
               <Form.Item 
                 name="password" 
-                label={<span className="label-text">Password</span>} 
-                rules={[{ required: true, message: "Masukkan password Anda!" }]}
+                label={<span className="label-text">Password</span>}
+                rules={[{ required: true, message: "Password wajib diisi" }]}
               >
-                <div className="input-wrap">
-                  <div className="input-icon"><Lock size={20} color="#667eea" strokeWidth={2.5} /></div>
-                  <Input 
-                    type={showPassword ? "text" : "password"} 
-                    placeholder="Masukkan password" 
-                    className="custom-input" 
-                  />
-                  <div className="eye-toggle" onClick={() => setShowPassword(!showPassword)}>
-                    {showPassword ? <Eye size={20} color="#94a3b8" /> : <EyeOff size={20} color="#94a3b8" />}
-                  </div>
-                </div>
+                <Input.Password 
+                  placeholder="Password Anda" 
+                  className="custom-input"
+                  prefix={<Lock size={20} color="#002347" strokeWidth={2.2} style={{ marginRight: 8 }} />}
+                  iconRender={(visible) => (visible ? <Eye size={20} color="#94a3b8" /> : <EyeOff size={20} color="#94a3b8" />)}
+                />
               </Form.Item>
 
-              <Form.Item>
+              <Form.Item style={{ marginTop: 24 }}>
                 <Button type="primary" htmlType="submit" block loading={loading} className="submit-btn">
-                  <span>Masuk</span><ArrowRight size={20} />
+                  <span>Masuk Sistem</span>
+                  <ArrowRight size={20} />
                 </Button>
               </Form.Item>
             </Form>
 
             <div className="form-footer">
               <Text className="footer-text">
-                © {new Date().getFullYear()} Sistem Informasi Kepegawaian.
+                © {new Date().getFullYear()} Arsip Nasional Republik Indonesia
               </Text>
             </div>
           </div>
