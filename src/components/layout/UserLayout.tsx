@@ -17,7 +17,7 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
   
   const { menuItems, selectedKey } = useMenu();
 
-  // FILTER MENU KHUSUS USER
+  
   const filteredMenuItems = menuItems.filter((item) => item.name.startsWith("user-"));
 
   return (
@@ -27,7 +27,7 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
         collapsedWidth={isMobile ? 0 : 80} width={260} className="custom-sider"
       >
         <div className="logo-container">
-          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px", marginLeft: "20px" }}>
             <div className="logo-box"><img src="/assets/ANRI.png" alt="Logo" className="logo-image" /></div>
             {!collapsed && <span className="logo-text">KGB ANRI</span>}
           </div>

@@ -106,7 +106,6 @@ export const AdminDashboard: React.FC = () => {
 
   return (
     <div className="dashboard-container">
-      {/* 1. HEADER */}
       <div style={{ marginBottom: "32px", display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
         <div>
           <Title level={2} style={{ margin: 0, color: "#002347", fontWeight: 800 }}>Dashboard KGB</Title>
@@ -122,7 +121,6 @@ export const AdminDashboard: React.FC = () => {
         </Button>
       </div>
 
-      {/* 2. STATISTIC CARDS */}
       <Row gutter={[20, 20]} style={{ marginBottom: "24px" }}>
         <Col xs={24} sm={12} lg={6}>
           <Card className="dashboard-card" variant="borderless">
@@ -148,7 +146,7 @@ export const AdminDashboard: React.FC = () => {
             <Statistic 
               title="Sedang Diproses" 
               value={mockStats.ongoingProcess} 
-              prefix={<SyncOutlined spin style={{ color: "#52c41a", backgroundColor: "#f6ffed", padding: 8, borderRadius: 8, marginRight: 12 }} />} 
+              prefix={<SyncOutlined style={{ color: "#52c41a", backgroundColor: "#f6ffed", padding: 8, borderRadius: 8, marginRight: 12 }} />} 
             />
           </Card>
         </Col>
@@ -164,10 +162,8 @@ export const AdminDashboard: React.FC = () => {
         </Col>
       </Row>
 
-      {/* 3. FILTER */}
       <DashboardFilter onSearch={handleSearch} />
 
-      {/* 4. MAIN CONTENT */}
       <Row gutter={[24, 24]} style={{ marginTop: 24 }}>
         <Col xs={24} lg={16}>
           <Space direction="vertical" size={24} style={{ width: "100%" }}>

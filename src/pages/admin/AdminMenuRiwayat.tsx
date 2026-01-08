@@ -8,7 +8,7 @@ const { RangePicker } = DatePicker;
 
 import { DynamicModal } from "../../components/DynamicModal";
 
-// Interface untuk tipe data
+
 interface KGBRecord {
   key: number;
   id: number;
@@ -33,7 +33,7 @@ interface FormDataState {
   fileSk: any;
 }
 
-// Data dummy generator
+
 const generateDummyData = (): KGBRecord[] => {
   const names = ["Ahmad Rizki", "Siti Nurhaliza", "Budi Santoso", "Dewi Lestari", "Eko Prasetyo", "Fitri Handayani", "Gunawan Wijaya", "Hesti Purwaningsih", "Indra Gunawan", "Joko Widodo"];
   const data = [];
@@ -59,7 +59,7 @@ const generateDummyData = (): KGBRecord[] => {
   return data;
 };
 
-// Main Component - Halaman KGB
+
 const KGBAdminMenuRiwayat: React.FC = () => {
   const [data] = useState<KGBRecord[]>(generateDummyData());
   const [filteredData, setFilteredData] = useState<KGBRecord[]>(data);
@@ -69,7 +69,7 @@ const KGBAdminMenuRiwayat: React.FC = () => {
   const [selectedRecord, setSelectedRecord] = useState<KGBRecord | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // Form state
+  
   const [formData, setFormData] = useState<FormDataState>({
     nama: "",
     nip: "",
@@ -81,12 +81,12 @@ const KGBAdminMenuRiwayat: React.FC = () => {
     fileSk: null,
   });
 
-  // Filter states
+  
   const [filterVisible, setFilterVisible] = useState<boolean>(false);
   const [selectedPeriodes, setSelectedPeriodes] = useState<number[]>([]);
   const [dateRange, setDateRange] = useState<[Dayjs | null, Dayjs | null] | null>(null);
 
-  // Format currency
+  
   const formatCurrency = (value: number): string => {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -95,7 +95,7 @@ const KGBAdminMenuRiwayat: React.FC = () => {
     }).format(value);
   };
 
-  // Apply filters
+  
   const applyFilters = (search: string, periodes: number[], dates: [Dayjs | null, Dayjs | null] | null): void => {
     let filtered = [...data];
 
@@ -117,13 +117,13 @@ const KGBAdminMenuRiwayat: React.FC = () => {
     setFilteredData(filtered);
   };
 
-  // Handle search
+  
   const handleSearch = (value: string): void => {
     setSearchText(value);
     applyFilters(value, selectedPeriodes, dateRange);
   };
 
-  // Handle filter
+  
   const handleFilterChange = (): void => {
     applyFilters(searchText, selectedPeriodes, dateRange);
     setFilterVisible(false);
@@ -137,7 +137,7 @@ const KGBAdminMenuRiwayat: React.FC = () => {
     setFilterVisible(false);
   };
 
-  // Modal handlers
+  
   const showModal = (mode: "view" | "edit" | "create", record: KGBRecord | null = null): void => {
     setModalMode(mode);
     setSelectedRecord(record);
@@ -205,14 +205,14 @@ const KGBAdminMenuRiwayat: React.FC = () => {
     });
   };
 
-  // Table columns
+  
   const columns: any[] = [
     {
       title: "No",
       key: "index",
       width: 60,
       render: (_: any, __: any, index: number) => index + 1,
-      fixed: "left" as const,
+      
     },
     {
       title: "Nama Pegawai",
@@ -220,7 +220,7 @@ const KGBAdminMenuRiwayat: React.FC = () => {
       key: "nama",
       width: 180,
       sorter: (a: KGBRecord, b: KGBRecord) => a.nama.localeCompare(b.nama),
-      fixed: "left" as const,
+      
     },
     {
       title: "NIP",
@@ -301,11 +301,11 @@ const KGBAdminMenuRiwayat: React.FC = () => {
     },
   ];
 
-  // Calculate statistics
+  
   const totalRecords = filteredData.length;
   const latestKGB: KGBRecord | null = filteredData.length > 0 ? filteredData.reduce((latest, curr) => (dayjs(curr.tmtKgb).isAfter(dayjs(latest.tmtKgb)) ? curr : latest)) : null;
 
-  // Filter content untuk Popover
+  
   const filterContent = (
     <div style={{ width: 320 }}>
       <div style={{ marginBottom: 16 }}>
@@ -355,7 +355,6 @@ const KGBAdminMenuRiwayat: React.FC = () => {
 
   return (
     <div style={{ padding: "24px", minHeight: "100vh" }}>
-      {/* Header */}
       <div style={{ marginBottom: 24 }}>
         <Title level={2} style={{ margin: 0, color: "#1890ff" }}>
           <UserOutlined /> Riwayat Kenaikan Gaji Berkala (KGB)
@@ -363,7 +362,6 @@ const KGBAdminMenuRiwayat: React.FC = () => {
         <Text type="secondary">Kelola dan pantau riwayat KGB pegawai secara terpusat</Text>
       </div>
 
-      {/* Statistics Cards */}
       <Row gutter={16} style={{ marginBottom: 24 }}>
         <Col xs={24} sm={12} lg={6}>
           <Card
@@ -389,7 +387,6 @@ const KGBAdminMenuRiwayat: React.FC = () => {
         </Col>
       </Row>
 
-      {/* Main Content */}
       <Card
         variant="borderless"
         style={{
@@ -398,7 +395,6 @@ const KGBAdminMenuRiwayat: React.FC = () => {
           boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
         }}
       >
-        {/* Toolbar */}
         <div
           style={{
             marginBottom: 16,
@@ -422,7 +418,6 @@ const KGBAdminMenuRiwayat: React.FC = () => {
           </Button>
         </div>
 
-        {/* Table */}
         <Table
           rowKey="key"
           columns={columns}
@@ -440,7 +435,6 @@ const KGBAdminMenuRiwayat: React.FC = () => {
         />
       </Card>
 
-      {/* Modal - Menggunakan DynamicModal component */}
       <DynamicModal
         title={modalMode === "create" ? "Tambah Riwayat KGB" : modalMode === "edit" ? "Edit Riwayat KGB" : "Detail Riwayat KGB"}
         isOpen={modalVisible}

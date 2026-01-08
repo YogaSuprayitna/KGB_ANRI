@@ -69,7 +69,6 @@ const Login = () => {
       <CustomNotification {...notifState} onClose={closeNotif} />
 
       <div className="split-grid">
-        {/* LEFT: HERO SECTION */}
         <div className="hero-section">
           <div className="decor-circle decor-1" />
           <div className="decor-circle decor-2" />
@@ -100,7 +99,6 @@ const Login = () => {
           </div>
         </div>
 
-        {/* RIGHT: FORM SECTION */}
         <div className="form-section">
           <div className="form-wrap">
             <div className="form-header">

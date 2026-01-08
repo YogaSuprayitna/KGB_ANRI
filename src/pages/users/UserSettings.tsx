@@ -266,7 +266,6 @@ export const ProfileUserSettings: React.FC = () => {
   return (
     <div style={{ padding: 24, minHeight: "100vh", background: "#f0f2f5" }}>
       
-      {/* --- DYNAMIC MODAL & FORM --- */}
       <DynamicModal
         title="Ubah Data Diri"
         isOpen={isModalOpen}
@@ -304,7 +303,6 @@ export const ProfileUserSettings: React.FC = () => {
         </Form>
       </DynamicModal>
 
-      {/* --- HEADER --- */}
       <div style={{ marginBottom: 24 }}>
         <Title level={2} style={{ margin: 0, marginBottom: 4 }}>Profil Pegawai</Title>
         <Text type="secondary" style={{ fontSize: 14 }}>Kelola informasi data diri dan riwayat kepegawaian Anda</Text>
@@ -312,7 +310,6 @@ export const ProfileUserSettings: React.FC = () => {
 
       <Row gutter={[24, 24]}>
         
-        {/* --- LEFT PROFILE CARD --- */}
         <Col xs={24} lg={8}>
           <Card variant="borderless" style={{ borderRadius: 16, overflow: "hidden", boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}>
             <div style={{ height: 120, background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", marginTop: -24, marginLeft: -24, marginRight: -24, position: "relative" }}>
@@ -325,7 +322,6 @@ export const ProfileUserSettings: React.FC = () => {
               <Title level={4} style={{ margin: 0, marginBottom: 4 }}>{profileData.name}</Title>
               <Text type="secondary" style={{ fontSize: 13 }}>{profileData.position}</Text>
 
-              {/* Looping Statistics */}
               <Row gutter={8} style={{ marginTop: 24, marginBottom: 24 }}>
                 {sidebarStats.map((stat, idx) => (
                   <Col span={12} key={idx}>
@@ -341,7 +337,6 @@ export const ProfileUserSettings: React.FC = () => {
                 ))}
               </Row>
 
-              {/* Looping Detail Items */}
               <div style={{ background: "#fafafa", padding: "12px 16px", borderRadius: 8, marginBottom: 16 }}>
                 <Space direction="vertical" size={8} style={{ width: "100%" }}>
                   {sidebarDetails.map((detail, idx) => (
@@ -371,7 +366,6 @@ export const ProfileUserSettings: React.FC = () => {
           </Card>
         </Col>
 
-        {/* --- RIGHT TABS CONTENT --- */}
         <Col xs={24} lg={16}>
           <Card variant="borderless" style={{ borderRadius: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.08)", minHeight: "100%" }}>
             <Tabs defaultActiveKey="1" size="large" items={[

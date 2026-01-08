@@ -161,7 +161,6 @@ export const AdminProfileSettings: React.FC = () => {
   return (
     <div style={{ padding: 24, minHeight: "100vh"}}>
       
-      {/* Header */}
       <div style={{ marginBottom: 24 }}>
         <Title level={2} style={{ margin: 0, marginBottom: 4 }}>Pengaturan Akun</Title>
         <Text type="secondary">Kelola profil administrator dan preferensi sistem Anda</Text>
@@ -169,10 +168,8 @@ export const AdminProfileSettings: React.FC = () => {
 
       <Row gutter={[24, 24]}>
         
-        {/* --- LEFT: ADMIN IDENTITY CARD --- */}
         <Col xs={24} md={8}>
           <Card variant="borderless" style={{ borderRadius: 16, overflow: "hidden", height: '100%', background: '#f4f8feff' }}>
-            {/* Background Cover */}
             <div style={{ 
               height: 120, 
               background: "linear-gradient(135deg, #001529 0%, #003a8c 100%)", 
@@ -184,7 +181,6 @@ export const AdminProfileSettings: React.FC = () => {
               </div>
             </div>
 
-            {/* Avatar & Basic Info */}
             <div style={{ textAlign: "center", marginTop: -60, position: 'relative' }}>
               <Avatar 
                 size={110} 
@@ -203,7 +199,6 @@ export const AdminProfileSettings: React.FC = () => {
 
               <Divider style={{ margin: "24px 0" }} />
 
-              {/* Quick Actions */}
               <Space direction="vertical" style={{ width: "100%" }}>
                 <Button type="primary" block icon={<EditOutlined />} onClick={handleOpenEdit} size="large">
                    Edit Profil
@@ -213,7 +208,6 @@ export const AdminProfileSettings: React.FC = () => {
           </Card>
         </Col>
 
-        {/* --- RIGHT: TABS SETTINGS --- */}
         <Col xs={24} md={16}>
           <Card variant="borderless" style={{ borderRadius: 16, minHeight: "100%" }}>
             <Tabs defaultActiveKey="1" size="large" items={[
@@ -232,7 +226,6 @@ export const AdminProfileSettings: React.FC = () => {
         </Col>
       </Row>
 
-      {/* --- DYNAMIC MODAL FOR EDIT --- */}
       <DynamicModal
         title="Ubah Profil Administrator"
         isOpen={isModalOpen}

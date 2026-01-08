@@ -8,15 +8,15 @@ import routerProvider, {
 } from "@refinedev/react-router";
 import { App as AntdApp } from "antd";
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
-import dataProvider from "@refinedev/simple-rest";
 
 // Providers & Layouts
 import { authProvider } from "./authProvider";
+import { dataProvider } from "./dataProvider"; // Gunakan dataProvider kustom yang kita buat
 import AdminLayout from "./components/layout/AdminLayout";
 import UserLayout from "./components/layout/UserLayout";
 import RoleProtected from "./components/RoleProtected"; 
 
-// Pages (Pastikan path impor sesuai dengan project Anda)
+// Pages
 import Login from "./pages/login";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import DataPegawai from "./pages/admin/dataPegawai";
@@ -37,10 +37,12 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 
+// --- CUSTOM LAYOUT SELECTOR ---
 const LayoutSelector = () => {
   const storedAuth = localStorage.getItem("auth");
   const user = storedAuth ? JSON.parse(storedAuth) : null;
 
+  // Memilih layout berdasarkan role yang tersimpan
   if (user?.role === "admin") {
     return (
       <AdminLayout>
@@ -60,12 +62,16 @@ function App() {
     <BrowserRouter>
       <AntdApp>
         <Refine
-          dataProvider={dataProvider("http://localhost:3000")}
+          // Pastikan port sesuai dengan JSON-Server (3001)
+          dataProvider={dataProvider("http://localhost:3001")} 
           notificationProvider={useNotificationProvider}
           routerProvider={routerProvider}
           authProvider={authProvider}
+          options={{
+            syncWithLocation: true, // Menyingkronkan state rute dengan URL browser
+            warnWhenUnsavedChanges: true,
+          }}
           resources={[
-            // Resources khusus Admin
             {
               name: "admin-dashboard",
               list: "/admin-dashboard",
@@ -91,7 +97,6 @@ function App() {
               list: "/admin-settings",
               meta: { label: "Pengaturan", icon: <SettingOutlined /> },
             },
-            // Resources khusus User
             {
               name: "user-dashboard",
               list: "/user-dashboard",
@@ -105,7 +110,6 @@ function App() {
           ]}
         >
           <Routes>
-            {/* GRUP ADMIN */}
             <Route
               element={
                 <Authenticated key="admin-scope" fallback={<CatchAllNavigate to="/login" />}>
@@ -126,7 +130,6 @@ function App() {
               </Route>
             </Route>
 
-            {/* GRUP USER */}
             <Route
               element={
                 <Authenticated key="user-scope" fallback={<CatchAllNavigate to="/login" />}>
@@ -140,14 +143,25 @@ function App() {
               </Route>
             </Route>
 
-            <Route path="/login" element={<Login />} />
-            
-            <Route path="/" element={
-              <Authenticated key="root" fallback={<Navigate to="/login" />}>
-                <NavigateToResource />
-              </Authenticated>
-            } />
-            
+            <Route
+              element={
+                <Authenticated key="auth-pages" fallback={<Outlet />}>
+                  <NavigateToResource />
+                </Authenticated>
+              }
+            >
+              <Route path="/login" element={<Login />} />
+            </Route>
+
+            <Route
+              path="/"
+              element={
+                <Authenticated key="root-redirect" fallback={<Navigate to="/login" />}>
+                  <NavigateToResource />
+                </Authenticated>
+              }
+            />
+
             <Route path="*" element={<ErrorComponent />} />
           </Routes>
           <DocumentTitleHandler handler={({ resource }) => `KGB ANRI | ${resource?.meta?.label || ""}`} />

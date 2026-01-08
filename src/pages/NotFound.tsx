@@ -1,21 +1,19 @@
 import React from 'react';
 import { Button, Typography, Space } from 'antd';
 import { Home, SearchX, MapPin } from 'lucide-react';
-import { useNavigate } from 'react-router-dom'; // Gunakan ini untuk navigasi SPA
+import { useNavigate } from 'react-router-dom'; 
 
 const { Title, Paragraph } = Typography;
 
 export default function NotFound() {
-  const navigate = useNavigate(); // Hook untuk navigasi
+  const navigate = useNavigate(); 
 
   return (
     <div style={styles.container}>
-      {/* Inject Keyframes */}
       <style>{cssAnimations}</style>
 
       <div style={styles.innerWrapper}>
         
-        {/* 404 Animation Section */}
         <div style={styles.animationContainer}>
           <Title level={1} style={styles.title404}>404</Title>
           <div style={styles.floatingIcons}>
@@ -24,7 +22,6 @@ export default function NotFound() {
           </div>
         </div>
 
-        {/* Content Card */}
         <div style={styles.card}>
           <Space direction="vertical" size="large" style={{ width: '100%' }}>
             <Title level={2} style={styles.heading}>Halaman Tidak Ditemukan</Title>
@@ -37,7 +34,7 @@ export default function NotFound() {
               type="primary" 
               size="large"
               icon={<Home size={20} />}
-              onClick={() => navigate('/')} // Ganti window.location.href
+              onClick={() => navigate('/')} 
               style={styles.button}
             >
               Kembali ke Beranda
@@ -45,7 +42,6 @@ export default function NotFound() {
           </Space>
         </div>
 
-        {/* Decorative Dots */}
         <div style={styles.dotsContainer}>
           {[0, 1, 2].map((i) => (
             <div key={i} style={{ ...styles.dot, animationDelay: `${i * 0.3}s` }} />
@@ -57,7 +53,7 @@ export default function NotFound() {
   );
 }
 
-// --- Styles Object ---
+
 const styles: Record<string, React.CSSProperties> = {
   container: {
     minHeight: '100vh',
@@ -146,7 +142,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
 };
 
-// --- Global CSS Animations ---
+
 const cssAnimations = `
   @keyframes float {
     0%, 100% { transform: translateY(0px); }

@@ -29,7 +29,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
         className="custom-sider"
       >
         <div className="logo-container">
-          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px", marginLeft: "20px" }}>
             <div className="logo-box">
               <img src="/assets/ANRI.png" alt="Logo" className="logo-image"/>
             </div>

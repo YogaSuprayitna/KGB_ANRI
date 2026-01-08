@@ -49,7 +49,6 @@ const DashboardFilter: React.FC<DashboardFilterProps> = ({ onSearch }) => {
         requiredMark={false}
       >
         <Row gutter={[20, 16]} align="bottom">
-          {/* Input Pencarian Nama/NIP */}
           <Col xs={24} sm={12} lg={10}>
             <Form.Item
               name="name"
@@ -73,7 +72,6 @@ const DashboardFilter: React.FC<DashboardFilterProps> = ({ onSearch }) => {
             </Form.Item>
           </Col>
 
-          {/* Select Status */}
           <Col xs={24} sm={12} lg={8}>
             <Form.Item
               name="status"
@@ -100,7 +98,6 @@ const DashboardFilter: React.FC<DashboardFilterProps> = ({ onSearch }) => {
             </Form.Item>
           </Col>
 
-          {/* Tombol Aksi */}
           <Col xs={24} lg={6}>
             <Form.Item style={{ marginBottom: 0 }}>
               <Space

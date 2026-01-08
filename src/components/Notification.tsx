@@ -32,20 +32,17 @@ const CustomNotification = ({ show, type, title, message, onClose }: Notificatio
 
   return (
     <div className={`custom-notification ${type} ${show ? 'active' : ''}`}>
-      {/* Icon Wrapper */}
       <div className="notif-icon-wrapper">
         <div className="icon-bg">
           {getIcon()}
         </div>
       </div>
 
-      {/* Content */}
       <div className="notif-content">
         <span className="notif-title">{title}</span>
         <p className="notif-message">{message}</p>
       </div>
 
-      {/* Close Button */}
       <button className="close-btn" onClick={onClose}>
         <X size={18} />
       </button>

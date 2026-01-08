@@ -322,13 +322,11 @@ const EmployeePage: React.FC = () => {
     return (
         <div>
             <Card style={{ borderRadius: '12px' }}>
-                {/* 1. Header & Title */}
                 <div style={{ marginBottom: 20 }}>
                     <Title level={3} style={{ margin: 0 }}>Data Pegawai</Title>
                     <Text type="secondary">Kelola database kepegawaian ANRI</Text>
                 </div>
 
-                {/* 2. Toolbar (Search, Filters, Add Button) */}
                 <div style={{ 
                     marginBottom: 24, 
                     display: 'flex', 
@@ -341,7 +339,6 @@ const EmployeePage: React.FC = () => {
                     borderRadius: '8px',
                     border: '1px solid #f0f0f0'
                 }}>
-                    {/* Kiri: Filter Group */}
                     <Space wrap>
                         <Input 
                             placeholder="Cari Nama / NIP..." 
@@ -351,7 +348,6 @@ const EmployeePage: React.FC = () => {
                             style={{ width: 200 }}
                         />
                         
-                        {/* BUTTON FILTER: UNIT KERJA */}
                         <Select
                             placeholder="Filter Unit Kerja"
                             allowClear
@@ -364,7 +360,6 @@ const EmployeePage: React.FC = () => {
                             <Option value="Deputi IPSK">Deputi IPSK</Option>
                         </Select>
 
-                        {/* BUTTON FILTER: MASA KERJA */}
                         <Select
                             placeholder="Filter Masa Kerja"
                             allowClear
@@ -378,7 +373,6 @@ const EmployeePage: React.FC = () => {
                         </Select>
                     </Space>
 
-                    {/* Kanan: Add Button */}
                     <Button 
                         type="primary" 
                         icon={<PlusOutlined />} 
@@ -390,7 +384,6 @@ const EmployeePage: React.FC = () => {
                     </Button>
                 </div>
 
-                {/* 3. Table */}
                 <Table 
                     columns={columns} 
                     dataSource={filteredData} 

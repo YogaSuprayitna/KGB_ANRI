@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import {
-  Row, Col, Card, Avatar, Tag, Button, List, Table, Progress, Space, Typography, Badge, Divider,
+  Row, Col, Card, Avatar, Tag, Button, List, Table, Progress, Space, Typography, Badge, Divider, Spin
 } from "antd";
 import {
   UserOutlined, ClockCircleOutlined, HistoryOutlined, BellOutlined,
@@ -15,6 +15,7 @@ import "../../styles/UserDashboard.css";
 const { Text, Title } = Typography;
 
 const UserDashboard: React.FC = () => {
+  
   const { data: identity, isLoading } = useGetIdentity<{ name?: string; role?: string; nip?: string }>();
   const navigate = useNavigate();
 
@@ -27,7 +28,10 @@ const UserDashboard: React.FC = () => {
     increasePercent: 5,
   });
 
-  const upcoming = useMemo(() => [{ key: "u1", tmt: "01-12-2025", status: "Verifikasi SDM", progress: 45, note: "Sedang diperiksa pusat" }], []);
+  const upcoming = useMemo(() => [
+    { key: "u1", tmt: "01-12-2025", status: "Verifikasi SDM", progress: 45, note: "Sedang diperiksa pusat" }
+  ], []);
+
   const history = useMemo(() => [
     { key: "h1", date: "01-12-2024", oldSalary: 4800000, newSalary: 5040000, percent: 5 },
     { key: "h2", date: "01-12-2023", oldSalary: 4560000, newSalary: 4800000, percent: 5 },
@@ -43,20 +47,20 @@ const UserDashboard: React.FC = () => {
     { id: "d2", title: "Formulir Pengajuan KGB", status: "Perlu Update", color: "#faad14" },
   ];
 
-  if (isLoading) return <div className="ud-loading">Memuat...</div>;
-
-  const formatCurrency = (v: number) => v.toLocaleString("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 });
-
   const nextIncreaseDate = useMemo(() => {
     const d = new Date(profile.lastIncrease);
-    d.setFullYear(d.getFullYear() + 1);
+    d.setFullYear(d.getFullYear() + 2); 
     return d;
   }, [profile.lastIncrease]);
+
+  
+  const formatCurrency = (v: number) => 
+    v.toLocaleString("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 });
 
   const handleGeneratePDF = (title: string) => {
     const doc = new jsPDF();
     doc.setFontSize(18);
-    doc.setTextColor(0, 35, 71); // Navy color
+    doc.setTextColor(0, 35, 71); 
     doc.text("ARSIP NASIONAL REPUBLIK INDONESIA", 20, 20);
     doc.setFontSize(12);
     doc.setTextColor(100, 100, 100);
@@ -65,12 +69,26 @@ const UserDashboard: React.FC = () => {
     doc.line(20, 45, 190, 45);
     const pdfBlob = doc.output("blob");
     const pdfUrl = URL.createObjectURL(pdfBlob);
-    window.open(pdfUrl, "_blank");
+    window.open(pdfUrl, "_blank"); 
   };
 
+  
+  if (isLoading) {
+    return (
+      <div className="ud-loading">
+        <Space direction="vertical" align="center">
+          <Spin size="large" />
+          <Text strong style={{ color: "#00509d", marginTop: 12 }}>
+            Memverifikasi Data Pegawai...
+          </Text>
+        </Space>
+      </div>
+    );
+  }
+
+  
   return (
     <div className="user-dashboard-container">
-      {/* HEADER */}
       <div className="ud-header-section">
         <div>
           <Title level={2} className="ud-main-title">Halo, {profile.name.split(' ')[0]}!</Title>
@@ -87,8 +105,9 @@ const UserDashboard: React.FC = () => {
         </Button>
       </div>
 
+      
+
       <Row gutter={[24, 24]}>
-        {/* LEFT COLUMN: PROFILE & STATS */}
         <Col xs={24} lg={8}>
           <Space direction="vertical" size={24} style={{ width: "100%" }}>
             <Card className="ud-profile-card" variant="borderless">
@@ -97,20 +116,16 @@ const UserDashboard: React.FC = () => {
                 <Title level={4} style={{ margin: "16px 0 4px 0", color: "#002347" }}>{profile.name}</Title>
                 <Text type="secondary">{profile.nip}</Text>
                 <Tag color="blue" className="ud-rank-tag">{profile.rank}</Tag>
-                
                 <Divider />
-                
                 <div className="ud-salary-info">
                   <Text className="ud-salary-label">Gaji Saat Ini</Text>
                   <Title level={3} className="ud-salary-amount">{formatCurrency(profile.currentSalary)}</Title>
                 </div>
-
                 <div className="ud-next-schedule">
                   <CalendarOutlined style={{ color: "#00509d", marginRight: 8 }} />
                   <Text>Jadwal Berikutnya: </Text>
                   <Text strong>{nextIncreaseDate.toLocaleDateString("id-ID", { month: 'long', year: 'numeric' })}</Text>
                 </div>
-
                 <Button block className="ud-btn-outline" onClick={() => navigate("/user-settings")}>
                   Pengaturan Profil
                 </Button>
@@ -134,10 +149,8 @@ const UserDashboard: React.FC = () => {
           </Space>
         </Col>
 
-        {/* RIGHT COLUMN: TABLES & DOCUMENTS */}
         <Col xs={24} lg={16}>
           <Space direction="vertical" size={24} style={{ width: "100%" }}>
-            {/* JADWAL AKTIF */}
             <Card title={<Space><ClockCircleOutlined /> <Text strong>Proses KGB Berjalan</Text></Space>} variant="borderless" className="ud-card-shadow">
               <Table 
                 dataSource={upcoming} 
@@ -163,7 +176,6 @@ const UserDashboard: React.FC = () => {
               />
             </Card>
 
-            {/* RIWAYAT */}
             <Card title={<Space><HistoryOutlined /> <Text strong>Riwayat Kenaikan Gaji</Text></Space>} variant="borderless" className="ud-card-shadow">
               <Table 
                 dataSource={history} 
@@ -178,7 +190,6 @@ const UserDashboard: React.FC = () => {
               />
             </Card>
 
-            {/* DOKUMEN */}
             <Card title={<Space><FileProtectOutlined /> <Text strong>Arsip Digital & SK</Text></Space>} variant="borderless" className="ud-card-shadow">
               <List
                 dataSource={documents}

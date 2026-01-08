@@ -382,7 +382,6 @@ const MenuUsulanKGB: React.FC = () => {
 
   return (
     <div style={{ padding: "24px", minHeight: "100vh" }}>
-      {/* Header */}
       <div style={{ marginBottom: "24px" }}>
         <h1 style={{ fontSize: "28px", fontWeight: 700, margin: 0, color: "#1890ff" }}>
           <FileProtectOutlined /> Menu Usulan KGB
@@ -392,7 +391,6 @@ const MenuUsulanKGB: React.FC = () => {
         </p>
       </div>
 
-      {/* Statistics Cards */}
       <Row gutter={16} style={{ marginBottom: "24px" }}>
         <Col xs={24} sm={12} lg={6}>
           <Card bordered={false} style={{ borderRadius: "8px" }}>
@@ -436,12 +434,10 @@ const MenuUsulanKGB: React.FC = () => {
         </Col>
       </Row>
 
-      {/* Main Content */}
       <Card 
         bordered={false}
         style={{ borderRadius: "8px", boxShadow: "0 1px 2px rgba(0,0,0,0.03)", backgroundColor: "#fafafa" }}
       >
-        {/* Filters */}
         <Row gutter={16} style={{ marginBottom: "16px" }}>
           <Col xs={24} sm={12} md={8}>
             <Input
@@ -469,7 +465,6 @@ const MenuUsulanKGB: React.FC = () => {
           </Col>
         </Row>
 
-        {/* Table */}
         <Table 
           columns={columns}
           dataSource={filteredData}
@@ -484,7 +479,6 @@ const MenuUsulanKGB: React.FC = () => {
         />
       </Card>
 
-      {/* Modal Detail/Edit */}
       <DynamicModal
         title={modalMode === "view" ? "Detail Pegawai" : "Validasi Dokumen Pegawai"}
         isOpen={isModalOpen}
