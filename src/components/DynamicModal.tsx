@@ -30,7 +30,7 @@ export const DynamicModal: React.FC<DynamicModalProps> = ({
     okButtonProps,
     cancelButtonProps,
 }) => {
-    // Tombol Footer Dinamis
+    
     const footerButtons: React.ReactNode[] = [
         <Button 
             key="back" 
@@ -42,7 +42,7 @@ export const DynamicModal: React.FC<DynamicModalProps> = ({
         </Button>,
     ];
 
-    // Tambahkan tombol Simpan jika bukan mode View
+    
     if (mode !== "view" && onSubmit) {
         footerButtons.push(
             <Button 

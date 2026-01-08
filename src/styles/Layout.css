@@ -1,7 +1,7 @@
 :root {
-  /* Palet Biru Solid ANRI */
-  --admin-navy: #002347;    /* Deep Navy */
-  --admin-blue: #00509d;    /* Royal Blue */
+ 
+  --admin-navy: #002347;   
+  --admin-blue: #00509d;   
   --bg-light: #f8fafc;
   --header-height: 70px;
 }
@@ -11,7 +11,7 @@
   background: var(--bg-light);
 }
 
-/* --- Sidebar (Sider) --- */
+
 .custom-sider {
   background: var(--admin-navy) !important;
   position: fixed !important;
@@ -57,7 +57,7 @@
   white-space: nowrap;
 }
 
-/* Menu Custom */
+
 .custom-menu {
   margin-top: 15px;
   border: none !important;
@@ -76,7 +76,7 @@
   border-radius: 8px;
 }
 
-/* --- Header & Perbaikan Alignment --- */
+
 .site-header {
   padding: 0 24px;
   background: white !important;
@@ -122,7 +122,7 @@
   margin: 0 12px;
 }
 
-/* Profile Box */
+
 .profile-box {
   display: flex;
   align-items: center;
@@ -151,7 +151,7 @@
   flex-shrink: 0;
 }
 
-/* --- Content Area --- */
+
 .site-layout {
   transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }

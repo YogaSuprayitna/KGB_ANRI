@@ -14,8 +14,9 @@ import dataProvider from "@refinedev/simple-rest";
 import { authProvider } from "./authProvider";
 import AdminLayout from "./components/layout/AdminLayout";
 import UserLayout from "./components/layout/UserLayout";
+import RoleProtected from "./components/RoleProtected"; 
 
-// Pages
+// Pages (Pastikan path impor sesuai dengan project Anda)
 import Login from "./pages/login";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import DataPegawai from "./pages/admin/dataPegawai";
@@ -26,7 +27,6 @@ import UserDashboard from "./pages/users/UserDashboard";
 import { ProfileUserSettings } from "./pages/users/UserSettings";
 import NotificationList from "./pages/Notificationlist";
 import NotificationDetail from "./pages/Notificationdetail";
-import NotFound from "./pages/NotFound";
 
 // Icons
 import {
@@ -35,11 +35,8 @@ import {
   FileTextOutlined,
   HistoryOutlined,
   SettingOutlined,
-  BellOutlined,
 } from "@ant-design/icons";
 
-// --- CUSTOM LAYOUT SELECTOR ---
-// Memilih layout berdasarkan role user secara otomatis
 const LayoutSelector = () => {
   const storedAuth = localStorage.getItem("auth");
   const user = storedAuth ? JSON.parse(storedAuth) : null;
@@ -67,16 +64,12 @@ function App() {
           notificationProvider={useNotificationProvider}
           routerProvider={routerProvider}
           authProvider={authProvider}
-          options={{
-            syncWithLocation: true,
-            warnWhenUnsavedChanges: true,
-          }}
-          // Definisi Resources untuk Menu Sidebar otomatis
           resources={[
+            // Resources khusus Admin
             {
               name: "admin-dashboard",
               list: "/admin-dashboard",
-              meta: { label: "Dashboard", icon: <DashboardOutlined />, canDelete: false },
+              meta: { label: "Dashboard", icon: <DashboardOutlined /> },
             },
             {
               name: "admin-pegawai",
@@ -98,77 +91,66 @@ function App() {
               list: "/admin-settings",
               meta: { label: "Pengaturan", icon: <SettingOutlined /> },
             },
+            // Resources khusus User
             {
               name: "user-dashboard",
               list: "/user-dashboard",
-              meta: { hide: true }, // Disembunyikan jika role adalah admin
+              meta: { label: "Dashboard", icon: <DashboardOutlined /> },
+            },
+            {
+              name: "user-settings",
+              list: "/user-settings",
+              meta: { label: "Pengaturan", icon: <SettingOutlined /> },
             }
           ]}
         >
           <Routes>
-            {/* --- PROTECTED ROUTES (LOGGED IN) --- */}
+            {/* GRUP ADMIN */}
             <Route
               element={
-                <Authenticated
-                  key="authenticated-inner"
-                  fallback={<CatchAllNavigate to="/login" />}
-                >
-                  <LayoutSelector />
+                <Authenticated key="admin-scope" fallback={<CatchAllNavigate to="/login" />}>
+                  <RoleProtected allowedRoles={["admin"]} />
                 </Authenticated>
               }
             >
-              {/* Redirect root ke Dashboard sesuai role */}
-              <Route index element={<NavigateToResource resource="admin-dashboard" />} />
-
-              {/* Admin Routes */}
-              <Route path="/admin-dashboard" element={<AdminDashboard />} />
-              <Route path="/admin-pegawai" element={<DataPegawai />} />
-              <Route path="/admin-menu-usulan" element={<MenuUsulanKGB />} />
-              <Route path="/admin-menu-riwayat" element={<KGBAdminMenuRiwayat />} />
-              <Route path="/admin-settings" element={<AdminProfileSettings />} />
-              
-              {/* Notifications */}
-              <Route path="/notifications">
-                <Route index element={<NotificationList />} />
-                <Route path="show/:notificationId" element={<NotificationDetail />} />
+              <Route element={<LayoutSelector />}>
+                <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                <Route path="/admin-pegawai" element={<DataPegawai />} />
+                <Route path="/admin-menu-usulan" element={<MenuUsulanKGB />} />
+                <Route path="/admin-menu-riwayat" element={<KGBAdminMenuRiwayat />} />
+                <Route path="/admin-settings" element={<AdminProfileSettings />} />
+                <Route path="/notifications">
+                  <Route index element={<NotificationList />} />
+                  <Route path="show/:notificationId" element={<NotificationDetail />} />
+                </Route>
               </Route>
-
-              {/* User Routes */}
-              <Route path="/user-dashboard" element={<UserDashboard />} />
-              <Route path="/user-settings" element={<ProfileUserSettings />} />
             </Route>
 
-            {/* --- PUBLIC ROUTES --- */}
+            {/* GRUP USER */}
             <Route
               element={
-                <Authenticated key="authenticated-outer" fallback={<Outlet />}>
-                  <NavigateToResource />
+                <Authenticated key="user-scope" fallback={<CatchAllNavigate to="/login" />}>
+                  <RoleProtected allowedRoles={["user"]} />
                 </Authenticated>
               }
             >
-              <Route path="/login" element={<Login />} />
+              <Route element={<LayoutSelector />}>
+                <Route path="/user-dashboard" element={<UserDashboard />} />
+                <Route path="/user-settings" element={<ProfileUserSettings />} />
+              </Route>
             </Route>
 
-            {/* --- ERROR PAGE --- */}
-            <Route
-              element={
-                <Authenticated key="error-pages" fallback={<Outlet />}>
-                  <LayoutSelector />
-                </Authenticated>
-              }
-            >
-              <Route path="*" element={<ErrorComponent />} />
-            </Route>
+            <Route path="/login" element={<Login />} />
+            
+            <Route path="/" element={
+              <Authenticated key="root" fallback={<Navigate to="/login" />}>
+                <NavigateToResource />
+              </Authenticated>
+            } />
+            
+            <Route path="*" element={<ErrorComponent />} />
           </Routes>
-
-          <DocumentTitleHandler
-            handler={({ resource, action }) => {
-              const suffix = "KGB ANRI";
-              const resourceLabel = resource?.meta?.label ?? resource?.name ?? "";
-              const prefix = resourceLabel ? `${resourceLabel} | ` : "";
-              return `${prefix}${suffix}`;
-            }}
-          />
+          <DocumentTitleHandler handler={({ resource }) => `KGB ANRI | ${resource?.meta?.label || ""}`} />
         </Refine>
       </AntdApp>
     </BrowserRouter>

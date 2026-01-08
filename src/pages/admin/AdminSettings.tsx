@@ -11,12 +11,12 @@ import {
   LogoutOutlined, BellOutlined
 } from "@ant-design/icons";
 
-// Asumsi import komponen DynamicModal
+
 import { DynamicModal } from "../../components/DynamicModal"; 
 
 const { Title, Text } = Typography;
 
-// --- INTERFACES & MOCK DATA ---
+
 
 interface IAdminProfile {
   name: string;
@@ -29,7 +29,7 @@ interface IAdminProfile {
   status: "Active" | "Inactive";
 }
 
-// Data awal (Mock)
+
 const initialAdminData: IAdminProfile = {
   name: "Administrator Utama",
   username: "admin_pusat",
@@ -41,7 +41,7 @@ const initialAdminData: IAdminProfile = {
   status: "Active",
 };
 
-// Mock Data Log Aktivitas
+
 const mockActivityLog = [
   { action: "Login ke sistem", time: "Baru saja", icon: <LaptopOutlined /> },
   { action: "Mengubah data pegawai (NIP: 19850310...)", time: "2 jam yang lalu", icon: <EditOutlined /> },
@@ -50,13 +50,13 @@ const mockActivityLog = [
 ];
 
 export const AdminProfileSettings: React.FC = () => {
-  // --- STATE ---
+  
   const [adminData, setAdminData] = useState<IAdminProfile>(initialAdminData);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [form] = Form.useForm();
 
-  // --- ACTIONS ---
+  
   const handleOpenEdit = () => {
     form.setFieldsValue(adminData);
     setIsModalOpen(true);
@@ -72,7 +72,7 @@ export const AdminProfileSettings: React.FC = () => {
       const values = await form.validateFields();
       setIsLoading(true);
 
-      // Simulasi API call
+      
       setTimeout(() => {
         setAdminData((prev) => ({ ...prev, ...values }));
         message.success("Profil administrator berhasil diperbarui");
@@ -84,17 +84,17 @@ export const AdminProfileSettings: React.FC = () => {
     }
   };
 
-  // --- CONFIGURATION ARRAYS (Agar Kode Dinamis/Looping) ---
+  
 
-  // 1. Config Form Fields untuk Modal
+  
   const formFields = [
     { name: "name", label: "Nama Tampilan", icon: <UserOutlined />, required: true, type: "text" },
-    { name: "username", label: "Username", icon: <GlobalOutlined />, required: true, type: "text", disabled: true }, // Username biasanya tidak bisa ubah
+    { name: "username", label: "Username", icon: <GlobalOutlined />, required: true, type: "text", disabled: true }, 
     { name: "email", label: "Email Pemulihan", icon: <MailOutlined />, required: true, type: "email" },
     { name: "phone", label: "No. Kontak (WA)", icon: <PhoneOutlined />, required: false, type: "text" },
   ];
 
-  // 2. Config Info List (Tab Profile)
+  
   const profileInfoList = [
     { label: "Username", value: adminData.username, icon: <GlobalOutlined /> },
     { label: "Email", value: adminData.email, icon: <MailOutlined /> },
@@ -103,16 +103,16 @@ export const AdminProfileSettings: React.FC = () => {
     { label: "Terakhir Login", value: adminData.lastLogin, icon: <HistoryOutlined /> },
   ];
 
-  // 3. Config Security Settings (Tab Security)
+  
   const securitySettings = [
     { title: "Autentikasi Dua Faktor (2FA)", desc: "Amankan akun dengan verifikasi OTP", checked: true },
     { title: "Notifikasi Login", desc: "Terima email saat ada login baru", checked: false },
     { title: "Sesi Otomatis Berakhir", desc: "Logout otomatis setelah 30 menit inaktif", checked: true },
   ];
 
-  // --- SUB-COMPONENTS ---
+  
 
-  // Tab 1: Informasi Akun
+  
   const AccountTab = () => (
     <div style={{ marginTop: 16 }}>
       <Row gutter={[16, 16]}>
@@ -139,7 +139,7 @@ export const AdminProfileSettings: React.FC = () => {
 
   
 
-  // Tab 3: Log Aktivitas
+  
   const ActivityTab = () => (
     <div style={{ marginTop: 24, paddingLeft: 12 }}>
       <Timeline
@@ -175,7 +175,7 @@ export const AdminProfileSettings: React.FC = () => {
             {/* Background Cover */}
             <div style={{ 
               height: 120, 
-              background: "linear-gradient(135deg, #001529 0%, #003a8c 100%)", // Warna lebih "Admin/Corporate"
+              background: "linear-gradient(135deg, #001529 0%, #003a8c 100%)", 
               margin: "-24px -24px 0", 
               position: "relative" 
             }}>

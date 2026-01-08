@@ -11,7 +11,7 @@ import {
   BellOutlined, 
   ClockCircleOutlined, 
   SyncOutlined,
-  CheckCircleOutlined // Ikon yang sebelumnya menyebabkan error sudah ditambahkan
+  CheckCircleOutlined 
 } from "@ant-design/icons";
 import { useNavigation } from "@refinedev/core";
 import DashboardFilter, { FilterValues } from "../../components/filter";
@@ -19,7 +19,7 @@ import "../../styles/AdminDashboard.css";
 
 const { Title, Text } = Typography;
 
-// --- MOCK DATA ---
+
 const mockStats = { 
   activeEmployees: 1240, 
   upcomingKGB: 45, 

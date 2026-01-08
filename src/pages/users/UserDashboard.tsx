@@ -1,305 +1,198 @@
 import React, { useMemo, useState } from "react";
 import {
-  Row,
-  Col,
-  Card,
-  Avatar,
-  Tag,
-  Statistic,
-  Button,
-  List,
-  Table,
-  Progress,
-  Space,
-  Typography,
-  Badge,
-  Divider,
+  Row, Col, Card, Avatar, Tag, Button, List, Table, Progress, Space, Typography, Badge, Divider,
 } from "antd";
 import {
-  UserOutlined,
-  ClockCircleOutlined,
-  HistoryOutlined,
-  BellOutlined,
-  FileProtectOutlined,
-  RiseOutlined,
-  TrophyOutlined,
-  CalendarOutlined,
+  UserOutlined, ClockCircleOutlined, HistoryOutlined, BellOutlined,
+  FileProtectOutlined, RiseOutlined, TrophyOutlined, CalendarOutlined,
   DollarOutlined,
 } from "@ant-design/icons";
-import { useGetIdentity, useLogout } from "@refinedev/core";
-
-// ➕ Navigasi
+import { useGetIdentity } from "@refinedev/core";
 import { useNavigate } from "react-router-dom";
-
-// ➕ Generate PDF
 import jsPDF from "jspdf";
-
 import "../../styles/UserDashboard.css";
 
 const { Text, Title } = Typography;
 
 const UserDashboard: React.FC = () => {
   const { data: identity, isLoading } = useGetIdentity<{ name?: string; role?: string; nip?: string }>();
-  const { mutate: logout } = useLogout();
-
   const navigate = useNavigate();
 
   const [profile] = useState({
     name: identity?.name ?? "Nama Pengguna",
     nip: identity?.nip ?? "19870101 200301 1 001",
-    rank: "III/a",
+    rank: "III/a - Penata Muda",
     currentSalary: 5200000,
     lastIncrease: "2024-12-01",
     increasePercent: 5,
   });
 
-  const upcoming = useMemo(
-    () => [{ key: "u1", tmt: "01-12-2025", status: "Menunggu Berkas", progress: 45, note: "Ajukan ke BKD" }],
-    []
-  );
+  const upcoming = useMemo(() => [{ key: "u1", tmt: "01-12-2025", status: "Verifikasi SDM", progress: 45, note: "Sedang diperiksa pusat" }], []);
+  const history = useMemo(() => [
+    { key: "h1", date: "01-12-2024", oldSalary: 4800000, newSalary: 5040000, percent: 5 },
+    { key: "h2", date: "01-12-2023", oldSalary: 4560000, newSalary: 4800000, percent: 5 },
+  ], []);
 
-  const history = useMemo(
-    () => [
-      { key: "h1", date: "01-12-2024", oldSalary: 4800000, newSalary: 5040000, percent: 5 },
-      { key: "h2", date: "01-12-2023", oldSalary: 4560000, newSalary: 4800000, percent: 5 },
-    ],
-    []
-  );
+  const notifications = useMemo(() => [
+    { id: 1, title: "Berkas KGB diterima", time: "2 hari lalu" },
+    { id: 2, title: "SK Siap Cetak", time: "1 minggu lalu" },
+  ], []);
 
-  const notifications = useMemo(
-    () => [
-      { id: 1, title: "Berkas KGB diterima", time: "2 hari lalu" },
-      { id: 2, title: "SK Siap Cetak", time: "1 minggu lalu" },
-    ],
-    []
-  );
+  const documents = [
+    { id: "d1", title: "SK Kenaikan Terakhir (2024)", status: "Tersedia", color: "#52c41a" },
+    { id: "d2", title: "Formulir Pengajuan KGB", status: "Perlu Update", color: "#faad14" },
+  ];
 
   if (isLoading) return <div className="ud-loading">Memuat...</div>;
 
-  function formatCurrency(v: number) {
-    return v.toLocaleString("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 });
-  }
+  const formatCurrency = (v: number) => v.toLocaleString("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 });
 
   const nextIncreaseDate = useMemo(() => {
     const d = new Date(profile.lastIncrease);
     d.setFullYear(d.getFullYear() + 1);
-    return d.toISOString().slice(0, 10);
+    return d;
   }, [profile.lastIncrease]);
 
-  // ➕ FUNGSI GENERATE PDF
-const handleGeneratePDF = (title: string) => {
-  const doc = new jsPDF();
-
-  doc.setFontSize(18);
-  doc.text("Dokumen Resmi", 20, 20);
-
-  doc.setFontSize(14);
-  doc.text(`Judul Dokumen: ${title}`, 20, 40);
-
-  doc.setFontSize(12);
-  doc.text("Dokumen ini digenerate otomatis dari Sistem KGB ANRI.", 20, 60);
-
-  // 👉 PREVIEW PDF DI TAB BARU
-  const pdfBlob = doc.output("blob");
-  const pdfUrl = URL.createObjectURL(pdfBlob);
-  window.open(pdfUrl, "_blank");
-};
-  const documents = [
-    { id: "d1", title: "SK Kenaikan Terakhir", status: "Tersedia", color: "#52c41a" },
-    { id: "d2", title: "Formulir Pengajuan", status: "Perlu Dilengkapi", color: "#faad14" },
-  ];
-
-  const upcomingColumns = [
-    {
-      title: "TMT",
-      dataIndex: "tmt",
-      key: "tmt",
-      render: (text: string) => (
-        <Space>
-          <CalendarOutlined className="ud-icon-primary" />
-          <Text strong>{text}</Text>
-        </Space>
-      ),
-    },
-    { title: "Status", dataIndex: "status", key: "status", render: (s: string) => <Tag className="ud-tag-orange">{s}</Tag> },
-    {
-      title: "Progres",
-      key: "progress",
-      render: (_: any, r: any) => (
-        <div className="ud-progress-cell">
-          <div className="ud-progress-row">
-            <Text className="ud-note">{r.note}</Text>
-            <Text className="ud-progress-value">{r.progress}%</Text>
-          </div>
-          <Progress percent={r.progress} size="small" showInfo={false} strokeColor={{ "0%": "#108ee9", "100%": "#87d068" }} />
-        </div>
-      ),
-    },
-    {
-      title: "Aksi",
-      key: "action",
-      render: () => (
-        <Space>
-          <Button type="link" size="small" className="ud-link-btn">
-            Detail
-          </Button>
-          <Button type="primary" size="small" className="ud-primary-sm">
-            Ajukan
-          </Button>
-        </Space>
-      ),
-    },
-  ];
-
-  const historyColumns = [
-    { title: "Tanggal", dataIndex: "date", key: "date", render: (text: string) => <Text strong>{text}</Text> },
-    { title: "Sebelumnya", dataIndex: "oldSalary", key: "oldSalary", render: (v: number) => <Text type="secondary">{formatCurrency(v)}</Text> },
-    { title: "Baru", dataIndex: "newSalary", key: "newSalary", render: (v: number) => <Text strong className="ud-new-salary">{formatCurrency(v)}</Text> },
-    {
-      title: "Kenaikan",
-      dataIndex: "percent",
-      key: "percent",
-      render: (p: number) => (
-        <Tag className="ud-tag-success">
-          <RiseOutlined /> {p}%
-        </Tag>
-      ),
-    },
-  ];
+  const handleGeneratePDF = (title: string) => {
+    const doc = new jsPDF();
+    doc.setFontSize(18);
+    doc.setTextColor(0, 35, 71); // Navy color
+    doc.text("ARSIP NASIONAL REPUBLIK INDONESIA", 20, 20);
+    doc.setFontSize(12);
+    doc.setTextColor(100, 100, 100);
+    doc.text(`Dokumen: ${title}`, 20, 30);
+    doc.text(`NIP: ${profile.nip}`, 20, 37);
+    doc.line(20, 45, 190, 45);
+    const pdfBlob = doc.output("blob");
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+    window.open(pdfUrl, "_blank");
+  };
 
   return (
-    <div className="user-dashboard">
+    <div className="user-dashboard-container">
       {/* HEADER */}
-      <div className="ud-header">
-        <div className="ud-header-info">
-          <Title level={3} className="ud-header-title">Dashboard Pengguna</Title>
-          <Text type="secondary" className="ud-header-sub">Arsip Nasional Republik Indonesia (ANRI)</Text>
+      <div className="ud-header-section">
+        <div>
+          <Title level={2} className="ud-main-title">Halo, {profile.name.split(' ')[0]}!</Title>
+          <Text className="ud-sub-title">Pantau status Kenaikan Gaji Berkala Anda di sini.</Text>
         </div>
-
-        <Space className="ud-header-actions">
-          <Button icon={<RiseOutlined />} type="primary" size="large" className="ud-gradient-btn">
-            Ajukan KGB
-          </Button>
-        </Space>
+        <Button 
+          type="primary" 
+          size="large" 
+          icon={<RiseOutlined />} 
+          className="btn-primary-solid"
+          onClick={() => navigate("/ajukan-kgb")}
+        >
+          Ajukan KGB Baru
+        </Button>
       </div>
 
       <Row gutter={[24, 24]}>
-        {/* LEFT */}
+        {/* LEFT COLUMN: PROFILE & STATS */}
         <Col xs={24} lg={8}>
-          <Card className="profile-card" bodyStyle={{ padding: 0 }}>
-            <div className="profile-body">
-              <Space direction="vertical" size="large" style={{ width: "100%" }}>
-                <div className="profile-top">
-                  <Avatar size={80} icon={<UserOutlined />} className="profile-avatar" />
-                  <div className="profile-meta">
-                    <Text strong className="profile-name">{profile.name}</Text>
-                    <div><Text className="profile-nip">NIP: {profile.nip}</Text></div>
-                    <div style={{ marginTop: 8 }}>
-                      <Tag className="profile-rank"><TrophyOutlined /> {profile.rank}</Tag>
-                    </div>
-                  </div>
+          <Space direction="vertical" size={24} style={{ width: "100%" }}>
+            <Card className="ud-profile-card" variant="borderless">
+              <div className="ud-profile-content">
+                <Avatar size={100} icon={<UserOutlined />} className="ud-avatar-blue" />
+                <Title level={4} style={{ margin: "16px 0 4px 0", color: "#002347" }}>{profile.name}</Title>
+                <Text type="secondary">{profile.nip}</Text>
+                <Tag color="blue" className="ud-rank-tag">{profile.rank}</Tag>
+                
+                <Divider />
+                
+                <div className="ud-salary-info">
+                  <Text className="ud-salary-label">Gaji Saat Ini</Text>
+                  <Title level={3} className="ud-salary-amount">{formatCurrency(profile.currentSalary)}</Title>
                 </div>
 
-                <div className="salary-box">
-                  <div className="salary-center">
-                    <Text className="salary-label">Gaji Saat Ini</Text>
-                    <div><Text strong className="salary-value">{formatCurrency(profile.currentSalary)}</Text></div>
-                  </div>
-
-                  <Divider className="ud-divider" />
-
-                  <Row gutter={16}>
-                    <Col span={12}>
-                      <div className="stat-cell">
-                        <DollarOutlined className="ud-icon-primary" />
-                        <div>
-                          <Text className="stat-label">Kenaikan/Tahun</Text>
-                          <Text strong className="stat-value">{profile.increasePercent}%</Text>
-                        </div>
-                      </div>
-                    </Col>
-                    <Col span={12}>
-                      <div className="stat-cell">
-                        <CalendarOutlined className="ud-icon-primary" />
-                        <div>
-                          <Text className="stat-label">Jadwal Berikutnya</Text>
-                          <Text strong className="stat-value">{new Date(nextIncreaseDate).toLocaleDateString("id-ID")}</Text>
-                        </div>
-                      </div>
-                    </Col>
-                  </Row>
+                <div className="ud-next-schedule">
+                  <CalendarOutlined style={{ color: "#00509d", marginRight: 8 }} />
+                  <Text>Jadwal Berikutnya: </Text>
+                  <Text strong>{nextIncreaseDate.toLocaleDateString("id-ID", { month: 'long', year: 'numeric' })}</Text>
                 </div>
 
-                <Button
-                  type="default"
-                  block
-                  size="large"
-                  className="ud-gradient-btn"
-                  onClick={() => navigate("/user-settings")}
-                >
-                  Edit Profil
+                <Button block className="ud-btn-outline" onClick={() => navigate("/user-settings")}>
+                  Pengaturan Profil
                 </Button>
-              </Space>
-            </div>
-          </Card>
+              </div>
+            </Card>
 
-          <Card title={<span><BellOutlined className="ud-icon-warning" /> <Text strong>Notifikasi</Text></span>} className="notifications-card">
-            <List
-              itemLayout="horizontal"
-              dataSource={notifications}
-              renderItem={(n) => (
-                <List.Item actions={[<Button type="link" size="small" className="ud-link-btn">Lihat</Button>]} className="ud-list-item">
-                  <List.Item.Meta
-                    avatar={
-                      <Badge dot color="#fa8c16">
-                        <Avatar icon={<BellOutlined />} className="ud-notif-avatar" />
-                      </Badge>
-                    }
-                    title={<Text strong className="ud-notif-title">{n.title}</Text>}
-                    description={<Text type="secondary" className="ud-notif-time">{n.time}</Text>}
-                  />
-                </List.Item>
-              )}
-            />
-            <div className="ud-notif-footer">
-              <Button type="link" className="ud-link-btn">Lihat Semua Notifikasi →</Button>
-            </div>
-          </Card>
+            <Card title={<Space><BellOutlined /> <Text strong>Notifikasi Terbaru</Text></Space>} variant="borderless" className="ud-card-shadow">
+              <List
+                dataSource={notifications}
+                renderItem={(item) => (
+                  <List.Item className="ud-notif-item">
+                    <List.Item.Meta
+                      avatar={<Badge dot status="processing"><Avatar size="small" icon={<ClockCircleOutlined />} /></Badge>}
+                      title={<Text strong style={{ fontSize: 13 }}>{item.title}</Text>}
+                      description={<Text type="secondary" style={{ fontSize: 11 }}>{item.time}</Text>}
+                    />
+                  </List.Item>
+                )}
+              />
+            </Card>
+          </Space>
         </Col>
 
-        {/* RIGHT */}
+        {/* RIGHT COLUMN: TABLES & DOCUMENTS */}
         <Col xs={24} lg={16}>
           <Space direction="vertical" size={24} style={{ width: "100%" }}>
-            <Card title={<span><ClockCircleOutlined className="ud-icon-warning" /> <Text strong>Jadwal KGB Saya</Text></span>} className="panel-card" extra={<Tag>1 Jadwal Aktif</Tag>}>
-              <Table dataSource={upcoming} columns={upcomingColumns} pagination={false} size="middle" />
+            {/* JADWAL AKTIF */}
+            <Card title={<Space><ClockCircleOutlined /> <Text strong>Proses KGB Berjalan</Text></Space>} variant="borderless" className="ud-card-shadow">
+              <Table 
+                dataSource={upcoming} 
+                pagination={false} 
+                size="middle"
+                columns={[
+                  { title: "TMT", dataIndex: "tmt", key: "tmt", render: (t) => <Text strong>{t}</Text> },
+                  { title: "STATUS", dataIndex: "status", key: "status", render: (s) => <Tag color="warning">{s}</Tag> },
+                  { 
+                    title: "PROGRES", 
+                    key: "progress", 
+                    render: (_, r) => (
+                      <div style={{ width: 150 }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+                          <Text style={{ fontSize: 11 }}>{r.note}</Text>
+                          <Text strong style={{ fontSize: 11 }}>{r.progress}%</Text>
+                        </div>
+                        <Progress percent={r.progress} size="small" showInfo={false} strokeColor="#00509d" />
+                      </div>
+                    ) 
+                  },
+                ]}
+              />
             </Card>
 
-            <Card title={<span><HistoryOutlined className="ud-icon-primary" /> <Text strong>Riwayat Kenaikan Gaji</Text></span>} className="panel-card">
-              <Table dataSource={history} columns={historyColumns} pagination={false} size="middle" />
+            {/* RIWAYAT */}
+            <Card title={<Space><HistoryOutlined /> <Text strong>Riwayat Kenaikan Gaji</Text></Space>} variant="borderless" className="ud-card-shadow">
+              <Table 
+                dataSource={history} 
+                pagination={false} 
+                size="middle"
+                columns={[
+                  { title: "TANGGAL", dataIndex: "date", key: "date" },
+                  { title: "GAJI LAMA", dataIndex: "oldSalary", render: (v) => formatCurrency(v) },
+                  { title: "GAJI BARU", dataIndex: "newSalary", render: (v) => <Text strong style={{ color: "#00509d" }}>{formatCurrency(v)}</Text> },
+                  { title: "NAIK", dataIndex: "percent", render: (p) => <Tag color="green">+{p}%</Tag> },
+                ]}
+              />
             </Card>
 
-            {/* ➕ — DOKUMEN & SK — sudah ditambahkan GENERATE PDF */}
-            <Card title={<span><FileProtectOutlined className="ud-icon-success" /> <Text strong>Dokumen & SK</Text></span>} className="panel-card">
+            {/* DOKUMEN */}
+            <Card title={<Space><FileProtectOutlined /> <Text strong>Arsip Digital & SK</Text></Space>} variant="borderless" className="ud-card-shadow">
               <List
-                itemLayout="horizontal"
                 dataSource={documents}
                 renderItem={(item) => (
                   <List.Item
                     actions={[
-                      <Button
-                        type="primary"
-                        className="ud-primary-sm"
-                        onClick={() => handleGeneratePDF(item.title)}
-                      >
-                        Unduh
-                      </Button>,
+                      <Button type="link" onClick={() => handleGeneratePDF(item.title)} icon={<FileProtectOutlined />}>
+                        Unduh SK
+                      </Button>
                     ]}
-                    className="ud-list-item"
                   >
                     <List.Item.Meta
-                      avatar={<Avatar icon={<FileProtectOutlined />} className="ud-doc-avatar" />}
                       title={<Text strong>{item.title}</Text>}
-                      description={<Tag className={item.color === "#52c41a" ? "ud-tag-success" : "ud-tag-warning"}>{item.status}</Tag>}
+                      description={<Tag color={item.color === "#52c41a" ? "success" : "warning"}>{item.status}</Tag>}
                     />
                   </List.Item>
                 )}

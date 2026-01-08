@@ -1,595 +1,209 @@
-/* Styles for UserDashboard - Fully Responsive */
+/* ============================================================ */
+/* THEME VARIABLES - BIRU SOLID ANRI */
+/* ============================================================ */
+:root {
+  --admin-navy: #002347;    /* Deep Navy */
+  --admin-blue: #00509d;    /* Royal Blue */
+  --bg-light: #f8fafc;
+  --text-main: #1e293b;
+  --text-sub: #64748b;
+  --border-color: #f1f5f9;
+  --header-height: 70px;
+}
 
 .user-dashboard {
   padding: 16px;
   min-height: 100vh;
-  font-family: Inter, Arial, sans-serif;
-  background: #fafafa;
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-light);
 }
 
-/* Header */
-.ud-header {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 16px;
-  padding: 16px 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+/* ============================================================ */
+/* HEADER SECTION */
+/* ============================================================ */
+.ud-header-section {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  margin-bottom: 32px;
 }
 
-.ud-header-info {
-  flex: 1;
-}
-
-.ud-header-title {
+.ud-main-title {
   margin: 0 !important;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  font-size: 20px !important;
+  color: var(--admin-navy) !important;
+  font-weight: 800 !important;
+  font-size: 22px !important;
 }
 
-.ud-header-sub {
-  font-size: 12px;
-  display: block;
-  margin-top: 4px;
-}
-
-.ud-header-actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  width: 100%;
-}
-
-.ud-header-actions .ant-btn {
-  flex: 1;
-  min-width: 120px;
-}
-
-/* Gradient primary button */
-.ud-gradient-btn.ant-btn {
-  border-radius: 8px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-  color: #fff !important;
-  border: none !important;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.28);
-  font-weight: 600;
-}
-
-.ud-logout-btn.ant-btn {
-  border-radius: 8px;
-}
-
-/* Loading */
-.ud-loading {
-  padding: 24px;
-  text-align: center;
-}
-
-/* Profile card */
-.profile-card {
-  border-radius: 16px;
-  background: #f5f5f5;
-  border: none;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-}
-
-.profile-body {
-  padding: 20px;
-}
-
-.profile-top {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  align-items: center;
-  text-align: center;
-}
-
-.profile-avatar {
-  border: 4px solid white !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
-}
-
-.profile-meta {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.profile-name {
-  font-size: 16px;
-  color: #262626;
-}
-
-.profile-nip {
-  font-size: 12px;
-  color: #595959;
-}
-
-.profile-rank {
-  background: white;
-  color: #667eea;
-  border-radius: 12px;
-  padding: 4px 12px;
-  font-weight: 600;
-  font-size: 13px;
-}
-
-/* Salary box */
-.salary-box {
-  background: #e8e8e8;
-  border-radius: 12px;
-  padding: 16px;
-}
-
-.salary-center {
-  text-align: center;
-  margin-bottom: 12px;
-}
-
-.salary-label {
-  color: #595959;
-  font-size: 13px;
-}
-
-.salary-value {
-  font-size: 20px;
-  color: #262626;
-}
-
-.ud-divider {
-  margin: 12px 0;
-  background: #d9d9d9 !important;
-}
-
-/* Stat cells inside salary box */
-.stat-cell {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: center;
-  text-align: center;
-}
-
-.ud-icon-primary {
-  color: #1890ff;
-  font-size: 18px;
-}
-
-.stat-label {
-  font-size: 10px;
-  color: #595959;
-  display: block;
-}
-
-.stat-value {
-  font-size: 13px;
-  color: #262626;
-}
-
-/* Notifications card */
-.notifications-card {
-  margin-top: 20px;
-  border-radius: 16px;
-  border: none;
-  background: #f5f5f5;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-}
-
-.notifications-card .ant-card-head-title {
+.ud-sub-title {
+  color: var(--text-sub);
   font-size: 14px;
 }
 
-.ud-notif-avatar {
-  background: #fff7e6;
-  color: #fa8c16 !important;
+/* ============================================================ */
+/* CARDS & PANELS */
+/* ============================================================ */
+.ud-card-shadow {
+  border-radius: 12px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid var(--border-color) !important;
+  background: #ffffff !important;
 }
 
-.ud-notif-title {
-  font-size: 13px;
-}
-
-.ud-notif-time {
-  font-size: 11px;
-  color: #8c8c8c;
-}
-
-.ud-notif-footer {
+/* Profile Card Customization */
+.ud-profile-card {
   text-align: center;
+  border-radius: 16px !important;
+  box-shadow: 0 4px 20px rgba(0, 35, 71, 0.08) !important;
+  border-top: 6px solid var(--admin-blue) !important; /* Aksen biru atas */
+}
+
+.ud-profile-content {
+  padding: 20px 10px;
+}
+
+.ud-avatar-blue {
+  background-color: var(--admin-blue) !important;
+  box-shadow: 0 4px 12px rgba(0, 80, 157, 0.3);
+}
+
+.ud-rank-tag {
   margin-top: 12px;
-}
-
-/* Panels on right */
-.panel-card {
-  border-radius: 16px;
-  border: none;
-  background: #f5f5f5;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-}
-
-.panel-card .ant-card-head-title {
-  font-size: 14px;
-}
-
-/* Table customization for mobile */
-.panel-card .ant-table {
-  overflow-x: auto;
-}
-
-.panel-card .ant-table-wrapper {
-  overflow-x: auto;
-}
-
-/* Table small custom cells */
-.ud-progress-cell {
-  min-width: 120px;
-}
-
-.ud-progress-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 6px;
-  flex-wrap: wrap;
-  gap: 4px;
-}
-
-.ud-note {
-  font-size: 11px;
-  color: #666;
-}
-
-.ud-progress-value {
-  font-size: 11px;
+  border-radius: 20px;
+  padding: 2px 15px;
   font-weight: 600;
-  color: #1890ff;
+  background: #e6f0f9 !important;
+  color: var(--admin-blue) !important;
+  border: none !important;
 }
 
-/* Link-like buttons */
-.ud-link-btn {
-  color: #1890ff;
-  padding: 0;
-  font-size: 12px;
+/* ============================================================ */
+/* SALARY & STATS BOX */
+/* ============================================================ */
+.ud-salary-info {
+  margin-bottom: 20px;
 }
 
-.ud-primary-sm {
-  border-radius: 6px;
-  font-size: 12px;
-}
-
-/* Tags */
-.ud-tag-orange {
-  background: rgba(250, 173, 20, 0.08);
-  color: #fa8c16;
-  border-radius: 12px;
-  padding: 2px 10px;
+.ud-salary-label {
+  color: var(--text-sub);
   font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.ud-tag-success {
-  background: rgba(82, 196, 26, 0.08);
-  color: #52c41a;
-  border-radius: 12px;
-  padding: 2px 8px;
-  font-size: 11px;
+.ud-salary-amount {
+  color: var(--admin-navy) !important;
+  margin: 4px 0 !important;
+  font-weight: 800 !important;
+  font-size: 24px !important;
 }
 
-.ud-tag-warning {
-  background: rgba(250, 173, 20, 0.08);
-  color: #faad14;
+.ud-next-schedule {
+  background-color: #f0f7ff;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 24px;
+  color: var(--admin-blue);
+  border: 1px dashed #cfe3ff;
+}
+
+/* ============================================================ */
+/* BUTTONS & ACTIONS */
+/* ============================================================ */
+/* Button Primary Solid */
+.btn-primary-solid {
+  background-color: var(--admin-blue) !important;
+  border-color: var(--admin-blue) !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 10px rgba(0, 80, 157, 0.2) !important;
+}
+
+.btn-primary-solid:hover {
+  background-color: var(--admin-navy) !important;
+  border-color: var(--admin-navy) !important;
+}
+
+.ud-btn-outline {
   border-radius: 8px;
-  padding: 2px 8px;
-  font-size: 11px;
-}
-
-/* Other small utilities */
-.ud-list-item {
-  padding: 12px 0;
-}
-
-.ud-doc-avatar {
-  background: #e6f7ff;
-  color: #1890ff;
-}
-
-.ud-icon-warning {
-  color: #faad14;
-  font-size: 16px;
-}
-
-.ud-icon-success {
-  color: #13c2c2;
-  font-size: 16px;
-}
-
-.ud-new-salary {
-  color: #52c41a;
   font-weight: 600;
+  color: var(--text-sub);
+  border: 1px solid #e2e8f0 !important;
 }
 
-/* ============================================ */
-/* RESPONSIVE BREAKPOINTS */
-/* ============================================ */
+.ud-btn-outline:hover {
+  color: var(--admin-blue) !important;
+  border-color: var(--admin-blue) !important;
+}
 
-/* Tablet - 768px and up */
+/* ============================================================ */
+/* TABLES & LISTS */
+/* ============================================================ */
+.ant-table-thead > tr > th {
+  background-color: #f8fafc !important;
+  color: var(--admin-navy) !important;
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  border-bottom: 2px solid var(--border-color) !important;
+}
+
+.ud-notif-item {
+  padding: 12px 0 !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.ud-notif-item:last-child {
+  border-bottom: none !important;
+}
+
+/* Progress Bar Customization */
+.ant-progress-bg {
+  background-color: var(--admin-blue) !important;
+}
+
+/* ============================================================ */
+/* RESPONSIVE BREAKPOINTS */
+/* ============================================================ */
+
+/* Tablet & Desktop */
 @media (min-width: 768px) {
   .user-dashboard {
-    padding: 20px;
+    padding: 24px;
   }
 
-  .ud-header {
+  .ud-header-section {
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
-    padding: 20px 24px;
-    margin-bottom: 24px;
+    align-items: flex-end;
   }
 
-  .ud-header-title {
-    font-size: 24px !important;
-  }
-
-  .ud-header-sub {
-    font-size: 13px;
-  }
-
-  .ud-header-actions {
-    width: auto;
-  }
-
-  .ud-header-actions .ant-btn {
-    flex: 0;
-    min-width: auto;
-  }
-
-  .profile-body {
-    padding: 24px;
-  }
-
-  .profile-top {
-    flex-direction: row;
-    text-align: left;
-    align-items: flex-start;
-  }
-
-  .profile-meta {
-    align-items: flex-start;
-  }
-
-  .profile-name {
-    font-size: 18px;
-  }
-
-  .profile-nip {
-    font-size: 13px;
-  }
-
-  .salary-value {
-    font-size: 24px;
-  }
-
-  .stat-cell {
-    flex-direction: row;
-    text-align: left;
-    align-items: center;
-  }
-
-  .ud-icon-primary {
-    font-size: 20px;
-  }
-
-  .stat-label {
-    font-size: 11px;
-  }
-
-  .stat-value {
-    font-size: 14px;
-  }
-
-  .notifications-card {
-    margin-top: 24px;
-  }
-
-  .notifications-card .ant-card-head-title {
-    font-size: 15px;
-  }
-
-  .panel-card .ant-card-head-title {
-    font-size: 16px;
-  }
-
-  .ud-notif-title {
-    font-size: 14px;
-  }
-
-  .ud-notif-time {
-    font-size: 12px;
-  }
-
-  .ud-progress-cell {
-    min-width: 140px;
-  }
-
-  .ud-note {
-    font-size: 12px;
-  }
-
-  .ud-progress-value {
-    font-size: 12px;
-  }
-
-  .ud-link-btn {
-    font-size: 13px;
-  }
-
-  .ud-primary-sm {
-    font-size: 13px;
-  }
-
-  .ud-tag-orange,
-  .ud-tag-success,
-  .ud-tag-warning {
-    font-size: 12px;
-    padding: 2px 12px;
-  }
-
-  .ud-icon-warning,
-  .ud-icon-success {
-    font-size: 18px;
+  .ud-main-title {
+    font-size: 28px !important;
   }
 }
 
-/* Desktop - 1024px and up */
-@media (min-width: 1024px) {
-  .user-dashboard {
-    padding: 24px;
-  }
-
-  .stat-value {
-    font-size: 16px;
-  }
-}
-
-/* Large Desktop - 1440px and up */
-@media (min-width: 1440px) {
-  .user-dashboard {
-    padding: 32px;
-    max-width: 1600px;
-    margin: 0 auto;
-  }
-
-  .ud-header {
-    padding: 24px 32px;
-  }
-}
-
-/* Small mobile adjustments - below 375px */
-@media (max-width: 374px) {
-  .user-dashboard {
-    padding: 12px;
-  }
-
-  .ud-header {
-    padding: 12px 16px;
-    margin-bottom: 16px;
-  }
-
-  .ud-header-title {
-    font-size: 18px !important;
-  }
-
-  .ud-header-sub {
-    font-size: 11px;
-  }
-
-  .profile-body {
-    padding: 16px;
-  }
-
-  .profile-name {
-    font-size: 15px;
-  }
-
-  .salary-value {
-    font-size: 18px;
-  }
-
-  .stat-value {
-    font-size: 12px;
-  }
-
-  .ud-header-actions .ant-btn {
-    font-size: 12px;
-    padding: 4px 12px;
-  }
-
-  .profile-rank {
-    font-size: 12px;
-    padding: 3px 10px;
-  }
-}
-
-/* Handle table overflow on mobile */
+/* Mobile Adjustments */
 @media (max-width: 767px) {
-  .panel-card .ant-table-content {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+  .ud-header-section {
+    text-align: center;
+    align-items: center;
   }
 
-  .panel-card .ant-table table {
-    min-width: 600px;
+  .ud-main-title {
+    font-size: 20px !important;
   }
 
-  /* Stack action buttons vertically on very small screens */
-  .ud-progress-cell {
-    min-width: 100px;
-  }
-
-  /* Adjust list items for mobile */
-  .ud-list-item .ant-list-item-action {
-    margin-left: 8px;
-  }
-
-  .ud-doc-avatar {
-    width: 40px !important;
-    height: 40px !important;
-  }
-
-  /* Make cards more compact on mobile */
-  .panel-card .ant-card-body {
-    padding: 16px;
-  }
-
-  .notifications-card .ant-card-body {
-    padding: 16px;
+  .ud-header-section .ant-btn {
+    width: 100%;
   }
 }
 
-/* Landscape mobile optimization */
-@media (max-height: 500px) and (orientation: landscape) {
-  .user-dashboard {
-    padding: 12px;
-  }
-
-  .ud-header {
-    padding: 12px 16px;
-    margin-bottom: 12px;
-  }
-
-  .profile-avatar {
-    width: 60px !important;
-    height: 60px !important;
-  }
-
-  .salary-box {
-    padding: 12px;
-  }
-}
-
-/* Print styles */
-@media print {
-  .user-dashboard {
-    background: white;
-    padding: 0;
-  }
-
-  .ud-header-actions,
-  .ud-gradient-btn,
-  .ud-logout-btn {
-    display: none;
-  }
-
-  .profile-card,
-  .notifications-card,
-  .panel-card {
-    box-shadow: none;
-    border: 1px solid #ddd;
-    page-break-inside: avoid;
-  }
+/* Loading state */
+.ud-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  font-weight: 700;
+  color: var(--admin-blue);
 }
