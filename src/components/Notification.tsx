@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Shield, CheckCircle, XCircle, AlertTriangle, X } from 'lucide-react';
-import '../styles/Notification.css'; // Pastikan path css sesuai
+import '../styles/notification.css'; // Pastikan path css sesuai
 
 interface NotificationProps {
   show: boolean;

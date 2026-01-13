@@ -10,7 +10,7 @@ import {
 import { useGetIdentity } from "@refinedev/core";
 import { useNavigate } from "react-router-dom";
 import jsPDF from "jspdf";
-import "../../styles/UserDashboard.css";
+import "../../styles/userDashboard.css";
 
 const { Text, Title } = Typography;
 

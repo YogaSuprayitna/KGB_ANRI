@@ -30,7 +30,7 @@ import {
   BellOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
-import { DynamicModal } from "../../components/DynamicModal";
+import { DynamicModal } from "../../components/dynamicModal";
 
 // ===== TYPES =====
 interface Employee {

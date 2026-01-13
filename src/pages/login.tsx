@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { User, Lock, Eye, EyeOff, ArrowRight, CheckCircle, FileText } from "lucide-react";
 import { Button, Form, Input, Typography, App } from "antd";
 import "../styles/login.css";
-import CustomNotification from "../components/Notification"; 
+import CustomNotification from "../components/notification"; 
 
 const { Title, Text } = Typography;
 

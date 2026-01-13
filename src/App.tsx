@@ -11,9 +11,9 @@ import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom
 
 import { authProvider } from "./authProvider";
 import { dataProvider } from "./dataProvider"; 
-import AdminLayout from "./components/layout/AdminLayout";
-import UserLayout from "./components/layout/UserLayout";
-import RoleProtected from "./components/RoleProtected"; 
+import AdminLayout from "./components/layout/adminLayout";
+import UserLayout from "./components/layout/userLayout";
+import RoleProtected from "./components/roleProtected"; 
 
 import Login from "./pages/login";
 import AdminDashboard from "./pages/admin/dashboard";
@@ -23,8 +23,8 @@ import KGBAdminMenuRiwayat from "./pages/admin/riwayatKGB";
 import { AdminProfileSettings } from "./pages/admin/settings";
 import UserDashboard from "./pages/users/dashboard";
 import { ProfileUserSettings } from "./pages/users/settings";
-import NotificationList from "./pages/Notificationlist";
-import NotificationDetail from "./pages/Notificationdetail";
+import NotificationList from "./pages/notificationList";
+import NotificationDetail from "./pages/notificationDetail";
 
 import {
   DashboardOutlined,

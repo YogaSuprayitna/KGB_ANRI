@@ -11,7 +11,7 @@ import {
   ClockCircleOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import "../styles/NotificationList.css"
+import "../styles/notificationList.css"
 
 const { Text, Title } = Typography;
 

@@ -15,7 +15,7 @@ import {
 } from "@ant-design/icons";
 import { useNavigation } from "@refinedev/core";
 import DashboardFilter, { FilterValues } from "../../components/filter";
-import "../../styles/AdminDashboard.css"; 
+import "../../styles/adminDashboard.css"; 
 
 const { Title, Text } = Typography;
 

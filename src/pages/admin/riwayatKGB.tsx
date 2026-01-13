@@ -6,7 +6,7 @@ import dayjs, { Dayjs } from "dayjs";
 const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
 
-import { DynamicModal } from "../../components/DynamicModal";
+import { DynamicModal } from "../../components/dynamicModal";
 
 
 interface KGBRecord {

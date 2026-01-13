@@ -3,7 +3,7 @@ import { Layout, Menu, Button, Dropdown, Avatar, Space, Typography, Grid } from 
 import { Menu as MenuIcon, User, ChevronRight, Bell, X } from "lucide-react";
 import { useGetIdentity, useLogout, useMenu } from "@refinedev/core";
 import { useNavigate } from "react-router-dom";
-import "../../styles/Layout.css";
+import "../../styles/layout.css";
 
 const { Header, Sider, Content } = Layout;
 const { Text } = Typography;
@@ -28,7 +28,7 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
       >
         <div className="logo-container">
           <div style={{ display: "flex", alignItems: "center", gap: "12px", marginLeft: "20px" }}>
-            <div className="logo-box"><img src="/assets/ANRI.png" alt="Logo" className="logo-image" /></div>
+            <div className="logo-box"><img src="/ANRI.png" alt="Logo" className="logo-image" /></div>
             {!collapsed && <span className="logo-text">KGB ANRI</span>}
           </div>
         </div>

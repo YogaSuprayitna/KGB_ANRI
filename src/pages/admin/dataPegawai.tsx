@@ -8,7 +8,7 @@ import {
     UserOutlined, HistoryOutlined, DollarOutlined, SolutionOutlined, FilterOutlined 
 } from "@ant-design/icons";
 import dayjs from "dayjs";
-import { DynamicModal } from "../../components/DynamicModal"; 
+import { DynamicModal } from "../../components/dynamicModal"; 
 
 const { Title, Text } = Typography;
 const { Option } = Select;

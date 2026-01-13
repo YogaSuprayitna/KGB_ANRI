@@ -27,7 +27,7 @@ import {
   EnvironmentOutlined,
   TagOutlined,
 } from "@ant-design/icons";
-import "../styles/Noticationdetail.css";
+import "../styles/noticationDetail.css";
 import { useNavigate } from "react-router-dom";
 
 

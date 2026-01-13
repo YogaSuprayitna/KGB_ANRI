@@ -12,7 +12,7 @@ import {
   EditOutlined, CheckCircleOutlined, ManOutlined, WomanOutlined,
 } from "@ant-design/icons";
 
-import { DynamicModal } from "../../components/DynamicModal"; 
+import { DynamicModal } from "../../components/dynamicModal"; 
 
 const { Title, Text } = Typography;
 
