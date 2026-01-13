@@ -16,7 +16,7 @@ import { DynamicModal } from "../../components/DynamicModal";
 
 const { Title, Text } = Typography;
 
-// --- INTERFACES & MOCK DATA ---
+
 interface IEmployeeProfile {
   name: string;
   nip: string;
@@ -82,14 +82,14 @@ const mockHistory: IHistoryRow[] = [
 ];
 
 export const ProfileUserSettings: React.FC = () => {
-  // --- STATE ---
+  
   const [profileData, setProfileData] = useState<IEmployeeProfile>(initialProfile);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   
   const [form] = Form.useForm();
 
-  // --- ACTIONS ---
+  
   const handleOpenEdit = () => {
     form.setFieldsValue(profileData);
     setIsModalOpen(true);
@@ -115,7 +115,7 @@ export const ProfileUserSettings: React.FC = () => {
     }
   };
 
-  // --- HELPERS ---
+  
   const formatCurrency = (value: number) => 
     new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(value);
 
@@ -134,9 +134,9 @@ export const ProfileUserSettings: React.FC = () => {
     return Math.min(Math.round((daysPassed / totalDays) * 100), 100);
   };
 
-  // --- CONFIGURATIONS (Untuk Looping/Mapping) ---
+  
 
-  // 1. Config Form Fields
+  
   const formSections = [
     {
       title: "Data Kepegawaian (Tidak dapat diubah)",
@@ -156,7 +156,7 @@ export const ProfileUserSettings: React.FC = () => {
     }
   ];
 
-  // 2. Config Personal Info Tab Cards
+  
   const personalInfoGroups = [
     {
       key: "identitas",
@@ -183,19 +183,19 @@ export const ProfileUserSettings: React.FC = () => {
     }
   ];
 
-  // 3. Config Sidebar Stats
+  
   const sidebarStats = [
     { title: "Golongan", value: mockHistory[0].golongan, icon: <TrophyOutlined />, color: "#1890ff", size: 20 },
     { title: "Masa Kerja", value: `${profileData.workPeriodYear}th ${profileData.workPeriodMonth}bl`, icon: <ClockCircleOutlined />, color: "#52c41a", size: 18 },
   ];
 
-  // 4. Config Sidebar Details
+  
   const sidebarDetails = [
     { label: "NIP", value: profileData.nip, icon: <IdcardOutlined />, color: "inherit", copyable: true },
     { label: "Gaji Pokok", value: formatCurrency(mockHistory[0].gajiPokok), icon: <FileTextOutlined />, color: "#52c41a", copyable: false },
   ];
 
-  // --- SUB-COMPONENTS ---
+  
   const PersonalInfoTab = () => (
     <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
       {personalInfoGroups.map((group) => (

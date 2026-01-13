@@ -13,9 +13,16 @@ import { DynamicModal } from "../../components/DynamicModal";
 const { Title, Text } = Typography;
 const { Option } = Select;
 
-// ==========================================
-// 1. TIPE DATA (TYPES)
-// ==========================================
+// Warna Tema ANRI
+const COLORS = {
+    navy: "#002347",
+    blue: "#00509d",
+    lightBlue: "#e6f4ff",
+    border: "#e2e8f0",
+    bg: "#f8fafc"
+};
+
+// ... (Interface IHistory dan IEmployee tetap sama)
 interface IHistory {
     date: string;
     description: string;
@@ -35,9 +42,7 @@ interface IEmployee {
     salaryHistory: IHistory[];
 }
 
-// ==========================================
-// 2. DUMMY DATA
-// ==========================================
+// ... (Dummy Data mockEmployees tetap sama)
 const mockEmployees: IEmployee[] = [
     {
         id: 1,
@@ -65,18 +70,6 @@ const mockEmployees: IEmployee[] = [
         unit: "Deputi Konservasi",
         tenure: 8,
         tmtPns: "2015-03-01",
-        rankHistory: [],
-        salaryHistory: []
-    },
-    {
-        id: 3,
-        name: "Budi Santoso",
-        nip: "19920202 201901 1 002",
-        rank: "III/a",
-        position: "Analis Kebijakan",
-        unit: "Deputi IPSK",
-        tenure: 3,
-        tmtPns: "2019-01-01",
         rankHistory: [],
         salaryHistory: []
     },
@@ -108,17 +101,17 @@ const EmployeeFormContent: React.FC<EmployeeFormContentProps> = ({ form, mode, i
     const GeneralInfo = () => (
         <Row gutter={[16, 16]}>
             <Col span={24}>
-                <Form.Item label="Nama Lengkap" name="name" rules={[{ required: true }]}>
+                <Form.Item label={<Text strong>Nama Lengkap</Text>} name="name" rules={[{ required: true }]}>
                     <Input disabled={isView} placeholder="Contoh: Budi Santoso" />
                 </Form.Item>
             </Col>
             <Col span={12}>
-                <Form.Item label="NIP" name="nip" rules={[{ required: true }]}>
+                <Form.Item label={<Text strong>NIP</Text>} name="nip" rules={[{ required: true }]}>
                     <Input disabled={isView} maxLength={18} />
                 </Form.Item>
             </Col>
             <Col span={12}>
-                <Form.Item label="Pangkat / Golongan" name="rank" rules={[{ required: true }]}>
+                <Form.Item label={<Text strong>Pangkat / Golongan</Text>} name="rank" rules={[{ required: true }]}>
                     <Select disabled={isView}>
                         {['III/a', 'III/b', 'III/c', 'III/d', 'IV/a', 'IV/b'].map(r => (
                             <Option key={r} value={r}>{r}</Option>
@@ -127,12 +120,12 @@ const EmployeeFormContent: React.FC<EmployeeFormContentProps> = ({ form, mode, i
                 </Form.Item>
             </Col>
             <Col span={12}>
-                <Form.Item label="Jabatan" name="position" rules={[{ required: true }]}>
+                <Form.Item label={<Text strong>Jabatan</Text>} name="position" rules={[{ required: true }]}>
                     <Input disabled={isView} />
                 </Form.Item>
             </Col>
             <Col span={12}>
-                <Form.Item label="Unit Kerja" name="unit" rules={[{ required: true }]}>
+                <Form.Item label={<Text strong>Unit Kerja</Text>} name="unit" rules={[{ required: true }]}>
                     <Select disabled={isView}>
                         <Option value="Sekretariat Utama">Sekretariat Utama</Option>
                         <Option value="Deputi Konservasi">Deputi Konservasi</Option>
@@ -141,12 +134,12 @@ const EmployeeFormContent: React.FC<EmployeeFormContentProps> = ({ form, mode, i
                 </Form.Item>
             </Col>
             <Col span={12}>
-                <Form.Item label="Masa Kerja (Tahun)" name="tenure" rules={[{ required: true }]}>
+                <Form.Item label={<Text strong>Masa Kerja (Tahun)</Text>} name="tenure" rules={[{ required: true }]}>
                     <InputNumber style={{ width: '100%' }} disabled={isView} min={0} />
                 </Form.Item>
             </Col>
             <Col span={12}>
-                <Form.Item label="TMT PNS" name="tmtPns" rules={[{ required: true }]}>
+                <Form.Item label={<Text strong>TMT PNS</Text>} name="tmtPns" rules={[{ required: true }]}>
                     <DatePicker style={{ width: '100%' }} disabled={isView} format="DD-MM-YYYY" />
                 </Form.Item>
             </Col>
@@ -156,13 +149,15 @@ const EmployeeFormContent: React.FC<EmployeeFormContentProps> = ({ form, mode, i
     const HistoryView = ({ data }: { data: IHistory[] }) => {
         if (!data || data.length === 0) return <Text type="secondary" italic>Belum ada data riwayat.</Text>;
         return (
-            <div style={{ padding: '0 10px', marginTop: 10 }}>
+            <div style={{ padding: '20px 10px' }}>
                 <Timeline mode="left">
                     {data.map((item, idx) => (
-                        <Timeline.Item key={idx} color="blue" label={item.date}>
-                            <Text strong>{item.description}</Text>
-                            <br />
-                            <Tag color="cyan" style={{ marginTop: 4 }}>{item.skNumber}</Tag>
+                        <Timeline.Item key={idx} color={COLORS.blue} label={<Text type="secondary">{item.date}</Text>}>
+                            <Card size="small" style={{ borderRadius: '8px', border: `1px solid ${COLORS.border}` }}>
+                                <Text strong style={{ color: COLORS.navy }}>{item.description}</Text>
+                                <br />
+                                <Tag color="blue" style={{ marginTop: 8 }}>{item.skNumber}</Tag>
+                            </Card>
                         </Timeline.Item>
                     ))}
                 </Timeline>
@@ -174,11 +169,15 @@ const EmployeeFormContent: React.FC<EmployeeFormContentProps> = ({ form, mode, i
 
     return (
         <Form form={form} layout="vertical">
-            <Tabs defaultActiveKey="1" items={[
-                { key: '1', label: <span><SolutionOutlined /> Data Utama</span>, children: <GeneralInfo /> },
-                { key: '2', label: <span><HistoryOutlined /> Riwayat Pangkat</span>, children: <HistoryView data={initialValues?.rankHistory || []} /> },
-                { key: '3', label: <span><DollarOutlined /> Riwayat Gaji</span>, children: <HistoryView data={initialValues?.salaryHistory || []} /> }
-            ]} />
+            <Tabs 
+                defaultActiveKey="1" 
+                tabBarStyle={{ color: COLORS.navy }}
+                items={[
+                    { key: '1', label: <span><SolutionOutlined /> Data Utama</span>, children: <div style={{ paddingTop: 16 }}><GeneralInfo /></div> },
+                    { key: '2', label: <span><HistoryOutlined /> Riwayat Pangkat</span>, children: <HistoryView data={initialValues?.rankHistory || []} /> },
+                    { key: '3', label: <span><DollarOutlined /> Riwayat Gaji</span>, children: <HistoryView data={initialValues?.salaryHistory || []} /> }
+                ]} 
+            />
         </Form>
     );
 };
@@ -188,38 +187,24 @@ const EmployeeFormContent: React.FC<EmployeeFormContentProps> = ({ form, mode, i
 // ==========================================
 const EmployeePage: React.FC = () => {
     const [data, setData] = useState<IEmployee[]>(mockEmployees);
-    
-    // -- STATE FILTER --
     const [searchText, setSearchText] = useState("");
     const [selectedUnit, setSelectedUnit] = useState<string | null>(null);
     const [selectedTenure, setSelectedTenure] = useState<string | null>(null);
-
-    // -- STATE MODAL --
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMode, setModalMode] = useState<"create" | "edit" | "view">("create");
     const [selectedRecord, setSelectedRecord] = useState<IEmployee | undefined>(undefined);
-    
     const [form] = Form.useForm();
 
-    // --- LOGIC FILTERING GABUNGAN ---
     const filteredData = data.filter(item => {
-        // 1. Filter Search (Nama & NIP)
-        const matchSearch = item.name.toLowerCase().includes(searchText.toLowerCase()) || 
-                            item.nip.includes(searchText);
-        
-        // 2. Filter Unit Kerja
+        const matchSearch = item.name.toLowerCase().includes(searchText.toLowerCase()) || item.nip.includes(searchText);
         const matchUnit = selectedUnit ? item.unit === selectedUnit : true;
-
-        // 3. Filter Masa Kerja
         let matchTenure = true;
         if (selectedTenure === '0-5') matchTenure = item.tenure <= 5;
         else if (selectedTenure === '5-10') matchTenure = item.tenure > 5 && item.tenure <= 10;
         else if (selectedTenure === '10+') matchTenure = item.tenure > 10;
-
         return matchSearch && matchUnit && matchTenure;
     });
 
-    // --- HANDLERS ---
     const handleOpen = (mode: "create" | "edit" | "view", record?: IEmployee) => {
         setModalMode(mode);
         setSelectedRecord(record);
@@ -253,66 +238,64 @@ const EmployeePage: React.FC = () => {
         message.success("Data pegawai dihapus");
     };
 
-    // --- COLUMNS CONFIGURATION ---
     const columns: any = [
         {
-            title: 'Pegawai',
+            title: <Text strong style={{ color: COLORS.navy }}>Pegawai</Text>,
             dataIndex: 'name',
             key: 'name',
             width: 300,
-            sorter: (a: IEmployee, b: IEmployee) => a.name.localeCompare(b.name), // SORT AKTIF
+            sorter: (a: IEmployee, b: IEmployee) => a.name.localeCompare(b.name),
             render: (text: string, record: IEmployee) => (
                 <Space>
-                    <Avatar shape="square" size="large" icon={<UserOutlined />} style={{ backgroundColor: '#1890ff' }} />
+                    <Avatar shape="square" size="large" icon={<UserOutlined />} style={{ backgroundColor: COLORS.blue }} />
                     <Space direction="vertical" size={0}>
-                        <Text strong>{text}</Text>
+                        <Text strong style={{ color: COLORS.navy }}>{text}</Text>
                         <Text type="secondary" style={{ fontSize: 12 }}>NIP. {record.nip}</Text>
                     </Space>
                 </Space>
             )
         },
         {
-            title: 'Jabatan & Gol',
+            title: <Text strong style={{ color: COLORS.navy }}>Jabatan & Gol</Text>,
             dataIndex: 'position',
             key: 'position',
-            sorter: (a: IEmployee, b: IEmployee) => a.rank.localeCompare(b.rank), // SORT AKTIF
             render: (text: string, record: IEmployee) => (
                 <Space direction="vertical" size={0}>
-                    <Text>{text}</Text>
-                    <Tag color="blue">{record.rank}</Tag>
+                    <Text style={{ color: COLORS.navy }}>{text}</Text>
+                    <Tag color="processing">{record.rank}</Tag>
                 </Space>
             )
         },
         {
-            title: 'Unit Kerja',
+            title: <Text strong style={{ color: COLORS.navy }}>Unit Kerja</Text>,
             dataIndex: 'unit',
             key: 'unit',
-            sorter: (a: IEmployee, b: IEmployee) => a.unit.localeCompare(b.unit), // SORT AKTIF
-            // Filter dihapus dari sini, dipindah ke atas
         },
         {
-            title: 'Masa Kerja',
+            title: <Text strong style={{ color: COLORS.navy }}>Masa Kerja</Text>,
             dataIndex: 'tenure',
             key: 'tenure',
             width: 150,
-            sorter: (a: IEmployee, b: IEmployee) => a.tenure - b.tenure, // SORT AKTIF
-            render: (val: number) => <Tag color={val > 10 ? "green" : "orange"}>{val} Tahun</Tag>
-            // Filter dihapus dari sini, dipindah ke atas
+            render: (val: number) => (
+                <Tag color={val > 10 ? "success" : "warning"} bordered={false}>
+                    {val} Tahun
+                </Tag>
+            )
         },
         {
-            title: 'Aksi',
+            title: <Text strong style={{ color: COLORS.navy }}>Aksi</Text>,
             key: 'action',
             width: 150,
             render: (_: any, record: IEmployee) => (
                 <Space>
-                    <Button size="small" icon={<EyeOutlined />} onClick={() => handleOpen("view", record)} />
-                    <Button size="small" icon={<EditOutlined />} onClick={() => handleOpen("edit", record)} />
+                    <Button size="small" type="text" style={{ color: COLORS.blue }} icon={<EyeOutlined />} onClick={() => handleOpen("view", record)} />
+                    <Button size="small" type="text" style={{ color: COLORS.blue }} icon={<EditOutlined />} onClick={() => handleOpen("edit", record)} />
                     <Popconfirm
                         title="Hapus Pegawai"
                         onConfirm={() => handleDelete(record.id)}
                         okText="Ya" cancelText="Batal" okButtonProps={{ danger: true }}
                     >
-                        <Button size="small" danger icon={<DeleteOutlined />} />
+                        <Button size="small" type="text" danger icon={<DeleteOutlined />} />
                     </Popconfirm>
                 </Space>
             )
@@ -320,76 +303,82 @@ const EmployeePage: React.FC = () => {
     ];
 
     return (
-        <div>
-            <Card style={{ borderRadius: '12px' }}>
-                <div style={{ marginBottom: 20 }}>
-                    <Title level={3} style={{ margin: 0 }}>Data Pegawai</Title>
-                    <Text type="secondary">Kelola database kepegawaian ANRI</Text>
-                </div>
-
-                <div style={{ 
-                    marginBottom: 24, 
-                    display: 'flex', 
-                    flexWrap: 'wrap', 
-                    gap: 16, 
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    backgroundColor: '#fafafa',
-                    padding: '16px',
-                    borderRadius: '8px',
-                    border: '1px solid #f0f0f0'
-                }}>
-                    <Space wrap>
-                        <Input 
-                            placeholder="Cari Nama / NIP..." 
-                            prefix={<SearchOutlined />} 
-                            allowClear
-                            onChange={(e) => setSearchText(e.target.value)}
-                            style={{ width: 200 }}
-                        />
-                        
-                        <Select
-                            placeholder="Filter Unit Kerja"
-                            allowClear
-                            style={{ width: 200 }}
-                            onChange={(val) => setSelectedUnit(val)}
-                            suffixIcon={<FilterOutlined />}
-                        >
-                            <Option value="Sekretariat Utama">Sekretariat Utama</Option>
-                            <Option value="Deputi Konservasi">Deputi Konservasi</Option>
-                            <Option value="Deputi IPSK">Deputi IPSK</Option>
-                        </Select>
-
-                        <Select
-                            placeholder="Filter Masa Kerja"
-                            allowClear
-                            style={{ width: 180 }}
-                            onChange={(val) => setSelectedTenure(val)}
-                            suffixIcon={<FilterOutlined />}
-                        >
-                            <Option value="0-5">0 - 5 Tahun</Option>
-                            <Option value="5-10">5 - 10 Tahun</Option>
-                            <Option value="10+">&gt; 10 Tahun</Option>
-                        </Select>
-                    </Space>
-
+        <div style={{ backgroundColor: COLORS.bg }}>
+            <Card 
+                bordered={false} 
+                style={{ borderRadius: '16px', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}
+            >
+                <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+                    <div>
+                        <Title level={3} style={{ margin: 0, color: COLORS.navy }}>Data Pegawai</Title>
+                        <Text type="secondary">Kelola database kepegawaian Arsip Nasional Republik Indonesia</Text>
+                    </div>
                     <Button 
                         type="primary" 
                         icon={<PlusOutlined />} 
                         size="large" 
                         onClick={() => handleOpen("create")}
-                        style={{ borderRadius: '6px' }}
+                        style={{ backgroundColor: COLORS.blue, borderRadius: '8px', height: '45px' }}
                     >
                         Tambah Pegawai
                     </Button>
+                </div>
+
+                {/* Filter Area - Putih & Biru Muda */}
+                <div style={{ 
+                    marginBottom: 24, 
+                    display: 'flex', 
+                    flexWrap: 'wrap', 
+                    gap: 12, 
+                    backgroundColor: COLORS.bg,
+                    padding: '20px',
+                    borderRadius: '12px',
+                    border: `1px solid ${COLORS.border}`
+                }}>
+                    <Input 
+                        placeholder="Cari Nama / NIP..." 
+                        prefix={<SearchOutlined style={{ color: COLORS.blue }} />} 
+                        allowClear
+                        onChange={(e) => setSearchText(e.target.value)}
+                        style={{ width: 250, borderRadius: '8px' }}
+                    />
+                    
+                    <Select
+                        placeholder="Filter Unit Kerja"
+                        allowClear
+                        style={{ width: 200 }}
+                        onChange={(val) => setSelectedUnit(val)}
+                        suffixIcon={<FilterOutlined style={{ color: COLORS.blue }} />}
+                    >
+                        <Option value="Sekretariat Utama">Sekretariat Utama</Option>
+                        <Option value="Deputi Konservasi">Deputi Konservasi</Option>
+                        <Option value="Deputi IPSK">Deputi IPSK</Option>
+                    </Select>
+
+                    <Select
+                        placeholder="Filter Masa Kerja"
+                        allowClear
+                        style={{ width: 180 }}
+                        onChange={(val) => setSelectedTenure(val)}
+                        suffixIcon={<FilterOutlined style={{ color: COLORS.blue }} />}
+                    >
+                        <Option value="0-5">0 - 5 Tahun</Option>
+                        <Option value="5-10">5 - 10 Tahun</Option>
+                        <Option value="10+">&gt; 10 Tahun</Option>
+                    </Select>
                 </div>
 
                 <Table 
                     columns={columns} 
                     dataSource={filteredData} 
                     rowKey="id"
-                    pagination={{ pageSize: 5, showSizeChanger: true }}
+                    pagination={{ 
+                        pageSize: 5, 
+                        showSizeChanger: true,
+                        position: ['bottomCenter']
+                    }}
                     scroll={{ x: 800 }}
+                    style={{ border: `1px solid ${COLORS.bg}`, borderRadius: '8px' }}
                 />
             </Card>
 

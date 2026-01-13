@@ -1,5 +1,4 @@
 :root {
- 
   --admin-navy: #002347;   
   --admin-blue: #00509d;   
   --bg-light: #f8fafc;
@@ -13,22 +12,23 @@
 
 
 .custom-sider {
-  background: var(--admin-navy) !important;
+  background: #ffffff !important;
   position: fixed !important;
   height: 100vh;
   left: 0;
   top: 0;
   bottom: 0;
-  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.15);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
   z-index: 1000;
+  border-right: 1px solid #edf2f7;
 }
 
 .logo-container {
   height: var(--header-height);
   display: flex;
   align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid #f1f5f9;
+  background: #ffffff !important;
   transition: all 0.3s ease;
 }
 
@@ -50,7 +50,7 @@
 }
 
 .logo-text {
-  color: #ffffff;
+  color: var(--admin-navy) !important;
   font-size: 16px;
   font-weight: 700;
   margin-left: 12px;
@@ -65,15 +65,34 @@
 }
 
 .custom-menu .ant-menu-item {
-  color: rgba(255, 255, 255, 0.7) !important;
+  color: var(--admin-navy) !important;
   margin-bottom: 8px !important;
+  font-weight: 500;
 }
 
+
+.custom-menu .ant-menu-item .anticon, 
+.custom-menu .ant-menu-item svg {
+  color: var(--admin-navy) !important;
+}
+
+
+.custom-menu .ant-menu-item:hover {
+  background-color: rgba(0, 80, 157, 0.05) !important;
+  color: var(--admin-blue) !important;
+}
+
+
 .custom-menu .ant-menu-item-selected {
-  background-color: var(--admin-blue) !important;
-  color: #ffffff !important;
-  font-weight: 600;
+  background-color: rgba(0, 80, 157, 0.1) !important;
+  color: var(--admin-blue) !important;
+  font-weight: 700;
   border-radius: 8px;
+}
+
+.custom-menu .ant-menu-item-selected .anticon, 
+.custom-menu .ant-menu-item-selected svg {
+  color: var(--admin-blue) !important;
 }
 
 
@@ -122,7 +141,6 @@
   margin: 0 12px;
 }
 
-
 .profile-box {
   display: flex;
   align-items: center;
@@ -150,7 +168,6 @@
   box-shadow: 0 2px 6px rgba(0, 80, 157, 0.2);
   flex-shrink: 0;
 }
-
 
 .site-layout {
   transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);

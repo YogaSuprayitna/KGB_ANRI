@@ -9,26 +9,26 @@ import routerProvider, {
 import { App as AntdApp } from "antd";
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
 
-// Providers & Layouts
+
 import { authProvider } from "./authProvider";
-import { dataProvider } from "./dataProvider"; // Gunakan dataProvider kustom yang kita buat
+import { dataProvider } from "./dataProvider"; 
 import AdminLayout from "./components/layout/AdminLayout";
 import UserLayout from "./components/layout/UserLayout";
 import RoleProtected from "./components/RoleProtected"; 
 
-// Pages
+
 import Login from "./pages/login";
-import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminDashboard from "./pages/admin/dashboard";
 import DataPegawai from "./pages/admin/dataPegawai";
-import MenuUsulanKGB from "./pages/admin/AdminMenuUsulan";
-import KGBAdminMenuRiwayat from "./pages/admin/AdminMenuRiwayat";
-import { AdminProfileSettings } from "./pages/admin/AdminSettings";
-import UserDashboard from "./pages/users/UserDashboard";
-import { ProfileUserSettings } from "./pages/users/UserSettings";
+import MenuUsulanKGB from "./pages/admin/usulanKGB";
+import KGBAdminMenuRiwayat from "./pages/admin/riwayatKGB";
+import { AdminProfileSettings } from "./pages/admin/settings";
+import UserDashboard from "./pages/users/Dashboard";
+import { ProfileUserSettings } from "./pages/users/Settings";
 import NotificationList from "./pages/Notificationlist";
 import NotificationDetail from "./pages/Notificationdetail";
 
-// Icons
+
 import {
   DashboardOutlined,
   TeamOutlined,
@@ -37,12 +37,12 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 
-// --- CUSTOM LAYOUT SELECTOR ---
+
 const LayoutSelector = () => {
   const storedAuth = localStorage.getItem("auth");
   const user = storedAuth ? JSON.parse(storedAuth) : null;
 
-  // Memilih layout berdasarkan role yang tersimpan
+  
   if (user?.role === "admin") {
     return (
       <AdminLayout>
@@ -62,13 +62,13 @@ function App() {
     <BrowserRouter>
       <AntdApp>
         <Refine
-          // Pastikan port sesuai dengan JSON-Server (3001)
+          
           dataProvider={dataProvider("http://localhost:3001")} 
           notificationProvider={useNotificationProvider}
           routerProvider={routerProvider}
           authProvider={authProvider}
           options={{
-            syncWithLocation: true, // Menyingkronkan state rute dengan URL browser
+            syncWithLocation: true, 
             warnWhenUnsavedChanges: true,
           }}
           resources={[

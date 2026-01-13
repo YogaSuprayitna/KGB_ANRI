@@ -8,7 +8,6 @@ const apiUrl = "http://localhost:3001";
 export const authProvider: AuthProvider = {
   login: async ({ username, password }) => {
     try {
-      // Menambahkan <any[]> untuk memberi tahu TS bahwa data adalah array
       const response = await axios.get<any[]>(
         `${apiUrl}/users?username=${username}&password=${password}`
       );
