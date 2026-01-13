@@ -1,5 +1,5 @@
 import { Authenticated, Refine } from "@refinedev/core";
-import { ErrorComponent, useNotificationProvider } from "@refinedev/antd";
+import { useNotificationProvider } from "@refinedev/antd";
 import "@refinedev/antd/dist/reset.css";
 import routerProvider, {
   CatchAllNavigate,
@@ -9,13 +9,11 @@ import routerProvider, {
 import { App as AntdApp } from "antd";
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
 
-
 import { authProvider } from "./authProvider";
 import { dataProvider } from "./dataProvider"; 
 import AdminLayout from "./components/layout/AdminLayout";
 import UserLayout from "./components/layout/UserLayout";
 import RoleProtected from "./components/RoleProtected"; 
-
 
 import Login from "./pages/login";
 import AdminDashboard from "./pages/admin/dashboard";
@@ -23,11 +21,10 @@ import DataPegawai from "./pages/admin/dataPegawai";
 import MenuUsulanKGB from "./pages/admin/usulanKGB";
 import KGBAdminMenuRiwayat from "./pages/admin/riwayatKGB";
 import { AdminProfileSettings } from "./pages/admin/settings";
-import UserDashboard from "./pages/users/Dashboard";
-import { ProfileUserSettings } from "./pages/users/Settings";
+import UserDashboard from "./pages/users/dashboard";
+import { ProfileUserSettings } from "./pages/users/settings";
 import NotificationList from "./pages/Notificationlist";
 import NotificationDetail from "./pages/Notificationdetail";
-
 
 import {
   DashboardOutlined,
@@ -37,12 +34,23 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 
+const CatchAllRedirect = () => {
+  const storedAuth = localStorage.getItem("auth");
+  const user = storedAuth ? JSON.parse(storedAuth) : null;
+
+  if (user?.role === "admin") {
+    return <Navigate to="/admin-dashboard" replace />;
+  }
+  if (user?.role === "user") {
+    return <Navigate to="/user-dashboard" replace />;
+  }
+  return <Navigate to="/login" replace />;
+};
 
 const LayoutSelector = () => {
   const storedAuth = localStorage.getItem("auth");
   const user = storedAuth ? JSON.parse(storedAuth) : null;
 
-  
   if (user?.role === "admin") {
     return (
       <AdminLayout>
@@ -62,7 +70,6 @@ function App() {
     <BrowserRouter>
       <AntdApp>
         <Refine
-          
           dataProvider={dataProvider("http://localhost:3001")} 
           notificationProvider={useNotificationProvider}
           routerProvider={routerProvider}
@@ -162,7 +169,7 @@ function App() {
               }
             />
 
-            <Route path="*" element={<ErrorComponent />} />
+            <Route path="*" element={<CatchAllRedirect />} />
           </Routes>
           <DocumentTitleHandler handler={({ resource }) => `KGB ANRI | ${resource?.meta?.label || ""}`} />
         </Refine>
