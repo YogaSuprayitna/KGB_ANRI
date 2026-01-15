@@ -21,7 +21,7 @@ const { Title, Text } = Typography;
 
 
 const mockStats = { 
-  activeEmployees: 1240, 
+  activeEmployees: 784, 
   upcomingKGB: 45, 
   ongoingProcess: 12, 
   pendingSK: 5 
@@ -43,7 +43,7 @@ const historyData = [
   { key: "2", name: "Ratna Sari", tmt: "01-01-2026", type: "KGB", skNumber: "SK/882/2026", status: "Selesai" },
 ];
 
-export const AdminDashboard: React.FC = () => {
+export const dashboardAdmin: React.FC = () => {
   const { list } = useNavigation();
   
   const [filteredDataSource, setFilteredDataSource] = useState(upcomingKGBData);
@@ -111,14 +111,6 @@ export const AdminDashboard: React.FC = () => {
           <Title level={2} style={{ margin: 0, color: "#002347", fontWeight: 800 }}>Dashboard KGB</Title>
           <Text type="secondary" style={{ fontSize: 14 }}>Arsip Nasional Republik Indonesia</Text>
         </div>
-        <Button 
-          type="primary" 
-          size="large" 
-          icon={<RiseOutlined />} 
-          className="btn-primary-solid"
-        >
-          Proses KGB Baru
-        </Button>
       </div>
 
       <Row gutter={[20, 20]} style={{ marginBottom: "24px" }}>
@@ -167,20 +159,6 @@ export const AdminDashboard: React.FC = () => {
       <Row gutter={[24, 24]} style={{ marginTop: 24 }}>
         <Col xs={24} lg={16}>
           <Space direction="vertical" size={24} style={{ width: "100%" }}>
-            <Card
-              title={<Space><SyncOutlined style={{ color: "#00509d" }} /> PROSES KGB SEDANG BERJALAN</Space>}
-              className="dashboard-card"
-              variant="borderless"
-              extra={<Button type="link" style={{ fontWeight: 600 }}>Lihat Semua</Button>}
-            >
-              <Table 
-                dataSource={filteredDataSource} 
-                columns={processColumns} 
-                pagination={{ pageSize: 5 }} 
-                size="middle"
-                locale={{ emptyText: "Data pegawai tidak ditemukan" }}
-              />
-            </Card>
 
             <Card
               title={<Space><HistoryOutlined style={{ color: "#722ed1" }} /> RIWAYAT KGB TERAKHIR</Space>}
@@ -237,4 +215,4 @@ export const AdminDashboard: React.FC = () => {
   );
 };
 
-export default AdminDashboard;
+export default dashboardAdmin;

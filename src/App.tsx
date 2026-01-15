@@ -15,12 +15,13 @@ import AdminLayout from "./components/layout/adminLayout";
 import UserLayout from "./components/layout/userLayout";
 import RoleProtected from "./components/roleProtected"; 
 
+// Import Pages
 import Login from "./pages/login";
 import AdminDashboard from "./pages/admin/dashboard";
 import DataPegawai from "./pages/admin/dataPegawai";
 import MenuUsulanKGB from "./pages/admin/usulanKGB";
+import UsulanKGBVerify from "./pages/admin/usulanKGBVerify"; // Halaman Verifikasi Baru
 import KGBAdminMenuRiwayat from "./pages/admin/riwayatKGB";
-import { AdminProfileSettings } from "./pages/admin/settings";
 import UserDashboard from "./pages/users/dashboard";
 import { ProfileUserSettings } from "./pages/users/settings";
 import NotificationList from "./pages/notificationList";
@@ -92,17 +93,14 @@ function App() {
             {
               name: "admin-menu-usulan",
               list: "/admin-menu-usulan",
+              // Menambahkan meta edit untuk mendukung navigasi halaman verifikasi
+              edit: "/admin-menu-usulan/verifikasi/:id",
               meta: { label: "Usulan KGB", icon: <FileTextOutlined /> },
             },
             {
               name: "admin-menu-riwayat",
               list: "/admin-menu-riwayat",
               meta: { label: "Riwayat KGB", icon: <HistoryOutlined /> },
-            },
-            {
-              name: "admin-settings",
-              list: "/admin-settings",
-              meta: { label: "Pengaturan", icon: <SettingOutlined /> },
             },
             {
               name: "user-dashboard",
@@ -117,6 +115,7 @@ function App() {
           ]}
         >
           <Routes>
+            {/* ADMIN SCOPE */}
             <Route
               element={
                 <Authenticated key="admin-scope" fallback={<CatchAllNavigate to="/login" />}>
@@ -127,9 +126,15 @@ function App() {
               <Route element={<LayoutSelector />}>
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />
                 <Route path="/admin-pegawai" element={<DataPegawai />} />
-                <Route path="/admin-menu-usulan" element={<MenuUsulanKGB />} />
+                
+                {/* Rute Usulan KGB & Verifikasi */}
+                <Route path="/admin-menu-usulan">
+                    <Route index element={<MenuUsulanKGB />} />
+                    <Route path="verifikasi/:id" element={<UsulanKGBVerify />} />
+                </Route>
+
                 <Route path="/admin-menu-riwayat" element={<KGBAdminMenuRiwayat />} />
-                <Route path="/admin-settings" element={<AdminProfileSettings />} />
+                
                 <Route path="/notifications">
                   <Route index element={<NotificationList />} />
                   <Route path="show/:notificationId" element={<NotificationDetail />} />
@@ -137,6 +142,7 @@ function App() {
               </Route>
             </Route>
 
+            {/* USER SCOPE */}
             <Route
               element={
                 <Authenticated key="user-scope" fallback={<CatchAllNavigate to="/login" />}>
@@ -150,6 +156,7 @@ function App() {
               </Route>
             </Route>
 
+            {/* LOGIN PAGE */}
             <Route
               element={
                 <Authenticated key="auth-pages" fallback={<Outlet />}>
@@ -160,6 +167,7 @@ function App() {
               <Route path="/login" element={<Login />} />
             </Route>
 
+            {/* ROOT REDIRECT */}
             <Route
               path="/"
               element={
@@ -171,7 +179,12 @@ function App() {
 
             <Route path="*" element={<CatchAllRedirect />} />
           </Routes>
-          <DocumentTitleHandler handler={({ resource }) => `KGB ANRI | ${resource?.meta?.label || ""}`} />
+          <DocumentTitleHandler handler={({ resource, action }) => {
+              const label = resource?.meta?.label || "";
+              const suffix = "KGB ANRI";
+              if (action === "edit") return `Verifikasi Usulan | ${suffix}`;
+              return `${label} | ${suffix}`;
+          }} />
         </Refine>
       </AntdApp>
     </BrowserRouter>

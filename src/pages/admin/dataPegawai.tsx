@@ -8,12 +8,12 @@ import {
     UserOutlined, HistoryOutlined, DollarOutlined, SolutionOutlined, FilterOutlined 
 } from "@ant-design/icons";
 import dayjs from "dayjs";
-import { DynamicModal } from "../../components/dynamicModal"; 
+import { data } from "react-router";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
 
-// Warna Tema ANRI
+
 const COLORS = {
     navy: "#002347",
     blue: "#00509d",
@@ -22,7 +22,7 @@ const COLORS = {
     bg: "#f8fafc"
 };
 
-// ... (Interface IHistory dan IEmployee tetap sama)
+
 interface IHistory {
     date: string;
     description: string;
@@ -42,7 +42,7 @@ interface IEmployee {
     salaryHistory: IHistory[];
 }
 
-// ... (Dummy Data mockEmployees tetap sama)
+
 const mockEmployees: IEmployee[] = [
     {
         id: 1,
@@ -75,9 +75,9 @@ const mockEmployees: IEmployee[] = [
     },
 ];
 
-// ==========================================
-// 3. SUB-COMPONENT: FORM CONTENT
-// ==========================================
+
+
+
 interface EmployeeFormContentProps {
     form: any;
     mode: "create" | "edit" | "view";
@@ -182,10 +182,10 @@ const EmployeeFormContent: React.FC<EmployeeFormContentProps> = ({ form, mode, i
     );
 };
 
-// ==========================================
-// 4. MAIN PAGE COMPONENT
-// ==========================================
-const EmployeePage: React.FC = () => {
+
+
+
+const dataPegawai: React.FC = () => {
     const [data, setData] = useState<IEmployee[]>(mockEmployees);
     const [searchText, setSearchText] = useState("");
     const [selectedUnit, setSelectedUnit] = useState<string | null>(null);
@@ -247,7 +247,7 @@ const EmployeePage: React.FC = () => {
             sorter: (a: IEmployee, b: IEmployee) => a.name.localeCompare(b.name),
             render: (text: string, record: IEmployee) => (
                 <Space>
-                    <Avatar shape="square" size="large" icon={<UserOutlined />} style={{ backgroundColor: COLORS.blue }} />
+                    <Avatar shape="square" size="large" icon={<UserOutlined />} style={{ color: "#00509d", backgroundColor: "#e6f0f9", padding: 8, borderRadius: 8, marginRight: 12 }} />
                     <Space direction="vertical" size={0}>
                         <Text strong style={{ color: COLORS.navy }}>{text}</Text>
                         <Text type="secondary" style={{ fontSize: 12 }}>NIP. {record.nip}</Text>
@@ -282,24 +282,6 @@ const EmployeePage: React.FC = () => {
                 </Tag>
             )
         },
-        {
-            title: <Text strong style={{ color: COLORS.navy }}>Aksi</Text>,
-            key: 'action',
-            width: 150,
-            render: (_: any, record: IEmployee) => (
-                <Space>
-                    <Button size="small" type="text" style={{ color: COLORS.blue }} icon={<EyeOutlined />} onClick={() => handleOpen("view", record)} />
-                    <Button size="small" type="text" style={{ color: COLORS.blue }} icon={<EditOutlined />} onClick={() => handleOpen("edit", record)} />
-                    <Popconfirm
-                        title="Hapus Pegawai"
-                        onConfirm={() => handleDelete(record.id)}
-                        okText="Ya" cancelText="Batal" okButtonProps={{ danger: true }}
-                    >
-                        <Button size="small" type="text" danger icon={<DeleteOutlined />} />
-                    </Popconfirm>
-                </Space>
-            )
-        }
     ];
 
     return (
@@ -313,18 +295,8 @@ const EmployeePage: React.FC = () => {
                         <Title level={3} style={{ margin: 0, color: COLORS.navy }}>Data Pegawai</Title>
                         <Text type="secondary">Kelola database kepegawaian Arsip Nasional Republik Indonesia</Text>
                     </div>
-                    <Button 
-                        type="primary" 
-                        icon={<PlusOutlined />} 
-                        size="large" 
-                        onClick={() => handleOpen("create")}
-                        style={{ backgroundColor: COLORS.blue, borderRadius: '8px', height: '45px' }}
-                    >
-                        Tambah Pegawai
-                    </Button>
                 </div>
 
-                {/* Filter Area - Putih & Biru Muda */}
                 <div style={{ 
                     marginBottom: 24, 
                     display: 'flex', 
@@ -382,18 +354,8 @@ const EmployeePage: React.FC = () => {
                 />
             </Card>
 
-            <DynamicModal
-                title={modalMode === "create" ? "Tambah Pegawai Baru" : modalMode === "edit" ? "Edit Data Pegawai" : "Detail Pegawai"}
-                isOpen={isModalOpen}
-                onClose={handleClose}
-                onSubmit={handleSubmit}
-                mode={modalMode}
-                width={800}
-            >
-                <EmployeeFormContent form={form} mode={modalMode} initialValues={selectedRecord} />
-            </DynamicModal>
         </div>
     );
 };
 
-export default EmployeePage;
+export default dataPegawai;

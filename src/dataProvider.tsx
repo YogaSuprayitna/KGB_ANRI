@@ -28,7 +28,7 @@ export const dataProvider = (apiUrl: string): DataProvider => {
   });
 
   return {
-    getList: async ({ resource, pagination, filters, sorters, meta }) => {
+    getList: async ({ resource, pagination, filters, sorters }) => {
       const url = `/${resource}`;
       
       

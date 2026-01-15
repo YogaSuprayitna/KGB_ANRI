@@ -1,0 +1,8 @@
+.usulan-container { padding: 24px; background-color: #f8fafc; min-height: 100vh; }
+.text-navy { color: #002347 !important; }
+.text-bold { font-weight: 600 !important; }
+.stats-card { border-radius: 12px !important; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03) !important; border: none !important; }
+.main-card { border-radius: 16px !important; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important; border: none !important; background-color: #ffffff !important; }
+.filter-row { margin-bottom: 20px; padding: 16px; background-color: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; }
+.usulan-table .ant-table-thead > tr > th { background-color: #f8fafc !important; color: #002347 !important; font-weight: 600 !important; }
+.checklist-item { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 12px; }

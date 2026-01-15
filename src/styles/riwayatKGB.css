@@ -1,0 +1,74 @@
+/* Container Utama */
+.history-page-container {
+    padding: 24px;
+    background-color: #f8fafc;
+    min-height: 100vh;
+}
+
+/* Tipografi */
+.text-navy {
+    color: #002347 !important;
+}
+
+.text-bold {
+    font-weight: 600 !important;
+}
+
+/* Kartu Statistik */
+.stats-card {
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+    border: none !important;
+}
+
+/* Area Filter & Tabel */
+.main-card {
+    border-radius: 16px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
+    border: none !important;
+}
+
+.filter-wrapper {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    background-color: #ffffff;
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+/* Kustomisasi Tabel */
+.history-table .ant-table-thead > tr > th {
+    background-color: #f8fafc !important;
+    color: #002347 !important;
+    font-weight: 600 !important;
+}
+
+.history-table {
+    border: 1px solid #f1f5f9;
+    border-radius: 8px;
+}
+
+/* Modal Styling */
+.modal-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #002347;
+}
+
+.required-star {
+    color: #ff4d4f;
+}
+
+.file-link {
+    color: #00509d;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+}
