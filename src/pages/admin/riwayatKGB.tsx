@@ -20,7 +20,6 @@ interface KGBRecord {
     id: number;
     nama: string;
     nip: string;
-    periode: number;
     gajiLama: number;
     gajiBaru: number;
     tmtKgb: string;
@@ -37,7 +36,6 @@ const generateDummyData = (): KGBRecord[] => {
             id: i,
             nama: names[Math.floor(Math.random() * names.length)],
             nip: `19850101201001100${i}`,
-            periode: Math.floor(Math.random() * 10) + 1,
             gajiLama: 3000000 + (i * 50000),
             gajiBaru: 3500000 + (i * 50000),
             tmtKgb: dayjs().subtract(i, "month").format("YYYY-MM-DD"),
@@ -78,7 +76,6 @@ const riwayatKGB: React.FC = () => {
         { 
             title: "Pegawai", 
             key: "pegawai", 
-            fixed: "left" as const, 
             width: 200,
             render: (_: any, record: KGBRecord) => (
                 <Space direction="vertical" size={0}>
@@ -86,11 +83,6 @@ const riwayatKGB: React.FC = () => {
                     <Text type="secondary" style={{ fontSize: 11 }}>NIP. {record.nip}</Text>
                 </Space>
             )
-        },
-        { 
-            title: "Periode", 
-            dataIndex: "periode", 
-            render: (p: number) => <Tag color="blue">Periode {p}</Tag> 
         },
         { 
             title: "Gaji Baru", 
@@ -104,20 +96,6 @@ const riwayatKGB: React.FC = () => {
         },
         { title: "Nomor SK", dataIndex: "nomorSk" },
     ];
-
-    const filterContent = (
-        <div style={{ width: 300 }}>
-            <Text strong className="text-navy">Filter Periode</Text>
-            <div style={{ margin: "8px 0 16px", maxHeight: 120, overflowY: "auto" }}>
-                {[...Array(10)].map((_, i) => (
-                    <div key={i}><Checkbox>Periode {i + 1}</Checkbox></div>
-                ))}
-            </div>
-            <Text strong className="text-navy">Rentang Tanggal</Text>
-            <RangePicker style={{ width: '100%', marginTop: 8 }} />
-            <Button type="primary" block style={{ marginTop: 16, backgroundColor: "#00509d" }}>Terapkan Filter</Button>
-        </div>
-    );
 
     return (
         <div className="history-page-container">
@@ -146,9 +124,6 @@ const riwayatKGB: React.FC = () => {
                             style={{ width: 300, borderRadius: 8 }}
                             allowClear
                         />
-                        <Popover content={filterContent} title="Opsi Filter" trigger="click">
-                            <Button icon={<FilterOutlined />} style={{ borderRadius: 8 }}>Filter</Button>
-                        </Popover>
                     </Space>
                 </div>
 

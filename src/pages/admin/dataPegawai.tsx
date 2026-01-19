@@ -67,7 +67,7 @@ const mockEmployees: IEmployee[] = [
         nip: "19900505 201503 2 005",
         rank: "III/c",
         position: "Arsiparis Muda",
-        unit: "Deputi Konservasi",
+        unit: "Sekretariat Utama",
         tenure: 8,
         tmtPns: "2015-03-01",
         rankHistory: [],
@@ -323,7 +323,7 @@ const dataPegawai: React.FC = () => {
                         suffixIcon={<FilterOutlined style={{ color: COLORS.blue }} />}
                     >
                         <Option value="Sekretariat Utama">Sekretariat Utama</Option>
-                        <Option value="Deputi Konservasi">Deputi Konservasi</Option>
+                        <Option value="Sekretariat Utama">Sekretariat Utama</Option>
                         <Option value="Deputi IPSK">Deputi IPSK</Option>
                     </Select>
 
